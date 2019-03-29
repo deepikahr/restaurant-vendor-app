@@ -17,9 +17,6 @@ class OrderList extends StatelessWidget {
             bottom: TabBar(
                   indicatorColor: Colors.transparent,
                    indicatorSize: TabBarIndicatorSize.tab,
-                    // controller: controller,
-                  //  activeBackgroundColor: Colors.white,
-                  //  inactiveBackgroundColor: tabColor,
                     labelColor: WHITE,
                     unselectedLabelColor: Colors.white70  ,
                     labelStyle: TextStyle(

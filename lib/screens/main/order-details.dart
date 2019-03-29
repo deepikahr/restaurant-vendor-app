@@ -10,7 +10,7 @@ import '../../services/orders.dart';
 
 class OrderDetails extends StatefulWidget {
   static String tag = "orderDetails";
-  var orderData;
+  final orderData;
   OrderDetails({Key key, this.orderData}) : super(key: key);
 
   @override
@@ -22,13 +22,13 @@ class _OrderDetailsState extends State<OrderDetails> {
     final GlobalKey<AsyncLoaderState> _asyncLoaderState = GlobalKey<AsyncLoaderState>();
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();  
     dynamic data;
+    dynamic productList;
 
   String customerName;
   String customerEmail;
   String customerContact;
   String paymentMethod;
   String shippingAddress;
-  String taxInfo;
   String deliveryCharge;
   String subTotal;
   String grandTotal;
@@ -40,31 +40,37 @@ class _OrderDetailsState extends State<OrderDetails> {
   @override
   void initState(){
     super.initState();
-    getOrderDetail();
+    orderDetail();
   }
 
-  Future<List<dynamic>> getOrderDetail() async {
-    await OrderServices.getOrderHistory().then((onValue){
-      print("Order detail---");
-      print(onValue[0]['paymentOption']);
-
-      customerName =onValue[0]['userInfo']['name'];
-      customerContact =onValue[0]['userInfo']['contactNumber'].toString();
-      customerEmail =onValue[0]['userInfo']['email'];
-      paymentMethod =onValue[0]['paymentOption'];
-      shippingAddress =onValue[0]['shippingAddress']['address'];
-      taxInfo =onValue[0]['taxInfo']['taxName'];
-      deliveryCharge =onValue[0]['deliveryCharge'].toString();
-      subTotal =onValue[0]['subTotal'].toString();
-      grandTotal =onValue[0]['grandTotal'].toString();
-      charges =onValue[0]['charges'].toString();
-      payableAmount =onValue[0]['payableAmount'].toString();
+  Future<Map<String, dynamic>> orderDetail() async {
 
 
+   
+    await OrderServices.getOrderDetail(widget.orderData['_id']).then((onValue){
+      
+      customerName =onValue['userInfo']['name'];
+      customerContact =onValue['userInfo']['contactNumber'].toString();
+      customerEmail =onValue['userInfo']['email'];
+      paymentMethod =onValue['paymentOption'];
+      shippingAddress =onValue['shippingAddress']['address'];
+      deliveryCharge =onValue['deliveryCharge'].toString();
+      subTotal =onValue['subTotal'].toString();
+      grandTotal =onValue['grandTotal'].toString();
+      charges =onValue['charges'].toString();
+      payableAmount =onValue['payableAmount'].toString();
+
+     List products =List();
+      for(int i=0;i<onValue['productDetails'].length;i++){
+            products.add(onValue['productDetails'][i]);
+      }
      setState(() {
        var resultData = onValue;
        data =resultData;
+       productList =products;
      });
+        // print("Product List---");
+        // print(productList);
     });
     return data;
   }
@@ -76,7 +82,7 @@ class _OrderDetailsState extends State<OrderDetails> {
  Widget build(BuildContext context) {
     var asyncLoader = AsyncLoader(
       key: _asyncLoaderState,
-      initState:  () async => await getOrderDetail(),
+      initState:  () async => await orderDetail(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
       renderError: ([error]) => NoData(message: 'Something went wrong..'),
       renderSuccess: ({data}) => data.length == 0
@@ -147,15 +153,6 @@ class _OrderDetailsState extends State<OrderDetails> {
         ),
         body: asyncLoader);
   }
-
-
-
-
-
-
-
-
-
 
   Widget _customerDetails() {
     return Container(
@@ -249,7 +246,6 @@ class _OrderDetailsState extends State<OrderDetails> {
               children: <Widget>[
                 _detailTopSection(),
                 _detailMiddle(),
-                _detailBottom('Taxes', taxInfo!=null ? taxInfo : ''),
                 _detailBottom('Delivery Charges', deliveryCharge!=null ? deliveryCharge : ''),
                 _detailBottom('Sub Total', subTotal!=null ? subTotal : ''),
                 _detailBottom('Grand Total', grandTotal!=null ? grandTotal : ''),

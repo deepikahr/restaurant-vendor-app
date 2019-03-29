@@ -55,7 +55,7 @@ class _LoginState extends State<Login> {
     AuthService.getUserInfo().then((onValue) {
       String role = onValue['role'];
       print("Rolll = =    " + onValue.toString());
-      Common.setRestaurantId(onValue['restaurantID']['_id']);
+      Common.setLocationId(onValue['locationInfo']['locationId']);
       if (role == 'Manager') {
         showSnackbar('Login Successfully');
         Navigator.of(context).pushNamed(OrderList.tag);

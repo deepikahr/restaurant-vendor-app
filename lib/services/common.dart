@@ -21,14 +21,14 @@ class Common {
   }
 
   // save restaurant_id on storage
-  static Future<bool> setRestaurantId(String restaurantId) async{
+  static Future<bool> setLocationId(String locationId) async{
       SharedPreferences prefs  =await SharedPreferences.getInstance();
-      return prefs.setString('restaurantId', restaurantId);
+      return prefs.setString('locationId', locationId);
   }
    // save token on storage
-  static Future<String> getRestaurantId() async {
+  static Future<String> getLocationId() async {
       SharedPreferences prefs  =await SharedPreferences.getInstance();
-      return Future( () => prefs.getString('restaurantId'));
+      return Future( () => prefs.getString('locationId'));
   }
 
 }
