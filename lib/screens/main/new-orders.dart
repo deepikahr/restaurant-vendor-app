@@ -5,6 +5,7 @@ import '../../styles/styles.dart';
 import 'package:async_loader/async_loader.dart';
 import '../../services/orders.dart';
 import '../../screens/main/order-details.dart';
+import 'package:intl/intl.dart';
 // CouponCard
 
 class NewOrders extends StatefulWidget {
@@ -16,31 +17,71 @@ class NewOrders extends StatefulWidget {
 class _NewOrdersState extends State<NewOrders> {
   final GlobalKey<AsyncLoaderState> _asyncLoaderState =
       GlobalKey<AsyncLoaderState>();
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  dynamic data;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List orders;
+  bool isAcceptLoading = false;
+  bool isCancleLoading = false;
+  int currentIndexAccept;
+  int currentIndexCancle;
 
   @override
   void initState() {
     super.initState();
-    getOrder();
+  }
+
+  void showSnackbar(message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(milliseconds: 3000),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   Future<List<dynamic>> getOrder() async {
     await OrderServices.getOrderHistory().then((onValue) {
-      // print("Order response---");
-      // print(onValue[0]['status']);
       List filterOrder = List();
-
       for (int i = 0; i < onValue.length; i++) {
         if (onValue[i]['status'] == "Pending") {
           filterOrder.add(onValue[i]);
         }
       }
       setState(() {
-        data = filterOrder;
+        orders = filterOrder;
       });
     });
-    return data;
+    return orders;
+  }
+
+  Future<List<dynamic>> accceptOrder(String orderId, int index) async {
+    setState(() {
+      isAcceptLoading = true;
+    });
+    Map<String, dynamic> body = {'status': "Accepted"};
+    await OrderServices.updateOrder(orderId, body).then((onValue) {
+      if (onValue['message'] != null) {
+        setState(() {
+          isAcceptLoading = false;
+          orders.removeAt(index);
+          showSnackbar('Order Accepted');
+        });
+      }
+    });
+  }
+
+  Future<List<dynamic>> cancelOrder(String orderId, int index) async {
+    setState(() {
+      isCancleLoading = true;
+    });
+    Map<String, dynamic> body = {'status': "Cancelled"};
+    await OrderServices.updateOrder(orderId, body).then((onValue) {
+      if (onValue['message'] != null) {
+        setState(() {
+          isCancleLoading = false;
+          orders.removeAt(index);
+          showSnackbar('Order Cancelled');
+        });
+      }
+    });
   }
 
   Widget build(BuildContext context) {
@@ -49,11 +90,11 @@ class _NewOrdersState extends State<NewOrders> {
       initState: () async => await getOrder(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
       renderError: ([error]) => NoData(message: 'Something went wrong..'),
-      renderSuccess: ({data}) => data.length == 0
+      renderSuccess: ({data}) => orders.length == 0
           ? NoData(message: 'No Order History')
           : Container(
               child: ListView.builder(
-                  itemCount: data == null ? 0 : data.length,
+                  itemCount: orders == null ? 0 : orders.length,
                   itemBuilder: (BuildContext context, dynamic index) {
                     return GestureDetector(
                       onTap: () {
@@ -61,9 +102,11 @@ class _NewOrdersState extends State<NewOrders> {
                             context,
                             new MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  new OrderDetails(orderData: data[index]),
+                                  new OrderDetails(
+                                    orderData: orders[index],
+                                    option: 'accept',
+                                  ),
                             ));
-                        // Navigator.of(context).pushNamed(CancelOrder.tag);
                       },
                       child: SingleChildScrollView(
                         child: Container(
@@ -71,38 +114,39 @@ class _NewOrdersState extends State<NewOrders> {
                           child: Column(
                             children: <Widget>[
                               Card(
-                                  elevation: 5.0,
-                                  margin: EdgeInsets.only(top: 12.0, bottom: 6),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(0)),
-                                  child: Column(
-                                    children: <Widget>[
-                                      OrderItem(
-                                        imgurl:
-                                            'https://images.unsplash.com/photo-1490717064594-3bd2c4081693?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60R',
-                                        orderId: '${data[index]['orderID']}',
-                                        dateTime: data[index]['createdAt']
-                                            .toString()
-                                            .substring(0, 10),
-                                        details: data[index]['shippingAddress'] !=
-                                                    null &&
-                                                data[index]['shippingAddress']
-                                                        ['locationName'] !=
-                                                    null
-                                            ? '${data[index]['shippingAddress']['locationName']}'
-                                            : '',
-                                        // data[index]['shippingAddress']['locationName'] ? '${data[index]['shippingAddress']['locationName']}' : ' ',
-                                        price:
-                                            ' \$ ${data[index]['payableAmount']
-                                            .toStringAsFixed(2)}',
-                                        paymentMethod:
-                                            ' - ${data[index]['paymentOption']}',
-                                        statusLabel: 'Status ',
-                                        status: '${data[index]['status']}',
-                                      ),
-                                      _bottomSection(),
-                                    ],
-                                  )),
+                                elevation: 5.0,
+                                margin: EdgeInsets.only(top: 12.0, bottom: 6),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0)),
+                                child: Column(
+                                  children: <Widget>[
+                                    OrderItem(
+                                      imgurl: orders[index]['productDetails'][0]
+                                              ['imageUrl'] ??
+                                          'https://images.unsplash.com/photo-1490717064594-3bd2c4081693?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60R',
+                                      orderId: '${orders[index]['orderID']}',
+                                      dateTime: DateFormat('hh:mma dd/MM/yyyy')
+                                          .format(DateTime.parse(
+                                              orders[index]['createdAt'])),
+                                      details: orders[index]
+                                                      ['shippingAddress'] !=
+                                                  null &&
+                                              orders[index]['shippingAddress']
+                                                      ['locationName'] !=
+                                                  null
+                                          ? '${orders[index]['shippingAddress']['locationName']}'
+                                          : '',
+                                      price:
+                                          ' \$${orders[index]['payableAmount'].toStringAsFixed(2)}',
+                                      paymentMethod:
+                                          ' - ${orders[index]['paymentOption']}',
+                                      statusLabel: 'Status: ',
+                                      status: '${orders[index]['status']}',
+                                    ),
+                                    _bottomSection(orders[index]['_id'], index),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -113,10 +157,12 @@ class _NewOrdersState extends State<NewOrders> {
     );
 
     return Scaffold(
-        body: asyncLoader);
+      body: asyncLoader,
+      key: _scaffoldKey,
+    );
   }
 
-  Widget _bottomSection() {
+  Widget _bottomSection(String id, int index) {
     return Container(
       decoration: const BoxDecoration(
           border: Border(
@@ -131,8 +177,15 @@ class _NewOrdersState extends State<NewOrders> {
               right: BorderSide(width: 1.0, color: Color(0xFFf29000000)),
             )),
             child: FlatButton(
-              onPressed: () {},
-              child: const Text('Accept'),
+              onPressed: () {
+                if (!isAcceptLoading) {
+                  currentIndexAccept = index;
+                  accceptOrder(id, index);
+                }
+              },
+              child: (isAcceptLoading && currentIndexAccept == index)
+                  ? Text('Wait...')
+                  : Text('Accept'),
               textColor: PRIMARY,
               padding: EdgeInsets.all(0),
             ),
@@ -140,8 +193,15 @@ class _NewOrdersState extends State<NewOrders> {
           Container(
             width: screenWidth(context) * 0.50,
             child: FlatButton(
-              onPressed: () {},
-              child: const Text('Reject'),
+              onPressed: () {
+                if (!isCancleLoading) {
+                  currentIndexCancle = index;
+                  cancelOrder(id, index);
+                }
+              },
+              child: (isCancleLoading && currentIndexCancle == index)
+                  ? Text('Wait...')
+                  : Text('Reject'),
               textColor: DARK_TEXT_A,
               padding: EdgeInsets.all(0),
             ),

@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
-import '../widgets/order-item.dart';
 import '../widgets/no-data.dart';
 import '../widgets/avatar.dart';
 import '../../styles/styles.dart';
 import 'package:async_loader/async_loader.dart';
 import '../../services/orders.dart';
-// import '../../screens/main/order-details.dart';
-// CouponCard
 
 class OrderDetails extends StatefulWidget {
   static String tag = "orderDetails";
   final orderData;
-  OrderDetails({Key key, this.orderData}) : super(key: key);
+  final String option;
+  OrderDetails({Key key, @required this.orderData, @required this.option})
+      : super(key: key);
 
   @override
   _OrderDetailsState createState() => _OrderDetailsState();
 }
 
 class _OrderDetailsState extends State<OrderDetails> {
-
-    final GlobalKey<AsyncLoaderState> _asyncLoaderState = GlobalKey<AsyncLoaderState>();
-    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();  
-    dynamic data;
-    dynamic productList;
+  final GlobalKey<AsyncLoaderState> _asyncLoaderState =
+      GlobalKey<AsyncLoaderState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  dynamic data;
+  dynamic productList;
 
   String customerName;
   String customerEmail;
@@ -34,115 +33,89 @@ class _OrderDetailsState extends State<OrderDetails> {
   String grandTotal;
   String charges;
   String payableAmount;
-
-
+  List products;
+  Map taxInfo;
+  bool isAcceptLoading = false;
+  bool isCancleLoading = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     orderDetail();
   }
 
   Future<Map<String, dynamic>> orderDetail() async {
-
-
-   
-    await OrderServices.getOrderDetail(widget.orderData['_id']).then((onValue){
-      
-      customerName =onValue['userInfo']['name'];
-      customerContact =onValue['userInfo']['contactNumber'].toString();
-      customerEmail =onValue['userInfo']['email'];
-      paymentMethod =onValue['paymentOption'];
-      shippingAddress =onValue['shippingAddress']['address'];
-      deliveryCharge =onValue['deliveryCharge'].toString();
-      subTotal =onValue['subTotal'].toString();
-      grandTotal =onValue['grandTotal'].toString();
-      charges =onValue['charges'].toString();
-      payableAmount =onValue['payableAmount'].toString();
-
-     List products =List();
-      for(int i=0;i<onValue['productDetails'].length;i++){
-            products.add(onValue['productDetails'][i]);
+    await OrderServices.getOrderDetail(widget.orderData['_id']).then((onValue) {
+      customerName = onValue['userInfo']['name'];
+      customerContact = onValue['userInfo']['contactNumber'].toString();
+      customerEmail = onValue['userInfo']['email'];
+      paymentMethod = onValue['paymentOption'];
+      shippingAddress = onValue['shippingAddress']['address'];
+      deliveryCharge = onValue['deliveryCharge'].toString();
+      subTotal = onValue['subTotal'].toString();
+      grandTotal = onValue['grandTotal'].toString();
+      charges = onValue['charges'].toString();
+      payableAmount = onValue['payableAmount'].toString();
+      taxInfo = onValue['taxInfo'] ?? {"taxRate": 0, "taxName": "nil"};
+      products = List();
+      for (int i = 0; i < onValue['productDetails'].length; i++) {
+        products.add(onValue['productDetails'][i]);
       }
-     setState(() {
-       var resultData = onValue;
-       data =resultData;
-       productList =products;
-     });
-        // print("Product List---");
-        // print(productList);
+      if (mounted) {
+        setState(() {
+          var resultData = onValue;
+          data = resultData;
+          productList = products;
+        });
+      }
     });
     return data;
   }
 
+  Future<List<dynamic>> accceptOrder() async {
+    setState(() {
+      isAcceptLoading = true;
+    });
+    Map body = {'status': "On the Way"};
+    await OrderServices.updateOrder(widget.orderData['_id'], body)
+        .then((onValue) {
+      if (onValue['message'] != null) {
+        setState(() {
+          isAcceptLoading = false;
+        });
+      } else {}
+    });
+  }
 
- 
+  Future<List<dynamic>> cancelOrder() async {
+    setState(() {
+      isCancleLoading = true;
+    });
+  }
 
-
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     var asyncLoader = AsyncLoader(
       key: _asyncLoaderState,
-      initState:  () async => await orderDetail(),
+      initState: () async => await orderDetail(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
       renderError: ([error]) => NoData(message: 'Something went wrong..'),
-      renderSuccess: ({data}) => data.length == 0
-            ? NoData(message: 'No Order History')
-            : Container(
-        width: screenWidth(context),
-        height: screenHeight(context),
-        padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-        decoration: BoxDecoration(
-          color: BG_COLOR,
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _customerDetails(),
-              _orderDetails(),
-            ],
+      renderSuccess: ({data}) => Container(
+            width: screenWidth(context),
+            height: screenHeight(context),
+            padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+            decoration: BoxDecoration(
+              color: BG_COLOR,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _customerDetails(),
+                  _orderDetails(),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-
-
-             
-            // child: ListView.builder(
-            //     itemCount: data[0] == null ? 0 : data.length,
-            //     itemBuilder: (BuildContext context, dynamic index) {
-
-            //       return SingleChildScrollView( 
-            //         child: Container(
-            //           width: screenWidth(context),
-            //           child: Column(
-            //             children: <Widget>[
-            //               Card(
-            //                   elevation: 5.0,
-            //                   margin: EdgeInsets.only(top: 12.0, bottom: 6),
-            //                   shape: RoundedRectangleBorder(
-            //                       borderRadius: BorderRadius.circular(0)),
-            //                   child: Column(
-            //                     children: <Widget>[
-            //                       OrderItem(
-            //                         imgurl:
-            //                             'https://images.unsplash.com/photo-1490717064594-3bd2c4081693?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60R',
-            //                         orderId: '${data[0]['orderID']}',
-            //                         dateTime: '09.08/19',
-            //                         details:'ghjgjh',
-            //                         price: ' \$ 56',
-            //                             paymentMethod:
-            //                                 ' - cod',
-            //                         statusLabel: 'Status ',
-            //                         status: 'succes',
-            //                       ),
-            //                       // _bottomSection()
-            //                     ],
-            //                   )),
-            //             ],
-            //           ),
-            //         ),
-            //       );
-            //     }),
     );
 
     return Scaffold(
@@ -175,15 +148,16 @@ class _OrderDetailsState extends State<OrderDetails> {
               padding: EdgeInsets.only(top: 12, bottom: 12),
               child: Column(
                 children: <Widget>[
-                  _customerSection(Icons.account_circle, 'Name', customerName!=null ? customerName : ''),
-                  _customerSection(
-                      Icons.location_on, 'Locaiton', shippingAddress!=null ? shippingAddress : ''),
-                  _customerSection(
-                      Icons.contact_phone, 'Contact', customerContact!=null ? customerContact : ''),
-                  _customerSection(
-                      Icons.email, 'Email', customerEmail!=null ? customerEmail : ''),
-                  _customerSection(
-                      Icons.payment, 'Payment Method', paymentMethod!=null ? paymentMethod : ''),
+                  _customerSection(Icons.account_circle, 'Name',
+                      customerName != null ? customerName : ''),
+                  _customerSection(Icons.location_on, 'Locaiton',
+                      shippingAddress != null ? shippingAddress : ''),
+                  _customerSection(Icons.contact_phone, 'Contact',
+                      customerContact != null ? customerContact : ''),
+                  _customerSection(Icons.email, 'Email',
+                      customerEmail != null ? customerEmail : ''),
+                  _customerSection(Icons.payment, 'Payment Method',
+                      paymentMethod != null ? paymentMethod : ''),
                 ],
               ),
             ),
@@ -196,33 +170,30 @@ class _OrderDetailsState extends State<OrderDetails> {
   Widget _customerSection(IconData icon, String label, String details) {
     return Container(
       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      child:
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-               Icon(
-                  icon,
-                  color: DARK_TEXT,
-                  size: 16,
-                ),
-                
-                 Padding(
-                    padding: EdgeInsets.only(left: 10.0,right: 10.0),
-                          child: Text(
-                          label,
-                          style: labelLarge(),
-                        ),
-                 ),
-                       Expanded(
-                        child: Text(
-                          details,
-                          style: labelLight(),
-
-                      ),
-                       ),
-            ],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Icon(
+            icon,
+            color: DARK_TEXT,
+            size: 16,
           ),
-      );
+          Padding(
+            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+            child: Text(
+              label,
+              style: labelLarge(),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              details,
+              style: labelLight(),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _orderDetails() {
@@ -241,17 +212,19 @@ class _OrderDetailsState extends State<OrderDetails> {
             top: 12.0,
           ),
           child: Container(
-            padding: EdgeInsets.only(top: 12, bottom: 12),
+            margin: EdgeInsets.only(top: 12, bottom: 12),
             child: Column(
               children: <Widget>[
                 _detailTopSection(),
-                _detailMiddle(),
-                _detailBottom('Delivery Charges', deliveryCharge!=null ? deliveryCharge : ''),
-                _detailBottom('Sub Total', subTotal!=null ? subTotal : ''),
-                _detailBottom('Grand Total', grandTotal!=null ? grandTotal : ''),
-                _detailBottom('Chrages', charges!=null ? charges : ''),
-                _detailBottom('Payable Amount', payableAmount!=null ? payableAmount : ''),
-
+                // _detailMiddle(),
+                _detailBottom('Sub Total', '\$' + subTotal ?? ''),
+                _detailBottom(
+                    'Tax', taxInfo['taxRate'].toStringAsFixed(2) + '%' ?? ''),
+                _detailBottom(
+                    'Delivery Charges',
+                    (deliveryCharge == 'Free' ? '' : '\$') + deliveryCharge ??
+                        ''),
+                _detailBottom('Grand Total', '\$' + grandTotal ?? ''),
               ],
             ),
           ),
@@ -261,118 +234,99 @@ class _OrderDetailsState extends State<OrderDetails> {
   }
 
   Widget _detailTopSection() {
-    return Container(
-        child: new Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        Container(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-          child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Flexible(
-                flex: 2,
-                child: Avatar(
-                  imgurl:
-                      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
+    return ListView.builder(
+        physics: ScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: products.length,
+        itemBuilder: (BuildContext context, int i) {
+          return Container(
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  flex: 2,
+                  child: products[i]['imageUrl'] == null
+                      ? Avatar(
+                          imgurl:
+                              "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
+                        )
+                      : Avatar(
+                          imgurl: products[i]['imageUrl'],
+                        ),
                 ),
-              ),
-              Flexible(
-                flex: 8,
-                child: Container(
-                  padding: EdgeInsets.only(right: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
+                Flexible(
+                  flex: 8,
+                  child: Container(
+                    padding: EdgeInsets.only(right: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("Perri perri pizza", style:labelLarge()),
-                        Padding(padding: EdgeInsets.only(right: 8.0, bottom: 5.0),),
-                        Text("XL", style:labelLight()),
+                        Row(
+                          children: <Widget>[
+                            Text(products[i]['title'], style: labelLarge()),
+                            Padding(
+                              padding: EdgeInsets.only(right: 8.0, bottom: 5.0),
+                            ),
+                            Text(products[i]['size'] ?? '',
+                                style: labelLight()),
+                          ],
+                        ),
+                        Text(
+                          "\$${products[i]['totalPrice']}",
+                          style: textPrimary(),
+                        ),
                       ],
                     ),
-                    Text("\$ 34", style: textPrimary(),),
-                  ],
-                ),),    
-              ),
-            ],
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-          child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Flexible(
-                flex: 2,
-                child: Avatar(
-                  imgurl:
-                      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
+                  ),
                 ),
-              ),
-              Flexible(
-                flex: 8,
-                child: Container(
-                  padding: EdgeInsets.only(right: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Text("Perri perri pizza", style:labelLarge()),
-                        Padding(padding: EdgeInsets.only(right: 8.0, bottom: 5.0),),
-                        Text("XL", style:labelLight()),
-                      ],
-                    ),
-                    Text("\$ 34", style: textPrimary(),),
-                  ],
-                ),),    
-              ),
-            ],
-          ),
-        ),
-      ],
-    ));
+              ],
+            ),
+          );
+        });
   }
 
   Widget _detailMiddle() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-      margin: EdgeInsets.only(bottom: 5, top: 5),
-      decoration: const BoxDecoration(
-          border: Border(
-        bottom: BorderSide(width: 1.0, color: Color(0xFFf29000000)),
-        top: BorderSide(width: 1.0, color: Color(0xFFf29000000)),
-      )),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              new Container(
-                width: screenWidth(context) * 0.7,
-                child: Text(
-                  'Send Request to Stevenson about not availability of product',
-                  style: labelLight(),
-                ),
+    if (widget.option == 'accept') {
+      return Container(
+        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+        margin: EdgeInsets.only(bottom: 5, top: 5),
+        decoration: const BoxDecoration(
+            border: Border(
+          bottom: BorderSide(width: 1.0, color: Color(0xFFf29000000)),
+          top: BorderSide(width: 1.0, color: Color(0xFFf29000000)),
+        )),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              width: screenWidth(context) * 0.2,
+              child: FlatButton(
+                onPressed: accceptOrder,
+                child: isAcceptLoading ? Text('Wait...') : Text('ACCEPT'),
+                textColor: PRIMARY,
+                padding: EdgeInsets.all(0),
               ),
-            ],
-          ),
-          new Container(
-            width: screenWidth(context) * 0.2,
-            child: FlatButton(
-              onPressed: () {},
-              child: const Text('SEND'),
-              textColor: PRIMARY,
-              padding: EdgeInsets.all(0),
             ),
-          ),
-        ],
-      ),
-    );
+            new Container(
+              width: screenWidth(context) * 0.2,
+              child: FlatButton(
+                onPressed: cancelOrder,
+                child: isCancleLoading ? Text('Wait...') : Text('REJECT'),
+                textColor: PRIMARY,
+                padding: EdgeInsets.all(0),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else if (widget.option == 'assign') {
+      return Text('assign here');
+    } else if (widget.option == 'history') {
+      return Text('history order status');
+    } else {
+      return Text('unwanted entry');
+    }
   }
 
   Widget _detailBottom(String label, String price) {
@@ -401,9 +355,4 @@ class _OrderDetailsState extends State<OrderDetails> {
       ),
     );
   }
-
-
-
-
-
 }

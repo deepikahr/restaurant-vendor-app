@@ -1,11 +1,8 @@
 //App name
-const APP_NAME = 'KitchenApp';
+const APP_NAME = 'Restaurant Sass';
 
 //one signal
 
 //api urls
 const BASE_URL = 'https://restaurantsass.herokuapp.com/';
-
-// api/users/me
-
-// const API_ENDPOINT = BASE_URL + 'api/';
+const API_ENDPOINT = BASE_URL + 'api/';

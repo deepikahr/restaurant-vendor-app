@@ -7,36 +7,27 @@ import '../../services/auth.dart';
 
 class Settings extends StatefulWidget {
   static String tag = "Settings";
-  
-
-
-
 
   @override
   _SettingsState createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings> {
-
   // final String url = "https://swapi.co/api/people";
-  List data =List();
+  List data = List();
 
- @override
-  void initState(){
+  @override
+  void initState() {
     super.initState();
     this.checkAuth();
   }
 
-   void checkAuth() {
+  void checkAuth() {
     AuthService.getUserInfo().then((onValue) {
-
       //  data =onValue;
       // print(data);
     });
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -45,25 +36,24 @@ class _SettingsState extends State<Settings> {
         title: Text("My Account", style: headerDefaultColor()),
         iconTheme: new IconThemeData(color: WHITE),
       ),
-      body: 
-      
-      // new ListView.builder(
-      //   itemCount: data == null ? 0 : data.length,
-      //   itemBuilder: (BuildContext context, int index){
-      //       return Container(
-      //           width: screenWidth(context),
-      //             child: Column(
-      //               children: <Widget>[
-      //                 Card(child: Text('ksdkfsd', style:titleStyle()),),
-      //               ],
-      //             ),
-                
-      //       );
-      //   }
-      // ),
+      body:
 
-      
-      Container(
+          // new ListView.builder(
+          //   itemCount: data == null ? 0 : data.length,
+          //   itemBuilder: (BuildContext context, int index){
+          //       return Container(
+          //           width: screenWidth(context),
+          //             child: Column(
+          //               children: <Widget>[
+          //                 Card(child: Text('ksdkfsd', style:titleStyle()),),
+          //               ],
+          //             ),
+
+          //       );
+          //   }
+          // ),
+
+          Container(
         width: screenWidth(context),
         height: screenHeight(context),
         decoration: BoxDecoration(
@@ -73,56 +63,52 @@ class _SettingsState extends State<Settings> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _profilePic(),
+              // _profilePic(),
               _settingSection(),
               _loginButton()
             ],
           ),
         ),
       ),
-
-
-
     );
   }
 
-Widget _profilePic(){
-  return Card(
-    elevation: 5.0,
-            color: WHITE,
-            child:Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 28),
-                ),
-                  Avatar(
-                      imgurl: 'https://cdn.pixabay.com/photo/2016/11/29/20/22/child-1871104_960_720.jpg',
-                    ),
-                    FlatButton(
-                          onPressed: () {},
-                          child: const Text('Change Profile'),
-                          textColor: PRIMARY,
-                          padding: EdgeInsets.all(0),
-                        ),
-              ],
-            )
-                    
-                  );
+  Widget _profilePic() {
+    return Card(
+        elevation: 5.0,
+        color: WHITE,
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 28),
+            ),
+            Avatar(
+              imgurl:
+                  'https://cdn.pixabay.com/photo/2016/11/29/20/22/child-1871104_960_720.jpg',
+            ),
+            FlatButton(
+              onPressed: () {},
+              child: const Text('Change Profile'),
+              textColor: PRIMARY,
+              padding: EdgeInsets.all(0),
+            ),
+          ],
+        ));
+  }
 
-}
-  Widget _loginButton(){
-    return  Container(
-      width: screenWidth(context) ,
+  Widget _loginButton() {
+    return Container(
+      width: screenWidth(context),
       padding: EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 12.0),
       child: RawMaterialButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
-        padding: EdgeInsets.all(12),
-        fillColor: PRIMARY,
-        child: Text("Update Profile", style: TextStyle(color: Colors.white)),
-        onPressed: () {
-          //  Navigator.of(context).pushNamed(OrderList.tag);
-        }         
-      ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
+          padding: EdgeInsets.all(12),
+          fillColor: PRIMARY,
+          child: Text("Update Profile", style: TextStyle(color: Colors.white)),
+          onPressed: () {
+            //  Navigator.of(context).pushNamed(OrderList.tag);
+          }),
     );
   }
 
@@ -347,5 +333,4 @@ Widget _profilePic(){
       ),
     );
   }
-
 }

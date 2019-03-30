@@ -41,30 +41,26 @@ class _MenuState extends State<Menu> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 14, 0),
-                    child: Avatar(
-                      imgurl:
-                          'https://cdn.pixabay.com/photo/2016/11/29/20/22/child-1871104_960_720.jpg',
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                          child: Text("Eric Hastings",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
-                              ))),
-                      FlatButton(
-                        onPressed: () {},
-                        child: const Text('Edit Profile'),
-                        textColor: WHITE,
-                        padding: EdgeInsets.all(0),
-                      ),
-                    ],
-                  ),
+                      padding: EdgeInsets.fromLTRB(0, 0, 14, 0),
+                      child: Image.asset('lib/assets/logos/logo-light.png')),
+                  // Column(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: <Widget>[
+                  //     Container(
+                  //         child: Text("Eric Hastings",
+                  //             style: TextStyle(
+                  //               color: Colors.white,
+                  //               fontWeight: FontWeight.w500,
+                  //               fontSize: 16,
+                  //             ))),
+                  //     FlatButton(
+                  //       onPressed: () {},
+                  //       child: const Text('Edit Profile'),
+                  //       textColor: WHITE,
+                  //       padding: EdgeInsets.all(0),
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
               decoration: BoxDecoration(
@@ -73,7 +69,7 @@ class _MenuState extends State<Menu> {
             ),
             _tile('Home', Icons.arrow_forward_ios, OrderList.tag),
             _tile('Order History', Icons.arrow_forward_ios, OrderHistory.tag),
-            _tile('Settings', Icons.arrow_forward_ios, Settings.tag),
+            // _tile('Settings', Icons.arrow_forward_ios, Settings.tag),
             // logout button,
             Container(
               decoration: const BoxDecoration(
@@ -87,9 +83,7 @@ class _MenuState extends State<Menu> {
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                     )),
-                onTap: () {
-                    logout();
-                },
+                onTap: logout,
                 trailing: Icon(
                   Icons.arrow_forward_ios,
                   color: PRIMARY,
@@ -97,7 +91,6 @@ class _MenuState extends State<Menu> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
@@ -127,9 +120,9 @@ class _MenuState extends State<Menu> {
           ),
         ),
       );
-      
-      void logout(){
-        Common.removeToken();
-        Navigator.of(context).pushNamed(Login.tag);
-      }
+
+  void logout() {
+    Common.removeToken();
+    Navigator.of(context).pushNamed(Login.tag);
+  }
 }

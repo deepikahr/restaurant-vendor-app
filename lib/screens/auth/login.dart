@@ -3,10 +3,11 @@ import '../../styles/styles.dart';
 import '../main/order-list.dart';
 import '../../services/auth.dart';
 import '../../services/common.dart';
-import '../blocs/validators.dart';
+import '../../blocs/validators.dart';
 
 class Login extends StatefulWidget {
   static String tag = "login";
+
   Login({Key key}) : super(key: key);
 
   @override
@@ -20,7 +21,7 @@ class _LoginState extends State<Login> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   login() {
-    if (_formKey.currentState.validate()) {
+    if (!isLoading && _formKey.currentState.validate()) {
       setState(() {
         isLoading = true;
       });
@@ -38,15 +39,11 @@ class _LoginState extends State<Login> {
           }
         });
       }
-      // print("login Reponse"+ onValue.toString());
-      setState(() {
-        isLoading = false;
-      });
     }).catchError((onError) {
       setState(() {
         isLoading = false;
       });
-      showSnackbar(onError);
+      showSnackbar(onError.toString());
       print("Error " + onError.toString());
     });
   }
@@ -54,7 +51,6 @@ class _LoginState extends State<Login> {
   void checkAuth() {
     AuthService.getUserInfo().then((onValue) {
       String role = onValue['role'];
-      print("Rolll = =    " + onValue.toString());
       Common.setLocationId(onValue['locationInfo']['locationId']);
       if (role == 'Manager') {
         showSnackbar('Login Successfully');
@@ -62,6 +58,9 @@ class _LoginState extends State<Login> {
       } else {
         showSnackbar('You are not authorised to login');
       }
+      setState(() {
+        isLoading = false;
+      });
     });
   }
 
@@ -83,11 +82,7 @@ class _LoginState extends State<Login> {
           child: ListView(
             shrinkWrap: true,
             padding: EdgeInsets.only(left: 24.0, right: 24.0),
-            children: <Widget>[
-              _logoSection(),
-              _loginForm()
-              // _forgotSection()
-            ],
+            children: <Widget>[_logoSection(), _loginForm()],
           ),
         ),
       ),
@@ -97,13 +92,11 @@ class _LoginState extends State<Login> {
   Widget _logoSection() {
     return Column(
       children: <Widget>[
-        CircleAvatar(
-          backgroundColor: Colors.transparent,
-          radius: 62.0,
-          child: Image.asset('lib/assets/images/logo.png'),
+        Image.asset(
+          'lib/assets/logos/logo-light.png',
+          width: 100,
+          height: 100,
         ),
-        Text("Eat_Out_Pal",
-            style: TextStyle(color: PRIMARY, fontWeight: FontWeight.w600))
       ],
     );
   }
