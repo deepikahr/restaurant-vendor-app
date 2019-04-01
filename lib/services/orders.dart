@@ -6,18 +6,34 @@ import './common.dart';
 class OrderServices {
   static final Client client = Client();
 
-  static Future<dynamic> getOrderHistory() async {
-    String token, locationId;
+  static Future<dynamic> getOrderList() async {
+    String token, id, role;
     await Common.getToken().then((onValue) {
       token = 'bearer ' + onValue;
     });
-    await Common.getLocationId().then((onValue) {
-      locationId = onValue;
+
+    await Common.getRole().then((onValue) {
+      role = onValue;
     });
-    final response = await client.post(
-        API_ENDPOINT + 'orders/search/order/bylocation/$locationId',
-        headers: {'Content-Type': 'application/json', 'Authorization': token});
-    return json.decode(response.body);
+    await Common.getId().then((onValue) {
+      id = onValue;
+    });
+    if (role == 'Manager') {
+      final response = await client.get(API_ENDPOINT + 'orders/location/$id',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          });
+      return json.decode(response.body);
+    }
+    if (role == 'Owner') {
+      final response = await client.get(API_ENDPOINT + 'orders/restaurant/$id',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          });
+      return json.decode(response.body);
+    }
   }
 
   static Future<Map<String, dynamic>> getOrderDetail(String orderId) async {
@@ -42,14 +58,12 @@ class OrderServices {
     return json.decode(response.body);
   }
 
-  //api/users/all/active/staff/5a6ec0b328d7b9001499a144
-
   static Future<dynamic> getStaffList() async {
     String token, locationId;
     await Common.getToken().then((onValue) {
       token = 'bearer ' + onValue;
     });
-    await Common.getLocationId().then((onValue) {
+    await Common.getId().then((onValue) {
       locationId = onValue;
     });
     final response = await client.get(

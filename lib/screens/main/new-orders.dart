@@ -38,7 +38,7 @@ class _NewOrdersState extends State<NewOrders> {
   }
 
   Future<List<dynamic>> getOrder() async {
-    await OrderServices.getOrderHistory().then((onValue) {
+    await OrderServices.getOrderList().then((onValue) {
       List filterOrder = List();
       for (int i = 0; i < onValue.length; i++) {
         if (onValue[i]['status'] == "Pending") {

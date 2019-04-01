@@ -51,12 +51,21 @@ class _LoginState extends State<Login> {
   void checkAuth() {
     AuthService.getUserInfo().then((onValue) {
       String role = onValue['role'];
-      Common.setLocationId(onValue['locationInfo']['locationId']);
-      if (role == 'Manager') {
+      if (role == 'Manager' || role == 'Owner') {
+        if (role == 'Manager') {
+          Common.setId(onValue['locationInfo']['locationId']);
+        }
+        if (role == 'Owner') {
+          Common.setId(onValue['_id']);
+        }
+        Common.setRole(role);
         showSnackbar('Login Successfully');
-        Navigator.of(context).pushNamed(OrderList.tag);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => OrderList()),
+            (Route<dynamic> route) => route.isFirst);
       } else {
-        showSnackbar('You are not authorised to login');
+        showSnackbar('You are not authorized to login');
       }
       setState(() {
         isLoading = false;

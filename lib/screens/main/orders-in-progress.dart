@@ -31,11 +31,8 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
   }
 
   Future<List<dynamic>> getOrder() async {
-    await OrderServices.getOrderHistory().then((onValue) {
-      // print("Order response---");
-      // print(onValue[0]['status']);
+    await OrderServices.getOrderList().then((onValue) {
       List filterOrder = List();
-
       for (int i = 0; i < onValue.length; i++) {
         if (onValue[i]['status'] == "Accepted") {
           filterOrder.add(onValue[i]);
@@ -202,8 +199,6 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
         renderError: ([error]) =>
             NoData(message: 'Please try again!', icon: Icons.block),
         renderSuccess: ({data}) {
-          print('okkkkkkkkkkkk');
-          print(data);
           if (data is List)
             return _shoeDeliveryAgentsList(data);
           else
@@ -283,10 +278,6 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                   setState(() {
                     isLoading = true;
                   });
-                  print('our staff' +
-                      orders[selectedIndex]['orderID'].toString());
-                  print('our order ID' + orders[selectedIndex]['_id']);
-                  print(staff);
                   orders[selectedIndex]['assigned'] = true;
                   orders[selectedIndex]['assignedDate'] =
                       DateTime.now().millisecondsSinceEpoch;
@@ -296,7 +287,6 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                   OrderServices.updateOrder(
                           orders[selectedIndex]['_id'], orders[selectedIndex])
                       .then((onValue) {
-                    print(onValue);
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
                     orders.removeAt(selectedIndex);

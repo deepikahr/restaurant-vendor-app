@@ -25,6 +25,7 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   String customerName;
   String customerEmail;
+  String orderId;
   String customerContact;
   String paymentMethod;
   String shippingAddress;
@@ -50,7 +51,10 @@ class _OrderDetailsState extends State<OrderDetails> {
       customerContact = onValue['userInfo']['contactNumber'].toString();
       customerEmail = onValue['userInfo']['email'];
       paymentMethod = onValue['paymentOption'];
-      shippingAddress = onValue['shippingAddress']['address'];
+      shippingAddress = onValue['shippingAddress'] != null
+          ? onValue['shippingAddress']['address']
+          : '';
+      orderId = '#' + onValue['orderID'].toString();
       deliveryCharge = onValue['deliveryCharge'].toString();
       subTotal = onValue['subTotal'].toString();
       grandTotal = onValue['grandTotal'].toString();
@@ -148,6 +152,8 @@ class _OrderDetailsState extends State<OrderDetails> {
               padding: EdgeInsets.only(top: 12, bottom: 12),
               child: Column(
                 children: <Widget>[
+                  _customerSection(Icons.card_membership, 'Order ID',
+                      orderId != null ? orderId : ''),
                   _customerSection(Icons.account_circle, 'Name',
                       customerName != null ? customerName : ''),
                   _customerSection(Icons.location_on, 'Locaiton',
@@ -254,6 +260,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                           imgurl: products[i]['imageUrl'],
                         ),
                 ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10),
+                ),
                 Flexible(
                   flex: 8,
                   child: Container(
@@ -261,20 +270,53 @@ class _OrderDetailsState extends State<OrderDetails> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        Text(products[i]['title'], style: labelLarge()),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(products[i]['title'], style: labelLarge()),
-                            Padding(
-                              padding: EdgeInsets.only(right: 8.0, bottom: 5.0),
-                            ),
-                            Text(products[i]['size'] ?? '',
+                            Text(
+                                (products[i]['size'] ?? '') +
+                                    ' x' +
+                                    products[i]['Quantity'].toString(),
                                 style: labelLight()),
+                            Text(
+                              "\$${products[i]['price'] * products[i]['Quantity']}",
+                              style: TextStyle(fontSize: 10),
+                            ),
                           ],
                         ),
-                        Text(
-                          "\$${products[i]['totalPrice']}",
-                          style: textPrimary(),
-                        ),
+                        ListView.builder(
+                            physics: ScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: products[i]['extraIngredients'] != null
+                                ? products[i]['extraIngredients'].length
+                                : 0,
+                            itemBuilder: (BuildContext context, int j) {
+                              return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(),
+                                    Text(
+                                        products[i]['extraIngredients'][j]
+                                                ['name'] ??
+                                            '',
+                                        style: labelLight()),
+                                    Text(
+                                      '\$${products[i]['extraIngredients'][j]['price'].toString()}' ??
+                                          '',
+                                      style: TextStyle(fontSize: 10),
+                                    )
+                                  ]);
+                            }),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Container(),
+                            Text('\$${products[i]['totalPrice']}',
+                                style: textPrimary()),
+                          ],
+                        )
                       ],
                     ),
                   ),

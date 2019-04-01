@@ -31,7 +31,7 @@ class _OrderHistoryState extends State<OrderHistory> {
   }
 
   Future<List<dynamic>> getOrder() async {
-    await OrderServices.getOrderHistory().then((onValue) {
+    await OrderServices.getOrderList().then((onValue) {
       List filterOrder = List();
 
       for (int i = 0; i < onValue.length; i++) {
