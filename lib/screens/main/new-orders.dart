@@ -45,36 +45,44 @@ class _NewOrdersState extends State<NewOrders> {
           filterOrder.add(onValue[i]);
         }
       }
-      setState(() {
-        orders = filterOrder;
-      });
+      if (mounted) {
+        setState(() {
+          orders = filterOrder;
+        });
+      }
     });
     return orders;
   }
 
   Future<List<dynamic>> accceptOrder(String orderId, int index) async {
-    setState(() {
-      isAcceptLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isAcceptLoading = true;
+      });
+    }
     Map<String, dynamic> body = {'status': "Accepted"};
     await OrderServices.updateOrder(orderId, body).then((onValue) {
       if (onValue['message'] != null) {
-        setState(() {
-          isAcceptLoading = false;
-          orders.removeAt(index);
-          showSnackbar('Order Accepted');
-        });
+        if (mounted) {
+          setState(() {
+            isAcceptLoading = false;
+            orders.removeAt(index);
+            showSnackbar('Order Accepted');
+          });
+        }
       }
     });
   }
 
   Future<List<dynamic>> cancelOrder(String orderId, int index) async {
-    setState(() {
-      isCancleLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isCancleLoading = true;
+      });
+    }
     Map<String, dynamic> body = {'status': "Cancelled"};
     await OrderServices.updateOrder(orderId, body).then((onValue) {
-      if (onValue['message'] != null) {
+      if (onValue['message'] != null && mounted) {
         setState(() {
           isCancleLoading = false;
           orders.removeAt(index);

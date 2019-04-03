@@ -40,9 +40,11 @@ class _OrderHistoryState extends State<OrderHistory> {
           filterOrder.add(onValue[i]);
         }
       }
-      setState(() {
-        data = filterOrder;
-      });
+      if (mounted) {
+        setState(() {
+          data = filterOrder;
+        });
+      }
     });
     return data;
   }

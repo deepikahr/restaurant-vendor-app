@@ -21,7 +21,7 @@ class _LoginState extends State<Login> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   login() {
-    if (!isLoading && _formKey.currentState.validate()) {
+    if (!isLoading && _formKey.currentState.validate() && mounted) {
       setState(() {
         isLoading = true;
       });
@@ -40,9 +40,11 @@ class _LoginState extends State<Login> {
         });
       }
     }).catchError((onError) {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
       showSnackbar(onError.toString());
       print("Error " + onError.toString());
     });
@@ -67,9 +69,11 @@ class _LoginState extends State<Login> {
       } else {
         showSnackbar('You are not authorized to login');
       }
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     });
   }
 

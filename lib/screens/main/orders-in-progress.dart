@@ -48,12 +48,14 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
   }
 
   Future<List<dynamic>> accceptOrder(String orderId, int index) async {
-    setState(() {
-      isAcceptLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isAcceptLoading = true;
+      });
+    }
     Map<String, dynamic> body = {'status': "Accepted"};
     await OrderServices.updateOrder(orderId, body).then((onValue) {
-      if (onValue['message'] != null) {
+      if (onValue['message'] != null && mounted) {
         setState(() {
           isAcceptLoading = false;
           orders.removeAt(index);
@@ -275,9 +277,11 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
               child: isLoading ? Text('Wait...') : Text('OK'),
               onPressed: () {
                 if (!isLoading) {
-                  setState(() {
-                    isLoading = true;
-                  });
+                  if (mounted) {
+                    setState(() {
+                      isLoading = true;
+                    });
+                  }
                   orders[selectedIndex]['assigned'] = true;
                   orders[selectedIndex]['assignedDate'] =
                       DateTime.now().millisecondsSinceEpoch;
@@ -291,9 +295,11 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                     Navigator.of(context).pop();
                     orders.removeAt(selectedIndex);
                     showSnackbar('Assigned Successfully');
-                    setState(() {
-                      isLoading = false;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
                   });
                 }
               },

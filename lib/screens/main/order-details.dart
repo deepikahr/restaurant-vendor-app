@@ -77,13 +77,15 @@ class _OrderDetailsState extends State<OrderDetails> {
   }
 
   Future<List<dynamic>> accceptOrder() async {
-    setState(() {
-      isAcceptLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isAcceptLoading = true;
+      });
+    }
     Map body = {'status': "On the Way"};
     await OrderServices.updateOrder(widget.orderData['_id'], body)
         .then((onValue) {
-      if (onValue['message'] != null) {
+      if (onValue['message'] != null && mounted) {
         setState(() {
           isAcceptLoading = false;
         });
@@ -92,9 +94,11 @@ class _OrderDetailsState extends State<OrderDetails> {
   }
 
   Future<List<dynamic>> cancelOrder() async {
-    setState(() {
-      isCancleLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isCancleLoading = true;
+      });
+    }
   }
 
   Widget build(BuildContext context) {
