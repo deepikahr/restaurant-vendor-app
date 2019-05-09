@@ -23,6 +23,7 @@ flutter:
 
   assets:
     - lib/assets/images/cover.png
+    - lib/assets/images/sass.png
     - lib/assets/images/logo.png
     - lib/assets/logos/logo.png
     - lib/assets/logos/logo-light.png
