@@ -6,6 +6,7 @@ import './orders-history.dart';
 import './settings.dart';
 import '../auth/login.dart';
 import '../../services/common.dart';
+import 'products.dart';
 
 class Menu extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -69,7 +70,7 @@ class _MenuState extends State<Menu> {
             ),
             _tile('Home', Icons.arrow_forward_ios, OrderList.tag),
             _tile('Order History', Icons.arrow_forward_ios, OrderHistory.tag),
-            // _tile('Settings', Icons.arrow_forward_ios, Settings.tag),
+             _tile('Products', Icons.arrow_forward_ios, Products.tag),
             // logout button,
             Container(
               decoration: const BoxDecoration(

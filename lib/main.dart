@@ -7,6 +7,8 @@ import './styles/styles.dart';
 import 'package:flutter_stetho/flutter_stetho.dart';
 import 'services/common.dart';
 import 'services/constant.dart';
+import './screens/main/products.dart';
+import './screens/main/add-products.dart';
 
 void main() {
   Stetho.initialize();
@@ -25,6 +27,8 @@ class MyApp extends StatelessWidget {
     OrderList.tag: (context) => OrderList(),
     OrderHistory.tag: (context) => OrderHistory(),
     Settings.tag: (context) => Settings(),
+    Products.tag: (context) => Products(),
+    AddProducts.tag: (context) => AddProducts(),
   };
 
   MyApp({this.route});

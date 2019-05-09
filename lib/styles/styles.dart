@@ -53,6 +53,7 @@ TextStyle titleStyle() {
   );
 }
 
+
 TextStyle labelLarge() {
   return TextStyle(
     fontWeight: FontWeight.w600,
@@ -93,5 +94,51 @@ TextStyle textGray() {
     fontWeight: FontWeight.w500,
     fontSize: 14.0,
     color: GRAY,
+  );
+}
+
+TextStyle whitetext() {
+  return TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 12.0,
+    color: Colors.white
+  );
+}
+
+TextStyle primaryText() {
+  return TextStyle(
+      fontWeight: FontWeight.w500,
+      fontSize: 12.0,
+      color: PRIMARY,
+  );
+}
+TextStyle blacktext() {
+  return TextStyle(
+      fontWeight: FontWeight.w500,
+      fontSize: 13.0,
+      color: Colors.black
+  );
+}
+
+TextStyle greytext() {
+  return TextStyle(
+      fontWeight: FontWeight.w500,
+      fontSize: 12.0,
+      color: GRAY
+  );
+}
+TextStyle boldtext() {
+  return TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 18.0,
+    color: Colors.black,
+  );
+}
+
+TextStyle boldwhite() {
+  return TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 16.0,
+    color: Colors.white,
   );
 }
