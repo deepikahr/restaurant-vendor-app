@@ -70,7 +70,7 @@ class _MenuState extends State<Menu> {
             ),
             _tile('Home', Icons.arrow_forward_ios, OrderList.tag),
             _tile('Order History', Icons.arrow_forward_ios, OrderHistory.tag),
-             _tile('Products', Icons.arrow_forward_ios, Products.tag),
+            //  _tile('Products', Icons.arrow_forward_ios, Products.tag),
             // logout button,
             Container(
               decoration: const BoxDecoration(
