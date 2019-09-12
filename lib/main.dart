@@ -4,14 +4,14 @@ import './screens/main/orders-history.dart';
 import './screens/auth/login.dart';
 import './screens/main/settings.dart';
 import './styles/styles.dart';
-import 'package:flutter_stetho/flutter_stetho.dart';
+// import 'package:flutter_stetho/flutter_stetho.dart';
 import 'services/common.dart';
 import 'services/constant.dart';
 import './screens/main/products.dart';
 import './screens/main/add-products.dart';
 
 void main() {
-  Stetho.initialize();
+  // Stetho.initialize();
   Common.getToken().then((loggedIn) {
     if (loggedIn != null)
       runApp(MyApp(route: OrderList()));
@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: APP_NAME,
       theme: ThemeData(
         primaryColor: PRIMARY,

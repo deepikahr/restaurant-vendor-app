@@ -65,7 +65,7 @@ class _LoginState extends State<Login> {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (BuildContext context) => OrderList()),
-            (Route<dynamic> route) => route.isFirst);
+            (Route<dynamic> route) => false);
       } else {
         showSnackbar('You are not authorized to login');
       }
