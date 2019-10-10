@@ -42,8 +42,10 @@ class _MenuState extends State<Menu> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
+                      width: 100.0,
+                      height: 100.0,
                       padding: EdgeInsets.fromLTRB(0, 0, 14, 0),
-                      child: Image.asset('lib/assets/logos/logo-light.png')),
+                      child: Image.asset('lib/assets/logos/logo.png')),
                   // Column(
                   //   mainAxisAlignment: MainAxisAlignment.center,
                   //   children: <Widget>[

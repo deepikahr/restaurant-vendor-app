@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // const PRIMARY = const Color(0xFFFC830F);
-const PRIMARY = const Color(0xFFE60D53); //primary color for eat out pal
+const PRIMARY = const Color(0xFFB6236C); //primary color for eat out pal
 final PRIMARY_LIGHT = const Color(0xFFFCA029);
 final SECONDARY = const Color(0xFFEE3324);
 final BORDER = const Color(0xF707070);

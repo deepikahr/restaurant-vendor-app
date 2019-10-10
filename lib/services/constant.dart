@@ -1,9 +1,11 @@
 //App name
-const APP_NAME = 'Restaurant Sass';
+const APP_NAME = 'Restaurant Saas';
 
 //one signal
 
 //api urls
 // const BASE_URL = 'http://api.eatoutpal.com/';
+// const BASE_URL = 'http://192.168.0.22:5020/';
+
 const BASE_URL = 'https://restaurantsass.herokuapp.com/';
 const API_ENDPOINT = BASE_URL + 'api/';
