@@ -145,7 +145,7 @@ class _LoginState extends State<Login> {
           email = value;
         },
         autofocus: false,
-        initialValue: 'watson@gmail.com',
+        initialValue: 'manager1@ionicfirebaseapp.com',
         obscureText: false,
         decoration: InputDecoration(
           hintText: 'Email',
