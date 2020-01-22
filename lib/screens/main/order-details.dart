@@ -41,8 +41,8 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   @override
   void initState() {
-    super.initState();
     orderDetail();
+    super.initState();
   }
 
   Future<Map<String, dynamic>> orderDetail() async {
@@ -108,22 +108,22 @@ class _OrderDetailsState extends State<OrderDetails> {
       renderLoad: () => Center(child: new CircularProgressIndicator()),
       renderError: ([error]) => NoData(message: 'Something went wrong..'),
       renderSuccess: ({data}) => Container(
-            width: screenWidth(context),
-            height: screenHeight(context),
-            padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-            decoration: BoxDecoration(
-              color: BG_COLOR,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _customerDetails(),
-                  _orderDetails(),
-                ],
-              ),
-            ),
+        width: screenWidth(context),
+        height: screenHeight(context),
+        padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        decoration: BoxDecoration(
+          color: BG_COLOR,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _customerDetails(),
+              _orderDetails(),
+            ],
           ),
+        ),
+      ),
     );
 
     return Scaffold(

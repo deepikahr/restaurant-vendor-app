@@ -26,8 +26,8 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
 
   @override
   void initState() {
-    super.initState();
     getOrder();
+    super.initState();
   }
 
   Future<List<dynamic>> getOrder() async {
@@ -95,9 +95,9 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                                           new MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 new OrderDetails(
-                                                  orderData: orders[index],
-                                                  option: 'assign',
-                                                ),
+                                              orderData: orders[index],
+                                              option: 'assign',
+                                            ),
                                           ),
                                         );
                                       },
@@ -106,10 +106,9 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                                                 [0]['imageUrl'] ??
                                             'https://images.unsplash.com/photo-1490717064594-3bd2c4081693?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60R',
                                         orderId: '${orders[index]['orderID']}',
-                                        dateTime: DateFormat(
-                                                'hh:mma dd/MM/yyyy')
-                                            .format(DateTime.parse(
-                                                orders[index]['createdAt'])),
+                                        dateTime: orders[index]['createdAtTime']!=null?DateFormat('dd-MMM-yy hh:mm a').format(new DateTime.fromMillisecondsSinceEpoch(orders[index]['createdAtTime'])): DateFormat('dd-MMM-yy hh:mm a')
+                                          .format(DateTime.parse(
+                                              orders[index]['createdAt'])),
                                         details: orders[index]
                                                         ['shippingAddress'] !=
                                                     null &&

@@ -26,8 +26,8 @@ class _OrderHistoryState extends State<OrderHistory> {
 
   @override
   void initState() {
-    super.initState();
     getOrder();
+    super.initState();
   }
 
   Future<List<dynamic>> getOrder() async {
@@ -68,9 +68,9 @@ class _OrderHistoryState extends State<OrderHistory> {
                             new MaterialPageRoute(
                               builder: (BuildContext context) =>
                                   new OrderDetails(
-                                    orderData: data[index],
-                                    option: 'history',
-                                  ),
+                                orderData: data[index],
+                                option: 'history',
+                              ),
                             ));
                       },
                       child: SingleChildScrollView(
@@ -91,9 +91,9 @@ class _OrderHistoryState extends State<OrderHistory> {
                                             'https://images.unsplash.com/photo-1490717064594-3bd2c4081693?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60R',
                                         orderId: '${data[index]['orderID']}',
                                         dateTime:
-                                            DateFormat('hh:mma dd/MM/yyyy')
-                                                .format(DateTime.parse(
-                                                    data[index]['createdAt'])),
+                                            data[index]['createdAtTime']!=null?DateFormat('dd-MMM-yy hh:mm a').format(new DateTime.fromMillisecondsSinceEpoch(data[index]['createdAtTime'])): DateFormat('dd-MMM-yy hh:mm a')
+                                          .format(DateTime.parse(
+                                              data[index]['createdAt'])),
                                         details: data[index]
                                                         ['shippingAddress'] !=
                                                     null &&
