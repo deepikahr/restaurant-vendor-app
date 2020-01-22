@@ -18,8 +18,8 @@ class _SettingsState extends State<Settings> {
 
   @override
   void initState() {
-    super.initState();
     this.checkAuth();
+    super.initState();
   }
 
   void checkAuth() {

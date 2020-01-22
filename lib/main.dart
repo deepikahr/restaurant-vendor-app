@@ -12,6 +12,7 @@ import './screens/main/add-products.dart';
 
 void main() {
   // Stetho.initialize();
+  WidgetsFlutterBinding.ensureInitialized();
   Common.getToken().then((loggedIn) {
     if (loggedIn != null)
       runApp(MyApp(route: OrderList()));

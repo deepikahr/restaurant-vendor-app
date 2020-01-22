@@ -43,7 +43,7 @@ class _NewOrdersState extends State<NewOrders> {
       for (int i = 0; i < onValue.length; i++) {
         if (onValue[i]['status'] == "Pending") {
           filterOrder.add(onValue[i]);
-        }
+          }
       }
       if (mounted) {
         setState(() {
@@ -111,9 +111,9 @@ class _NewOrdersState extends State<NewOrders> {
                             new MaterialPageRoute(
                               builder: (BuildContext context) =>
                                   new OrderDetails(
-                                    orderData: orders[index],
-                                    option: 'accept',
-                                  ),
+                                orderData: orders[index],
+                                option: 'accept',
+                              ),
                             ));
                       },
                       child: SingleChildScrollView(
@@ -133,7 +133,7 @@ class _NewOrdersState extends State<NewOrders> {
                                               ['imageUrl'] ??
                                           'https://images.unsplash.com/photo-1490717064594-3bd2c4081693?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60R',
                                       orderId: '${orders[index]['orderID']}',
-                                      dateTime: DateFormat('hh:mma dd/MM/yyyy')
+                                      dateTime:orders[index]['createdAtTime']!=null?DateFormat('dd-MMM-yy hh:mm a').format(new DateTime.fromMillisecondsSinceEpoch(orders[index]['createdAtTime'])): DateFormat('dd-MMM-yy hh:mm a')
                                           .format(DateTime.parse(
                                               orders[index]['createdAt'])),
                                       details: orders[index]
