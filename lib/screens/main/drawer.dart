@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../styles/styles.dart';
-import '../widgets/avatar.dart';
 import './order-list.dart';
 import './orders-history.dart';
-import './settings.dart';
 import '../auth/login.dart';
 import '../../services/common.dart';
-import 'products.dart';
 
 class Menu extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -30,7 +27,6 @@ class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: screenWidth(context) * 0.70,
       child: Drawer(
         child: ListView(
           // Important: Remove any padding from the ListView.
@@ -46,24 +42,6 @@ class _MenuState extends State<Menu> {
                       height: 100.0,
                       padding: EdgeInsets.fromLTRB(0, 0, 14, 0),
                       child: Image.asset('lib/assets/logos/logo.png')),
-                  // Column(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: <Widget>[
-                  //     Container(
-                  //         child: Text("Eric Hastings",
-                  //             style: TextStyle(
-                  //               color: Colors.white,
-                  //               fontWeight: FontWeight.w500,
-                  //               fontSize: 16,
-                  //             ))),
-                  //     FlatButton(
-                  //       onPressed: () {},
-                  //       child: const Text('Edit Profile'),
-                  //       textColor: WHITE,
-                  //       padding: EdgeInsets.all(0),
-                  //     ),
-                  //   ],
-                  // ),
                 ],
               ),
               decoration: BoxDecoration(
@@ -72,8 +50,6 @@ class _MenuState extends State<Menu> {
             ),
             _tile('Home', Icons.arrow_forward_ios, OrderList.tag),
             _tile('Order History', Icons.arrow_forward_ios, OrderHistory.tag),
-            //  _tile('Products', Icons.arrow_forward_ios, Products.tag),
-            // logout button,
             Container(
               decoration: const BoxDecoration(
                 border: Border(

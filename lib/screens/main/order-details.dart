@@ -91,6 +91,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         });
       } else {}
     });
+    return Future(null);
   }
 
   Future<List<dynamic>> cancelOrder() async {
@@ -99,6 +100,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         isCancleLoading = true;
       });
     }
+    return Future(null);
   }
 
   Widget build(BuildContext context) {
@@ -226,7 +228,7 @@ class _OrderDetailsState extends State<OrderDetails> {
             child: Column(
               children: <Widget>[
                 _detailTopSection(),
-                // _detailMiddle(),
+                // detailMiddle(),
                 _detailBottom('Sub Total', '\$' + subTotal ?? ''),
                 _detailBottom(
                     'Tax', taxInfo['taxRate'].toStringAsFixed(2) + '%' ?? ''),
@@ -331,7 +333,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         });
   }
 
-  Widget _detailMiddle() {
+  Widget detailMiddle() {
     if (widget.option == 'accept') {
       return Container(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
