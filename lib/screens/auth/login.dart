@@ -139,7 +139,8 @@ class _LoginState extends State<Login> {
           if (value.isEmpty ||
               !RegExp(Validators.emailPattern).hasMatch(value)) {
             return 'Please enter a valid email';
-          }
+          } else
+            return null;
         },
         onSaved: (String value) {
           email = value;
@@ -168,7 +169,8 @@ class _LoginState extends State<Login> {
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Password should be atleast 6 char long';
-        }
+        } else
+          return null;
       },
       onSaved: (String value) {
         password = value;

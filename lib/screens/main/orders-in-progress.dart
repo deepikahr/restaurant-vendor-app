@@ -62,6 +62,8 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
         });
       }
     });
+    return Future(null);
+
   }
 
   Widget build(BuildContext context) {

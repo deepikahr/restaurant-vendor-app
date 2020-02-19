@@ -63,7 +63,7 @@ class _SettingsState extends State<Settings> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // _profilePic(),
+              // profilePic(),
               _settingSection(),
               _loginButton()
             ],
@@ -73,7 +73,7 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  Widget _profilePic() {
+  Widget profilePic() {
     return Card(
         elevation: 5.0,
         color: WHITE,
