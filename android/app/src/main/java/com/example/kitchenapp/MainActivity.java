@@ -1,4 +1,4 @@
-package com.example.kitchenapp;
+package com.ionicfirebaseapp.vendorapp;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
