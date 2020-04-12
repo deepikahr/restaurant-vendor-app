@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../styles/styles.dart';
+import '../../constant.dart' show languages;
+import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
 // CouponCard
 
 class AddProducts extends StatefulWidget {
   static String tag = "AddProducts";
+  final Map<String, Map<String, String>> localizedValues;
+  final String locale;
+  AddProducts({Key key, this.locale, this.localizedValues}) : super(key: key);
 
   @override
   _AddProductsState createState() => _AddProductsState();
@@ -17,7 +22,8 @@ class _AddProductsState extends State<AddProducts> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Add Products", style: headerDefaultColor()),
+          title: Text(MyLocalizations.of(context).addProducts,
+              style: headerDefaultColor()),
           elevation: 0.0,
           iconTheme: new IconThemeData(color: WHITE),
         ),
@@ -41,7 +47,7 @@ class _AddProductsState extends State<AddProducts> {
                             onPressed: null,
                             fillColor: PRIMARY,
                             child: Text(
-                              'Select Image',
+                              MyLocalizations.of(context).selectImage,
                               style: whitetext(),
                             )),
                       )),
@@ -67,7 +73,7 @@ class _AddProductsState extends State<AddProducts> {
                       flex: 5,
                       fit: FlexFit.tight,
                       child: Text(
-                        'Location Name',
+                        MyLocalizations.of(context).locationName,
                         style: blacktext(),
                       ),
                     ),
@@ -99,7 +105,7 @@ class _AddProductsState extends State<AddProducts> {
                       flex: 5,
                       fit: FlexFit.tight,
                       child: Text(
-                        'Select Category',
+                        MyLocalizations.of(context).category,
                         style: blacktext(),
                       ),
                     ),
@@ -140,7 +146,7 @@ class _AddProductsState extends State<AddProducts> {
                       flex: 5,
                       fit: FlexFit.tight,
                       child: Text(
-                        'Product Name',
+                        MyLocalizations.of(context).productName,
                         style: blacktext(),
                       ),
                     ),
@@ -172,7 +178,7 @@ class _AddProductsState extends State<AddProducts> {
                       flex: 5,
                       fit: FlexFit.tight,
                       child: Text(
-                        'Enter Brand Name',
+                        MyLocalizations.of(context).enterBrandName,
                         style: blacktext(),
                       ),
                     ),
@@ -204,7 +210,7 @@ class _AddProductsState extends State<AddProducts> {
                       flex: 5,
                       fit: FlexFit.tight,
                       child: Text(
-                        'About Our Product',
+                        MyLocalizations.of(context).aboutOurProduct,
                         style: blacktext(),
                       ),
                     ),
@@ -233,7 +239,7 @@ class _AddProductsState extends State<AddProducts> {
                 margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
                 alignment: Alignment.topLeft,
                 child: Text(
-                  'Variant Info*',
+                  MyLocalizations.of(context).variantInfo,
                   style: boldtext(),
                 ),
               ),
@@ -245,7 +251,7 @@ class _AddProductsState extends State<AddProducts> {
                       flex: 2,
                       fit: FlexFit.tight,
                       child: Text(
-                        'Size',
+                        MyLocalizations.of(context).size,
                         style: blacktext(),
                       ),
                     ),
@@ -259,7 +265,7 @@ class _AddProductsState extends State<AddProducts> {
                           child: new TextFormField(
                             decoration: new InputDecoration(
                                 border: InputBorder.none,
-                                hintText: 'half/full',
+                                hintText: MyLocalizations.of(context).halfFull,
                                 hintStyle: greytext(),
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 10.0)),
@@ -303,7 +309,7 @@ class _AddProductsState extends State<AddProducts> {
                       flex: 2,
                       fit: FlexFit.tight,
                       child: Text(
-                        'Discount',
+                        MyLocalizations.of(context).discount,
                         style: blacktext(),
                       ),
                     ),
@@ -330,7 +336,7 @@ class _AddProductsState extends State<AddProducts> {
                       flex: 2,
                       fit: FlexFit.tight,
                       child: Text(
-                        'Price',
+                        MyLocalizations.of(context).price,
                         style: blacktext(),
                       ),
                     ),
@@ -373,7 +379,7 @@ class _AddProductsState extends State<AddProducts> {
                 margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
                 alignment: Alignment.topLeft,
                 child: Text(
-                  'Extra Variant Info',
+                  MyLocalizations.of(context).extraVariantInfo,
                   style: boldtext(),
                 ),
               ),
@@ -386,7 +392,7 @@ class _AddProductsState extends State<AddProducts> {
                       flex: 2,
                       fit: FlexFit.tight,
                       child: Text(
-                        'Name',
+                        MyLocalizations.of(context).name,
                         style: blacktext(),
                       ),
                     ),
@@ -413,7 +419,7 @@ class _AddProductsState extends State<AddProducts> {
                       flex: 2,
                       fit: FlexFit.tight,
                       child: Text(
-                        'Price',
+                        MyLocalizations.of(context).price,
                         style: blacktext(),
                       ),
                     ),
@@ -478,7 +484,7 @@ class _AddProductsState extends State<AddProducts> {
                       child: RawMaterialButton(
                         onPressed: null,
                         child: Text(
-                          'Create',
+                          MyLocalizations.of(context).create,
                           style: boldwhite(),
                         ),
                       ),
@@ -491,7 +497,7 @@ class _AddProductsState extends State<AddProducts> {
                       child: RawMaterialButton(
                         onPressed: null,
                         child: Text(
-                          'Cancel',
+                          MyLocalizations.of(context).cancel,
                           style: boldwhite(),
                         ),
                       ),

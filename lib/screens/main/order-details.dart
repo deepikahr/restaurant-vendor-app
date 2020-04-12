@@ -4,12 +4,20 @@ import '../widgets/avatar.dart';
 import '../../styles/styles.dart';
 import 'package:async_loader/async_loader.dart';
 import '../../services/orders.dart';
+import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
 
 class OrderDetails extends StatefulWidget {
   static String tag = "orderDetails";
   final orderData;
   final String option;
-  OrderDetails({Key key, @required this.orderData, @required this.option})
+  final Map<String, Map<String, String>> localizedValues;
+  final String locale;
+  OrderDetails(
+      {Key key,
+      @required this.orderData,
+      @required this.option,
+      this.locale,
+      this.localizedValues})
       : super(key: key);
 
   @override
@@ -108,7 +116,8 @@ class _OrderDetailsState extends State<OrderDetails> {
       key: _asyncLoaderState,
       initState: () async => await orderDetail(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
-      renderError: ([error]) => NoData(message: 'Something went wrong..'),
+      renderError: ([error]) =>
+          NoData(message: MyLocalizations.of(context).errorMessage),
       renderSuccess: ({data}) => Container(
         width: screenWidth(context),
         height: screenHeight(context),
@@ -131,7 +140,8 @@ class _OrderDetailsState extends State<OrderDetails> {
     return Scaffold(
         backgroundColor: WHITE,
         appBar: AppBar(
-          title: Text("Order Details", style: headerDefaultColor()),
+          title: Text(MyLocalizations.of(context).orderDetails,
+              style: headerDefaultColor()),
           iconTheme: new IconThemeData(color: WHITE),
         ),
         body: asyncLoader);
@@ -144,7 +154,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "Customer and Payment Info",
+            MyLocalizations.of(context).customerAndPaymentInfo,
             style: titleStyle(),
           ),
           Card(
@@ -213,7 +223,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          "Order Details",
+          MyLocalizations.of(context).orderDetails,
           style: titleStyle(),
         ),
         Card(
@@ -351,7 +361,9 @@ class _OrderDetailsState extends State<OrderDetails> {
               width: screenWidth(context) * 0.2,
               child: FlatButton(
                 onPressed: accceptOrder,
-                child: isAcceptLoading ? Text('Wait...') : Text('ACCEPT'),
+                child: isAcceptLoading
+                    ? Text(MyLocalizations.of(context).pleaseWait)
+                    : Text(MyLocalizations.of(context).accept),
                 textColor: PRIMARY,
                 padding: EdgeInsets.all(0),
               ),
@@ -360,7 +372,9 @@ class _OrderDetailsState extends State<OrderDetails> {
               width: screenWidth(context) * 0.2,
               child: FlatButton(
                 onPressed: cancelOrder,
-                child: isCancleLoading ? Text('Wait...') : Text('REJECT'),
+                child: isCancleLoading
+                    ? Text(MyLocalizations.of(context).pleaseWait)
+                    : Text(MyLocalizations.of(context).reject),
                 textColor: PRIMARY,
                 padding: EdgeInsets.all(0),
               ),

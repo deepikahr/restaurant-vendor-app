@@ -5,9 +5,20 @@ import './orders-history.dart';
 import '../auth/login.dart';
 import '../../services/common.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/cupertino.dart';
+import '../../main.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import '../../constant.dart' show languages;
+import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
+
 class Menu extends StatefulWidget {
+  final Map<String, Map<String, String>> localizedValues;
+  final String locale;
   final GlobalKey<ScaffoldState> scaffoldKey;
-  Menu({Key key, this.scaffoldKey}) : super(key: key);
+  Menu({Key key, this.scaffoldKey, this.locale, this.localizedValues})
+      : super(key: key);
 
   @override
   _MenuState createState() => _MenuState();
@@ -22,6 +33,29 @@ class _MenuState extends State<Menu> {
   @override
   void initState() {
     super.initState();
+    getData();
+  }
+
+  String selectedLanguages, selectedLang;
+
+  List<String> languages = ['English', 'French', 'Arbic'];
+
+  var selectedLanguage, selectedLocale;
+
+  getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (mounted) {
+      setState(() {
+        selectedLanguage = prefs.getString('selectedLanguage');
+      });
+      if (selectedLanguage == 'en') {
+        selectedLocale = 'English';
+      } else if (selectedLanguage == 'fr') {
+        selectedLocale = 'French';
+      } else if (selectedLanguage == 'ar') {
+        selectedLocale = 'Arbic';
+      }
+    }
   }
 
   @override
@@ -48,8 +82,10 @@ class _MenuState extends State<Menu> {
                 color: PRIMARY,
               ),
             ),
-            _tile('Home', Icons.arrow_forward_ios, OrderList.tag),
-            _tile('Order History', Icons.arrow_forward_ios, OrderHistory.tag),
+            _tile(MyLocalizations.of(context).home, Icons.arrow_forward_ios,
+                OrderList.tag),
+            _tile(MyLocalizations.of(context).orderHistory,
+                Icons.arrow_forward_ios, OrderHistory.tag),
             Container(
               decoration: const BoxDecoration(
                 border: Border(
@@ -57,7 +93,7 @@ class _MenuState extends State<Menu> {
                 ),
               ),
               child: ListTile(
-                title: Text("Logout",
+                title: Text(MyLocalizations.of(context).logout,
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
@@ -70,6 +106,64 @@ class _MenuState extends State<Menu> {
                 ),
               ),
             ),
+            Container(
+              // margin: EdgeInsets.only(top: 10.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey, width: 1.0),
+              ),
+              child: ListTile(
+                title: Text(MyLocalizations.of(context).selectLanguages),
+                trailing: DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    hint: Text(
+                        selectedLocale == null ? 'English' : selectedLocale),
+                    value: selectedLanguages,
+                    onChanged: (newValue) async {
+                      if (newValue == 'English') {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.setString('selectedLanguage', 'en');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                MyApp(widget.locale, widget.localizedValues),
+                          ),
+                        );
+                      } else if (newValue == 'Arbic') {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.setString('selectedLanguage', 'ar');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                MyApp(widget.locale, widget.localizedValues),
+                          ),
+                        );
+                      } else {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.setString('selectedLanguage', 'fr');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                MyApp(widget.locale, widget.localizedValues),
+                          ),
+                        );
+                      }
+                    },
+                    items: languages.map((lang) {
+                      return DropdownMenuItem(
+                        child: new Text(lang),
+                        value: lang,
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

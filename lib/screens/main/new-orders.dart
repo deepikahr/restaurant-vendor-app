@@ -6,10 +6,16 @@ import 'package:async_loader/async_loader.dart';
 import '../../services/orders.dart';
 import '../../screens/main/order-details.dart';
 import 'package:intl/intl.dart';
+import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
+
 // CouponCard
 
 class NewOrders extends StatefulWidget {
   static String tag = "newOrder";
+  final Map<String, Map<String, String>> localizedValues;
+  final String locale;
+  NewOrders({Key key, this.locale, this.localizedValues}) : super(key: key);
+
   @override
   _NewOrdersState createState() => _NewOrdersState();
 }
@@ -67,7 +73,7 @@ class _NewOrdersState extends State<NewOrders> {
           setState(() {
             isAcceptLoading = false;
             orders.removeAt(index);
-            showSnackbar('Order Accepted');
+            showSnackbar(MyLocalizations.of(context).orderAccepted);
           });
         }
       }
@@ -88,21 +94,21 @@ class _NewOrdersState extends State<NewOrders> {
         setState(() {
           isCancleLoading = false;
           orders.removeAt(index);
-          showSnackbar('Order Cancelled');
+          showSnackbar(MyLocalizations.of(context).orderCancelled);
         });
       }
     });
     return Future(null);
   }
-
+ 
   Widget build(BuildContext context) {
     var asyncLoader = AsyncLoader(
       key: _asyncLoaderState,
       initState: () async => await getOrder(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
-      renderError: ([error]) => NoData(message: 'Something went wrong..'),
+      renderError: ([error]) => NoData(message: MyLocalizations.of(context).errorMessage),
       renderSuccess: ({data}) => orders.length == 0
-          ? NoData(message: 'No Order History')
+          ? NoData(message: MyLocalizations.of(context).noOrderHistory)
           : Container(
               child: ListView.builder(
                   itemCount: orders == null ? 0 : orders.length,
@@ -115,7 +121,7 @@ class _NewOrdersState extends State<NewOrders> {
                               builder: (BuildContext context) =>
                                   new OrderDetails(
                                 orderData: orders[index],
-                                option: 'accept',
+                                option: MyLocalizations.of(context).accept,
                               ),
                             ));
                       },
@@ -203,8 +209,8 @@ class _NewOrdersState extends State<NewOrders> {
                 }
               },
               child: (isAcceptLoading && currentIndexAccept == index)
-                  ? Text('Wait...')
-                  : Text('Accept'),
+                  ? Text(MyLocalizations.of(context).pleaseWait)
+                  : Text(MyLocalizations.of(context).accept),
               textColor: PRIMARY,
               padding: EdgeInsets.all(0),
             ),
@@ -219,8 +225,8 @@ class _NewOrdersState extends State<NewOrders> {
                 }
               },
               child: (isCancleLoading && currentIndexCancle == index)
-                  ? Text('Wait...')
-                  : Text('Reject'),
+                  ? Text(MyLocalizations.of(context).pleaseWait)
+                  : Text(MyLocalizations.of(context).reject),
               textColor: DARK_TEXT_A,
               padding: EdgeInsets.all(0),
             ),

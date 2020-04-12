@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import '../../styles/styles.dart';
 import 'add-products.dart';
 import 'view-products.dart';
+import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
+
 // CouponCard
 
 class Products extends StatefulWidget {
   static String tag = "Products";
+  final Map<String, Map<String, String>> localizedValues;
+  final String locale;
+  Products({Key key, this.locale, this.localizedValues}) : super(key: key);
 
   @override
   _ProductsState createState() => _ProductsState();
@@ -18,7 +23,8 @@ class _ProductsState extends State<Products> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Products", style: headerDefaultColor()),
+          title: Text(MyLocalizations.of(context).products,
+              style: headerDefaultColor()),
           elevation: 0.0,
           iconTheme: new IconThemeData(color: WHITE),
         ),
@@ -47,7 +53,8 @@ class _ProductsState extends State<Products> {
                               child: new TextFormField(
                                 decoration: new InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: 'Search Product',
+                                    hintText: MyLocalizations.of(context)
+                                        .searchProduct,
                                     hintStyle: primaryText(),
                                     contentPadding: EdgeInsets.symmetric(
                                         horizontal: 10.0, vertical: 10.0)),
@@ -75,11 +82,14 @@ class _ProductsState extends State<Products> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => AddProducts()),
+                                    builder: (context) => AddProducts(
+                                        locale: widget.locale,
+                                        localizedValues:
+                                            widget.localizedValues)),
                               );
                             },
                             child: Text(
-                              'Add Products',
+                              MyLocalizations.of(context).addProducts,
                               style: whitetext(),
                             )),
                       ))
@@ -93,7 +103,7 @@ class _ProductsState extends State<Products> {
                       flex: 7,
                       fit: FlexFit.tight,
                       child: Text(
-                        'Product name',
+                        MyLocalizations.of(context).productName,
                         style: blacktext(),
                       ),
                     ),
@@ -101,7 +111,7 @@ class _ProductsState extends State<Products> {
                       flex: 6,
                       fit: FlexFit.tight,
                       child: Text(
-                        'Enable/Disable',
+                        MyLocalizations.of(context).enableDisable,
                         style: blacktext(),
                       ),
                     ),
@@ -109,7 +119,7 @@ class _ProductsState extends State<Products> {
                       flex: 3,
                       fit: FlexFit.tight,
                       child: Text(
-                        'View',
+                        MyLocalizations.of(context).view,
                         style: blacktext(),
                       ),
                     ),
@@ -117,7 +127,7 @@ class _ProductsState extends State<Products> {
                       flex: 3,
                       fit: FlexFit.tight,
                       child: Text(
-                        'Edit',
+                        MyLocalizations.of(context).edit,
                         style: blacktext(),
                       ),
                     ),
@@ -142,7 +152,7 @@ class _ProductsState extends State<Products> {
             flex: 7,
             fit: FlexFit.tight,
             child: Text(
-              'Green Salad',
+              "Green Salad",
               style: greytext(),
             ),
           ),
