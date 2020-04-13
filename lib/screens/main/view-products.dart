@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
 import '../../styles/styles.dart';
+import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
 
 class ViewProducts extends StatefulWidget {
   static String tag = "ViewProducts";
+  final Map<String, Map<String, String>> localizedValues;
+  final String locale;
+  ViewProducts({Key key, this.locale, this.localizedValues}) : super(key: key);
 
   @override
   _ViewProductsState createState() => _ViewProductsState();
@@ -16,7 +20,8 @@ class _ViewProductsState extends State<ViewProducts> {
     return Scaffold(
         backgroundColor: BG_COLOR,
         appBar: AppBar(
-          title: Text("View Products", style: headerDefaultColor()),
+          title: Text(MyLocalizations.of(context).viewProducts,
+              style: headerDefaultColor()),
           elevation: 0.0,
           iconTheme: new IconThemeData(color: WHITE),
         ),
@@ -43,7 +48,7 @@ class _ViewProductsState extends State<ViewProducts> {
                                       flex: 4,
                                       fit: FlexFit.tight,
                                       child: Text(
-                                        'Product name:',
+                                        MyLocalizations.of(context).productName,
                                         style: blacktext(),
                                       ),
                                     ),
@@ -66,7 +71,7 @@ class _ViewProductsState extends State<ViewProducts> {
                                       flex: 4,
                                       fit: FlexFit.tight,
                                       child: Text(
-                                        'Brand:',
+                                        MyLocalizations.of(context).brand,
                                         style: blacktext(),
                                       ),
                                     ),
@@ -89,7 +94,7 @@ class _ViewProductsState extends State<ViewProducts> {
                                       flex: 4,
                                       fit: FlexFit.tight,
                                       child: Text(
-                                        'Category:',
+                                        MyLocalizations.of(context).category,
                                         style: blacktext(),
                                       ),
                                     ),
@@ -112,7 +117,7 @@ class _ViewProductsState extends State<ViewProducts> {
                                       flex: 4,
                                       fit: FlexFit.tight,
                                       child: Text(
-                                        'Description:',
+                                        MyLocalizations.of(context).description,
                                         style: blacktext(),
                                       ),
                                     ),
@@ -142,7 +147,7 @@ class _ViewProductsState extends State<ViewProducts> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'VARIANT',
+                        MyLocalizations.of(context).variant,
                         style: boldtext(),
                       ),
                       Padding(padding: EdgeInsets.only(bottom: 10.0)),
@@ -150,7 +155,7 @@ class _ViewProductsState extends State<ViewProducts> {
                         children: <TableRow>[
                           TableRow(children: <Widget>[
                             Text(
-                              'Serial',
+                              MyLocalizations.of(context).serial,
                               style: blacktext(),
                             ),
                             Text(
@@ -158,11 +163,11 @@ class _ViewProductsState extends State<ViewProducts> {
                               style: blacktext(),
                             ),
                             Text(
-                              'Discount',
+                              MyLocalizations.of(context).discount,
                               style: blacktext(),
                             ),
                             Text(
-                              'Price',
+                              MyLocalizations.of(context).price,
                               style: blacktext(),
                             ),
                           ]),
@@ -208,7 +213,7 @@ class _ViewProductsState extends State<ViewProducts> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'EXTRA VARIANT',
+                        MyLocalizations.of(context).extraVariant,
                         style: boldtext(),
                       ),
                       Padding(padding: EdgeInsets.only(bottom: 10.0)),
@@ -216,15 +221,15 @@ class _ViewProductsState extends State<ViewProducts> {
                         children: <TableRow>[
                           TableRow(children: <Widget>[
                             Text(
-                              'Serial',
+                              MyLocalizations.of(context).serial,
                               style: blacktext(),
                             ),
                             Text(
-                              'Name',
+                              MyLocalizations.of(context).name,
                               style: blacktext(),
                             ),
                             Text(
-                              'Price',
+                              MyLocalizations.of(context).price,
                               style: blacktext(),
                             ),
                           ]),

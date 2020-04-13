@@ -6,12 +6,15 @@ import 'package:async_loader/async_loader.dart';
 import '../../services/orders.dart';
 import '../../screens/main/order-details.dart';
 import 'package:intl/intl.dart';
+import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
 
 class OrderHistory extends StatefulWidget {
   static String tag = "orderHistory";
+  final Map<String, Map<String, String>> localizedValues;
+  final String locale;
 
   OrderHistory({
-    Key key,
+    Key key,this.locale, this.localizedValues
   }) : super(key: key);
 
   @override
@@ -54,9 +57,9 @@ class _OrderHistoryState extends State<OrderHistory> {
       key: _asyncLoaderState,
       initState: () async => await getOrder(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
-      renderError: ([error]) => NoData(message: 'Something went wrong..'),
+      renderError: ([error]) => NoData(message: MyLocalizations.of(context).errorMessage),
       renderSuccess: ({data}) => data.length == 0
-          ? NoData(message: 'No Order History')
+          ? NoData(message: MyLocalizations.of(context).noOrderHistory)
           : Container(
               child: ListView.builder(
                   itemCount: data == null ? 0 : data.length,
@@ -125,7 +128,7 @@ class _OrderHistoryState extends State<OrderHistory> {
     return Scaffold(
         backgroundColor: WHITE,
         appBar: AppBar(
-          title: Text("Order History", style: headerDefaultColor()),
+          title: Text(MyLocalizations.of(context).orderHistory, style: headerDefaultColor()),
           iconTheme: new IconThemeData(color: WHITE),
         ),
         body: asyncLoader);

@@ -6,11 +6,16 @@ import 'package:async_loader/async_loader.dart';
 import '../../services/orders.dart';
 import '../../screens/main/order-details.dart';
 import 'package:intl/intl.dart';
+import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
+
 
 // CouponCard
 
 class OrdersInProgress extends StatefulWidget {
   static String tag = "orderProgress";
+  final Map<String, Map<String, String>> localizedValues;
+  final String locale;
+  OrdersInProgress({Key key, this.locale, this.localizedValues}) : super(key: key);
 
   @override
   _OrdersInProgressState createState() => _OrdersInProgressState();
@@ -73,7 +78,7 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
       renderLoad: () => Center(child: new CircularProgressIndicator()),
       renderError: ([error]) => NoData(message: 'Something went wrong..'),
       renderSuccess: ({data}) => data.length == 0
-          ? NoData(message: 'No Order History')
+          ? NoData(message: MyLocalizations.of(context).noOrderHistory)
           : Container(
               child: ListView.builder(
                   itemCount: orders == null ? 0 : orders.length,
@@ -163,7 +168,7 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
           )),
           child: Center(
             child: Text(
-              "Assign For Deliver ",
+              MyLocalizations.of(context).assignForDeliver,
               style: TextStyle(color: SUCCESS),
             ),
           ),
@@ -172,7 +177,7 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
     } else {
       return InkWell(
         onTap: () {
-          showSnackbar('Already assigned');
+          showSnackbar(MyLocalizations.of(context).alreadyAssigned);
         },
         child: Container(
           height: 44,
@@ -182,7 +187,7 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
           )),
           child: Center(
             child: Text(
-              "Assigned To " + deliveryBoyName,
+              MyLocalizations.of(context).assignedTo+ deliveryBoyName,
               style: TextStyle(color: Colors.yellow[600]),
             ),
           ),
@@ -200,19 +205,19 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
         initState: () async => await _getStaffList(),
         renderLoad: () => Center(child: CircularProgressIndicator()),
         renderError: ([error]) =>
-            NoData(message: 'Please try again!', icon: Icons.block),
+            NoData(message: MyLocalizations.of(context).pleaseTryAgain, icon: Icons.block),
         renderSuccess: ({data}) {
           if (data is List)
             return _shoeDeliveryAgentsList(data);
           else
-            return Text('No Staff Available');
+            return Text(MyLocalizations.of(context).noStaffAvailable);
         });
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select Delivery Agent'),
+          title: Text(MyLocalizations.of(context).selectDeliveryAgent),
           content: _asyncLoaderStaff,
         );
       },
@@ -244,7 +249,7 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                   child: ListTile(
                     title: Column(
                       children: [
-                        Text(list[index]['name']),
+                        Text(list[index][MyLocalizations.of(context).name]),
                         Divider(),
                       ],
                     ),
@@ -263,19 +268,19 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm'),
+          title: Text(MyLocalizations.of(context).confirm),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Are you sure you want to assign order to ' +
-                    staff['name'] +
+                Text(MyLocalizations.of(context).areYouSureYouWantToAssignOrderTo
+ +                    staff['name'] +
                     '?'),
               ],
             ),
           ),
           actions: <Widget>[
             FlatButton(
-              child: isLoading ? Text('Wait...') : Text('OK'),
+              child: isLoading ? Text(MyLocalizations.of(context).pleaseWait) : Text(MyLocalizations.of(context).ok),
               onPressed: () {
                 if (!isLoading) {
                   if (mounted) {
@@ -295,7 +300,7 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
                     orders.removeAt(selectedIndex);
-                    showSnackbar('Assigned Successfully');
+                    showSnackbar(MyLocalizations.of(context).assignedSuccessfully);
                     if (mounted) {
                       setState(() {
                         isLoading = false;
@@ -306,7 +311,7 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
               },
             ),
             FlatButton(
-              child: Text('Go Back'),
+              child: Text(MyLocalizations.of(context).goBack),
               onPressed: () {
                 Navigator.of(context).pop();
               },
