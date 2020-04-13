@@ -253,5 +253,12 @@
   "brand": "brand",
   "variant": "VARIANT",
   "serial": "Serial",
-  "extraVariant": "Extra Variant"
+  "extraVariant": "Extra Variant",
+  "mRP": "MRP",
+  "like": "like",
+  "assignhere": "Assign here",
+  "historyorderstatus": "History order status",
+  "unwantedentry": "Unwanted entry",
+  "tax": "Tax",
+  "free": "Free"
 }

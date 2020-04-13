@@ -168,17 +168,29 @@ class _OrderDetailsState extends State<OrderDetails> {
               padding: EdgeInsets.only(top: 12, bottom: 12),
               child: Column(
                 children: <Widget>[
-                  _customerSection(Icons.card_membership, 'Order ID',
+                  _customerSection(
+                      Icons.card_membership,
+                      MyLocalizations.of(context).orderID,
                       orderId != null ? orderId : ''),
-                  _customerSection(Icons.account_circle, 'Name',
+                  _customerSection(
+                      Icons.account_circle,
+                      MyLocalizations.of(context).name,
                       customerName != null ? customerName : ''),
-                  _customerSection(Icons.location_on, 'Locaiton',
+                  _customerSection(
+                      Icons.location_on,
+                      MyLocalizations.of(context).location,
                       shippingAddress != null ? shippingAddress : ''),
-                  _customerSection(Icons.contact_phone, 'Contact',
+                  _customerSection(
+                      Icons.contact_phone,
+                      MyLocalizations.of(context).contactNo,
                       customerContact != null ? customerContact : ''),
-                  _customerSection(Icons.email, 'Email',
+                  _customerSection(
+                      Icons.email,
+                      MyLocalizations.of(context).emailId,
                       customerEmail != null ? customerEmail : ''),
-                  _customerSection(Icons.payment, 'Payment Method',
+                  _customerSection(
+                      Icons.payment,
+                      MyLocalizations.of(context).paymentMethod,
                       paymentMethod != null ? paymentMethod : ''),
                 ],
               ),
@@ -239,14 +251,19 @@ class _OrderDetailsState extends State<OrderDetails> {
               children: <Widget>[
                 _detailTopSection(),
                 // detailMiddle(),
-                _detailBottom('Sub Total', '\$' + subTotal ?? ''),
+                _detailBottom(MyLocalizations.of(context).subTotal,
+                    '\$' + subTotal ?? ''),
+                _detailBottom(MyLocalizations.of(context).tax,
+                    taxInfo['taxRate'].toStringAsFixed(2) + '%' ?? ''),
                 _detailBottom(
-                    'Tax', taxInfo['taxRate'].toStringAsFixed(2) + '%' ?? ''),
-                _detailBottom(
-                    'Delivery Charges',
-                    (deliveryCharge == 'Free' ? '' : '\$') + deliveryCharge ??
+                    MyLocalizations.of(context).deliveryCharges,
+                    (deliveryCharge == MyLocalizations.of(context).free
+                                ? ''
+                                : '\$') +
+                            deliveryCharge ??
                         ''),
-                _detailBottom('Grand Total', '\$' + grandTotal ?? ''),
+                _detailBottom(MyLocalizations.of(context).grandTotal,
+                    '\$' + grandTotal ?? ''),
               ],
             ),
           ),
@@ -383,11 +400,11 @@ class _OrderDetailsState extends State<OrderDetails> {
         ),
       );
     } else if (widget.option == 'assign') {
-      return Text('assign here');
+      return Text(MyLocalizations.of(context).assignhere);
     } else if (widget.option == 'history') {
-      return Text('history order status');
+      return Text(MyLocalizations.of(context).historyorderstatus);
     } else {
-      return Text('unwanted entry');
+      return Text(MyLocalizations.of(context).unwantedentry);
     }
   }
 

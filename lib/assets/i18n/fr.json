@@ -253,5 +253,12 @@
   "brand": "marque",
   "variant": "UNE VARIANTE",
   "serial": "En série",
-  "extraVariant": "Variante supplémentaire"
+  "extraVariant": "Variante supplémentaire",
+  "mRP": "MRP",
+  "like": "comme",
+  "assignhere": "Attribuer ici",
+  "historyorderstatus": "Statut de la commande d'historique",
+  "unwantedentry": "Entrée indésirable",
+  "tax": "impôt",
+  "free": "gratuit"
 }

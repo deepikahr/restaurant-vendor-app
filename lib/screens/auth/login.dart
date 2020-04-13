@@ -51,7 +51,7 @@ class _LoginState extends State<Login> {
         });
       }
       showSnackbar(onError.toString());
-      print("Error " + onError.toString());
+      print(MyLocalizations.of(context).errorMessage + onError.toString());
     });
   }
 

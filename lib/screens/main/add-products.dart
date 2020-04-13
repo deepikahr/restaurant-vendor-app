@@ -21,48 +21,51 @@ class _AddProductsState extends State<AddProducts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(MyLocalizations.of(context).addProducts,
-              style: headerDefaultColor()),
-          elevation: 0.0,
-          iconTheme: new IconThemeData(color: WHITE),
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-              child: Column(
+      appBar: AppBar(
+        title: Text(MyLocalizations.of(context).addProducts,
+            style: headerDefaultColor()),
+        elevation: 0.0,
+        iconTheme: new IconThemeData(color: WHITE),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Flexible(
-                      flex: 9,
-                      fit: FlexFit.tight,
-                      child: Container(
-                        height: 35.0,
-                        margin:
-                            EdgeInsets.only(right: 10.0, top: 0.0, left: 20.0),
-                        color: PRIMARY,
-                        padding: EdgeInsets.only(right: 10.0, left: 10.0),
-                        child: RawMaterialButton(
-                            onPressed: null,
-                            fillColor: PRIMARY,
-                            child: Text(
-                              MyLocalizations.of(context).selectImage,
-                              style: whitetext(),
-                            )),
-                      )),
-                  Flexible(
-                      flex: 8,
-                      fit: FlexFit.tight,
-                      child: Container(
-                        width: 80.0,
-                        height: 80.0,
-                        margin: EdgeInsets.symmetric(vertical: 10.0),
-                        decoration: BoxDecoration(
-                          color: GRAY,
-                          shape: BoxShape.circle,
+                    flex: 9,
+                    fit: FlexFit.tight,
+                    child: Container(
+                      height: 35.0,
+                      margin:
+                          EdgeInsets.only(right: 10.0, top: 0.0, left: 20.0),
+                      color: PRIMARY,
+                      padding: EdgeInsets.only(right: 10.0, left: 10.0),
+                      child: RawMaterialButton(
+                        onPressed: null,
+                        fillColor: PRIMARY,
+                        child: Text(
+                          MyLocalizations.of(context).selectImage,
+                          style: whitetext(),
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 8,
+                    fit: FlexFit.tight,
+                    child: Container(
+                      width: 80.0,
+                      height: 80.0,
+                      margin: EdgeInsets.symmetric(vertical: 10.0),
+                      decoration: BoxDecoration(
+                        color: GRAY,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
                 ],
               ),
               Container(
@@ -78,22 +81,23 @@ class _AddProductsState extends State<AddProducts> {
                       ),
                     ),
                     Flexible(
-                        flex: 8,
-                        fit: FlexFit.tight,
-                        child: Container(
-                          decoration:
-                              BoxDecoration(border: Border.all(color: GRAY)),
-                          child: new TextFormField(
-                            decoration: new InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Trivandrum',
-                                hintStyle: greytext(),
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 10.0)),
-                            keyboardType: TextInputType.text,
-                            style: greytext(),
-                          ),
-                        )),
+                      flex: 8,
+                      fit: FlexFit.tight,
+                      child: Container(
+                        decoration:
+                            BoxDecoration(border: Border.all(color: GRAY)),
+                        child: new TextFormField(
+                          decoration: new InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Trivandrum',
+                              hintStyle: greytext(),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 10.0)),
+                          keyboardType: TextInputType.text,
+                          style: greytext(),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -110,31 +114,33 @@ class _AddProductsState extends State<AddProducts> {
                       ),
                     ),
                     Flexible(
-                        flex: 8,
-                        fit: FlexFit.tight,
-                        child: Container(
-                            height: 39.0,
-                            padding: EdgeInsets.only(left: 10.0),
-                            decoration:
-                                BoxDecoration(border: Border.all(color: GRAY)),
-                            child: new DropdownButtonHideUnderline(
-                              child: new DropdownButton<String>(
-                                  items: _currencies
-                                      .map((String dropDownStringItem) {
-                                    return DropdownMenuItem<String>(
-                                      value: dropDownStringItem,
-                                      child: Text(dropDownStringItem),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String newvalue) {
-                                    setState(() {
-                                      this.currentitem = newvalue;
-                                    });
-                                  },
-                                  value: currentitem,
-                                  isDense: true,
-                                  style: greytext()),
-                            ))),
+                      flex: 8,
+                      fit: FlexFit.tight,
+                      child: Container(
+                        height: 39.0,
+                        padding: EdgeInsets.only(left: 10.0),
+                        decoration:
+                            BoxDecoration(border: Border.all(color: GRAY)),
+                        child: new DropdownButtonHideUnderline(
+                          child: new DropdownButton<String>(
+                              items:
+                                  _currencies.map((String dropDownStringItem) {
+                                return DropdownMenuItem<String>(
+                                  value: dropDownStringItem,
+                                  child: Text(dropDownStringItem),
+                                );
+                              }).toList(),
+                              onChanged: (String newvalue) {
+                                setState(() {
+                                  this.currentitem = newvalue;
+                                });
+                              },
+                              value: currentitem,
+                              isDense: true,
+                              style: greytext()),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -151,22 +157,23 @@ class _AddProductsState extends State<AddProducts> {
                       ),
                     ),
                     Flexible(
-                        flex: 8,
-                        fit: FlexFit.tight,
-                        child: Container(
-                          decoration:
-                              BoxDecoration(border: Border.all(color: GRAY)),
-                          child: new TextFormField(
-                            decoration: new InputDecoration(
-                                border: InputBorder.none,
-                                hintText: '',
-                                hintStyle: greytext(),
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 10.0)),
-                            keyboardType: TextInputType.text,
-                            style: greytext(),
-                          ),
-                        )),
+                      flex: 8,
+                      fit: FlexFit.tight,
+                      child: Container(
+                        decoration:
+                            BoxDecoration(border: Border.all(color: GRAY)),
+                        child: new TextFormField(
+                          decoration: new InputDecoration(
+                              border: InputBorder.none,
+                              hintText: '',
+                              hintStyle: greytext(),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 10.0)),
+                          keyboardType: TextInputType.text,
+                          style: greytext(),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -277,7 +284,7 @@ class _AddProductsState extends State<AddProducts> {
                         flex: 2,
                         fit: FlexFit.tight,
                         child: Text(
-                          'MRP',
+                          MyLocalizations.of(context).mRP,
                           style: blacktext(),
                         )),
                     Flexible(
@@ -350,7 +357,8 @@ class _AddProductsState extends State<AddProducts> {
                           child: new TextFormField(
                             decoration: new InputDecoration(
                                 border: InputBorder.none,
-                                hintText: 'like(0)',
+                                hintText:
+                                    MyLocalizations.of(context).like + '(0)',
                                 hintStyle: greytext(),
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 10.0)),
@@ -424,23 +432,24 @@ class _AddProductsState extends State<AddProducts> {
                       ),
                     ),
                     Flexible(
-                        flex: 3,
-                        fit: FlexFit.tight,
-                        child: Container(
-                          margin: EdgeInsets.only(right: 10.0),
-                          decoration:
-                              BoxDecoration(border: Border.all(color: GRAY)),
-                          child: new TextFormField(
-                            decoration: new InputDecoration(
-                                border: InputBorder.none,
-                                hintText: '',
-                                hintStyle: greytext(),
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 10.0)),
-                            keyboardType: TextInputType.text,
-                            style: greytext(),
-                          ),
-                        )),
+                      flex: 3,
+                      fit: FlexFit.tight,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 10.0),
+                        decoration:
+                            BoxDecoration(border: Border.all(color: GRAY)),
+                        child: new TextFormField(
+                          decoration: new InputDecoration(
+                              border: InputBorder.none,
+                              hintText: '',
+                              hintStyle: greytext(),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 10.0)),
+                          keyboardType: TextInputType.text,
+                          style: greytext(),
+                        ),
+                      ),
+                    ),
                     Flexible(
                         flex: 1,
                         fit: FlexFit.tight,
@@ -506,7 +515,9 @@ class _AddProductsState extends State<AddProducts> {
                 ),
               )
             ],
-          )),
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }

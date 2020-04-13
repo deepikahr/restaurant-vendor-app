@@ -116,7 +116,9 @@ class _OrderHistoryState extends State<OrderHistory> {
                                             ' \$${data[index]['payableAmount'].toStringAsFixed(2)}',
                                         paymentMethod:
                                             ' - ${data[index]['paymentOption']}',
-                                        statusLabel: 'Status: ',
+                                        statusLabel:
+                                            MyLocalizations.of(context).status +
+                                                ': ',
                                         status: '${data[index]['status']}',
                                       ),
                                       // _bottomSection()

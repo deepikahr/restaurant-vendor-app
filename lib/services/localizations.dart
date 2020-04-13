@@ -1051,6 +1051,34 @@ class MyLocalizations {
     return localizedValues[locale.languageCode]['noDeliverycharge'];
   }
 
+  String get mRP {
+    return localizedValues[locale.languageCode]['mRP'];
+  }
+
+  String get like {
+    return localizedValues[locale.languageCode]['like'];
+  }
+
+  String get assignhere {
+    return localizedValues[locale.languageCode]['assignhere'];
+  }
+
+  String get historyorderstatus {
+    return localizedValues[locale.languageCode]['historyorderstatus'];
+  }
+
+  String get unwantedentry {
+    return localizedValues[locale.languageCode]['unwantedentry'];
+  }
+
+  String get tax {
+    return localizedValues[locale.languageCode]['tax'];
+  }
+
+  String get free {
+    return localizedValues[locale.languageCode]['free'];
+  }
+
   greetTo(name) {
     return localizedValues[locale.languageCode]['greetTo']
         .replaceAll('{{name}}', name);

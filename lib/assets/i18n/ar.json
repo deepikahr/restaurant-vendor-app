@@ -253,5 +253,12 @@
     "brand": "العلامة التجارية",
     "variant": "متغير",
     "serial": "مسلسل",
-    "extraVariant": "البديل الإضافي"
+    "extraVariant": "البديل الإضافي",
+    "mRP": "MRP",
+    "like": "مثل",
+    "assignhere": "تعيين هنا",
+    "historyorderstatus": "حالة طلب السجل",
+    "unwantedentry": "دخول غير مرغوب فيه",
+    "tax": "ضريبة",
+    "free": "مجانا"
 }
