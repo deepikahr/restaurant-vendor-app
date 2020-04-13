@@ -35,4 +35,5 @@ flutter:
     - lib/assets/i18n/en.json
     - lib/assets/i18n/fr.json
     - lib/assets/i18n/ar.json
+    - lib/assets/i18n/zh.json
 

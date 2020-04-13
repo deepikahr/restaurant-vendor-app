@@ -1,7 +1,7 @@
+import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import '../../styles/styles.dart';
-import '../../constant.dart' show languages;
-import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
+
 // CouponCard
 
 class AddProducts extends StatefulWidget {

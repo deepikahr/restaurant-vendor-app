@@ -9,3 +9,4 @@ const APP_NAME = 'Restaurant Saas';
 
 const BASE_URL = 'https://restaurant-sass.herokuapp.com/';
 const API_ENDPOINT = BASE_URL + 'api/';
+const List<String> LANGUAGES = ['en', 'fr', 'ar', 'zh'];

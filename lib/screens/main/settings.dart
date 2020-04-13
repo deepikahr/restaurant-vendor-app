@@ -1,9 +1,9 @@
+import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
 import '../../styles/styles.dart';
 import '../widgets/avatar.dart';
 import '../../services/auth.dart';
-import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
 // CouponCard
 
 class Settings extends StatefulWidget {
@@ -41,24 +41,7 @@ class _SettingsState extends State<Settings> {
             style: headerDefaultColor()),
         iconTheme: new IconThemeData(color: WHITE),
       ),
-      body:
-
-          // new ListView.builder(
-          //   itemCount: data == null ? 0 : data.length,
-          //   itemBuilder: (BuildContext context, int index){
-          //       return Container(
-          //           width: screenWidth(context),
-          //             child: Column(
-          //               children: <Widget>[
-          //                 Card(child: Text('ksdkfsd', style:titleStyle()),),
-          //               ],
-          //             ),
-
-          //       );
-          //   }
-          // ),
-
-          Container(
+      body: Container(
         width: screenWidth(context),
         height: screenHeight(context),
         decoration: BoxDecoration(

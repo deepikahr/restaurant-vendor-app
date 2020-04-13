@@ -1,11 +1,10 @@
+import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import '../../styles/styles.dart';
 import '../main/order-list.dart';
 import '../../services/auth.dart';
 import '../../services/common.dart';
 import '../../blocs/validators.dart';
-import '../../constant.dart' show languages;
-import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
 
 class Login extends StatefulWidget {
   final Map<String, Map<String, String>> localizedValues;
@@ -68,10 +67,16 @@ class _LoginState extends State<Login> {
         }
         Common.setRole(role);
         showSnackbar(MyLocalizations.of(context).loginSuccessfully);
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (BuildContext context) => OrderList()),
-            (Route<dynamic> route) => false);
+        Future.delayed(Duration(milliseconds: 1500), () {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => OrderList(
+                        locale: widget.locale,
+                        localizedValues: widget.localizedValues,
+                      )),
+              (Route<dynamic> route) => false);
+        });
       } else {
         showSnackbar(MyLocalizations.of(context).youAreNotAuthorizedToLogin);
       }

@@ -1,8 +1,8 @@
+import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import '../../styles/styles.dart';
 import 'add-products.dart';
 import 'view-products.dart';
-import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
 
 // CouponCard
 
@@ -22,15 +22,15 @@ class _ProductsState extends State<Products> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(MyLocalizations.of(context).products,
-              style: headerDefaultColor()),
-          elevation: 0.0,
-          iconTheme: new IconThemeData(color: WHITE),
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-              child: Column(
+      appBar: AppBar(
+        title: Text(MyLocalizations.of(context).products,
+            style: headerDefaultColor()),
+        elevation: 0.0,
+        iconTheme: new IconThemeData(color: WHITE),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -139,8 +139,10 @@ class _ProductsState extends State<Products> {
               productsDetails(),
               productsDetails(),
             ],
-          )),
-        ));
+          ),
+        ),
+      ),
+    );
   }
 
   Widget productsDetails() {
@@ -170,22 +172,24 @@ class _ProductsState extends State<Products> {
                 ),
               )),
           Flexible(
-              flex: 3,
-              fit: FlexFit.tight,
-              child: Container(
-                  child: IconButton(
-                      icon: Icon(
-                        Icons.remove_red_eye,
-                        color: GRAY,
-                        size: 20.0,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ViewProducts()),
-                        );
-                      }))),
+            flex: 3,
+            fit: FlexFit.tight,
+            child: Container(
+              child: IconButton(
+                icon: Icon(
+                  Icons.remove_red_eye,
+                  color: GRAY,
+                  size: 20.0,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ViewProducts()),
+                  );
+                },
+              ),
+            ),
+          ),
           Flexible(
               flex: 3,
               fit: FlexFit.tight,

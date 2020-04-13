@@ -1,10 +1,10 @@
+import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import '../widgets/no-data.dart';
 import '../widgets/avatar.dart';
 import '../../styles/styles.dart';
 import 'package:async_loader/async_loader.dart';
 import '../../services/orders.dart';
-import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
 
 class OrderDetails extends StatefulWidget {
   static String tag = "orderDetails";

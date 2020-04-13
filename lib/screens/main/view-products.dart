@@ -1,7 +1,7 @@
+import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
 import '../../styles/styles.dart';
-import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
 
 class ViewProducts extends StatefulWidget {
   static String tag = "ViewProducts";
