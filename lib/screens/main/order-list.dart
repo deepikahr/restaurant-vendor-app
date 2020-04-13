@@ -17,6 +17,7 @@ class OrderList extends StatefulWidget {
 }
 
 class OrderListState extends State<OrderList> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -55,11 +56,20 @@ class OrderListState extends State<OrderList> {
           iconTheme: new IconThemeData(color: WHITE),
         ),
         drawer: Menu(
-            locale: widget.locale, localizedValues: widget.localizedValues),
+          locale: widget.locale,
+          localizedValues: widget.localizedValues,
+          scaffoldKey: _scaffoldKey,
+        ),
         body: TabBarView(
           children: [
-            NewOrders(),
-            OrdersInProgress(),
+            NewOrders(
+              locale: widget.locale,
+              localizedValues: widget.localizedValues,
+            ),
+            OrdersInProgress(
+              locale: widget.locale,
+              localizedValues: widget.localizedValues,
+            ),
           ],
         ),
       ),

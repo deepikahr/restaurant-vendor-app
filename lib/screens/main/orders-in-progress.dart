@@ -75,7 +75,9 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
       key: _asyncLoaderState,
       initState: () async => await getOrder(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
-      renderError: ([error]) => NoData(message: 'Something went wrong..'),
+      renderError: ([error]) => NoData(
+          message: MyLocalizations.of(context)
+              .somethingwentwrongpleaserestarttheapp),
       renderSuccess: ({data}) => data.length == 0
           ? NoData(message: MyLocalizations.of(context).noOrderHistory)
           : Container(
@@ -137,7 +139,9 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                                             ' \$${orders[index]['payableAmount'].toStringAsFixed(2)}',
                                         paymentMethod:
                                             ' - ${orders[index]['paymentOption']}',
-                                        statusLabel: 'Status: ',
+                                        statusLabel:
+                                            MyLocalizations.of(context).status +
+                                                ': ',
                                         status: '${orders[index]['status']}',
                                       ),
                                     ),
@@ -250,20 +254,21 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
               list[index]['isSelected'] = false;
             list[0]['isSelected'] = true;
             return InkWell(
-                onTap: () {
-                  _showAssignConfirmAlert(list[index]);
-                },
-                child: Container(
-                  color: Colors.white,
-                  child: ListTile(
-                    title: Column(
-                      children: [
-                        Text(list[index][MyLocalizations.of(context).name]),
-                        Divider(),
-                      ],
-                    ),
+              onTap: () {
+                _showAssignConfirmAlert(list[index]);
+              },
+              child: Container(
+                color: Colors.white,
+                child: ListTile(
+                  title: Column(
+                    children: [
+                      Text(list[index][MyLocalizations.of(context).name]),
+                      Divider(),
+                    ],
                   ),
-                ));
+                ),
+              ),
+            );
           },
         ),
       ),

@@ -253,5 +253,12 @@
     "brand": "品牌",
     "variant": "变种",
     "serial": "串",
-    "extraVariant": "额外的变体"
+    "extraVariant": "额外的变体",
+    "mRP": "物料需求计划",
+    "like": "喜欢",
+    "assignhere": "在这里分配",
+    "historyorderstatus": "历史订单状态",
+    "unwantedentry": "不需要的条目",
+    "tax": "税",
+    "free": "自由"
 }
