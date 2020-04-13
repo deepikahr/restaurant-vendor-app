@@ -1,17 +1,13 @@
+import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import '../../styles/styles.dart';
+import '../auth/login.dart';
 import './order-list.dart';
 import './orders-history.dart';
-import '../auth/login.dart';
 import '../../services/common.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import '../../main.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-
-import '../../constant.dart' show languages;
-import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
 
 class Menu extends StatefulWidget {
   final Map<String, Map<String, String>> localizedValues;
@@ -38,7 +34,7 @@ class _MenuState extends State<Menu> {
 
   String selectedLanguages, selectedLang;
 
-  List<String> languages = ['English', 'French', 'Arbic'];
+  List<String> languages = ['English', 'French', 'Arbic', 'Chinese'];
 
   var selectedLanguage, selectedLocale;
 
@@ -54,6 +50,8 @@ class _MenuState extends State<Menu> {
         selectedLocale = 'French';
       } else if (selectedLanguage == 'ar') {
         selectedLocale = 'Arbic';
+      } else if (selectedLanguage == 'zh') {
+        selectedLocale = 'Chinese';
       }
     }
   }
@@ -82,10 +80,20 @@ class _MenuState extends State<Menu> {
                 color: PRIMARY,
               ),
             ),
-            _tile(MyLocalizations.of(context).home, Icons.arrow_forward_ios,
-                OrderList.tag),
-            _tile(MyLocalizations.of(context).orderHistory,
-                Icons.arrow_forward_ios, OrderHistory.tag),
+            _tile(
+                MyLocalizations.of(context).home,
+                Icons.arrow_forward_ios,
+                OrderList(
+                  locale: widget.locale,
+                  localizedValues: widget.localizedValues,
+                )),
+            _tile(
+                MyLocalizations.of(context).orderHistory,
+                Icons.arrow_forward_ios,
+                OrderHistory(
+                  locale: widget.locale,
+                  localizedValues: widget.localizedValues,
+                )),
             Container(
               decoration: const BoxDecoration(
                 border: Border(
@@ -127,7 +135,7 @@ class _MenuState extends State<Menu> {
                           context,
                           MaterialPageRoute(
                             builder: (BuildContext context) =>
-                                MyApp(widget.locale, widget.localizedValues),
+                                MyApp("en", widget.localizedValues),
                           ),
                         );
                       } else if (newValue == 'Arbic') {
@@ -137,8 +145,21 @@ class _MenuState extends State<Menu> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
+                            builder: (BuildContext context) => MyApp(
+                              "ar",
+                              widget.localizedValues,
+                            ),
+                          ),
+                        );
+                      } else if (newValue == 'Chinese') {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.setString('selectedLanguage', 'zh');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
                             builder: (BuildContext context) =>
-                                MyApp(widget.locale, widget.localizedValues),
+                                MyApp('zh', widget.localizedValues),
                           ),
                         );
                       } else {
@@ -149,7 +170,7 @@ class _MenuState extends State<Menu> {
                           context,
                           MaterialPageRoute(
                             builder: (BuildContext context) =>
-                                MyApp(widget.locale, widget.localizedValues),
+                                MyApp('fr', widget.localizedValues),
                           ),
                         );
                       }
@@ -170,21 +191,28 @@ class _MenuState extends State<Menu> {
     );
   }
 
-  Widget _tile(String title, IconData icon, String routeName) => Container(
+  Widget _tile(String title, IconData icon, Widget routeName) => Container(
         decoration: const BoxDecoration(
           border: Border(
             bottom: BorderSide(width: 1.0, color: Color(0xFFf29000000)),
           ),
         ),
         child: ListTile(
-          title: Text(title,
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-              )),
+          title: Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+            ),
+          ),
           onTap: () {
             Navigator.pop(context);
-            Navigator.of(context).pushNamed(routeName);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => routeName,
+              ),
+            );
           },
           trailing: Icon(
             icon,
@@ -196,6 +224,13 @@ class _MenuState extends State<Menu> {
 
   void logout() {
     Common.removeToken();
-    Navigator.of(context).pushNamed(Login.tag);
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => Login(
+                  locale: widget.locale,
+                  localizedValues: widget.localizedValues,
+                )),
+        (Route<dynamic> route) => false);
   }
 }

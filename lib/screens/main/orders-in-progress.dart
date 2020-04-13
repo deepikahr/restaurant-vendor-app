@@ -1,3 +1,4 @@
+import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import '../widgets/order-item.dart';
 import '../widgets/no-data.dart';
@@ -6,8 +7,6 @@ import 'package:async_loader/async_loader.dart';
 import '../../services/orders.dart';
 import '../../screens/main/order-details.dart';
 import 'package:intl/intl.dart';
-import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
-
 
 // CouponCard
 
@@ -15,7 +14,8 @@ class OrdersInProgress extends StatefulWidget {
   static String tag = "orderProgress";
   final Map<String, Map<String, String>> localizedValues;
   final String locale;
-  OrdersInProgress({Key key, this.locale, this.localizedValues}) : super(key: key);
+  OrdersInProgress({Key key, this.locale, this.localizedValues})
+      : super(key: key);
 
   @override
   _OrdersInProgressState createState() => _OrdersInProgressState();
@@ -68,7 +68,6 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
       }
     });
     return Future(null);
-
   }
 
   Widget build(BuildContext context) {
@@ -113,9 +112,18 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                                                 [0]['imageUrl'] ??
                                             'https://images.unsplash.com/photo-1490717064594-3bd2c4081693?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60R',
                                         orderId: '${orders[index]['orderID']}',
-                                        dateTime: orders[index]['createdAtTime']!=null?DateFormat('dd-MMM-yy hh:mm a').format(new DateTime.fromMillisecondsSinceEpoch(orders[index]['createdAtTime'])): DateFormat('dd-MMM-yy hh:mm a')
-                                          .format(DateTime.parse(
-                                              orders[index]['createdAt'])),
+                                        dateTime: orders[index]
+                                                    ['createdAtTime'] !=
+                                                null
+                                            ? DateFormat('dd-MMM-yy hh:mm a')
+                                                .format(new DateTime
+                                                        .fromMillisecondsSinceEpoch(
+                                                    orders[index]
+                                                        ['createdAtTime']))
+                                            : DateFormat('dd-MMM-yy hh:mm a')
+                                                .format(DateTime.parse(
+                                                    orders[index]
+                                                        ['createdAt'])),
                                         details: orders[index]
                                                         ['shippingAddress'] !=
                                                     null &&
@@ -187,7 +195,7 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
           )),
           child: Center(
             child: Text(
-              MyLocalizations.of(context).assignedTo+ deliveryBoyName,
+              MyLocalizations.of(context).assignedTo + deliveryBoyName,
               style: TextStyle(color: Colors.yellow[600]),
             ),
           ),
@@ -204,8 +212,9 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
         key: _asyncLoaderStateStaff,
         initState: () async => await _getStaffList(),
         renderLoad: () => Center(child: CircularProgressIndicator()),
-        renderError: ([error]) =>
-            NoData(message: MyLocalizations.of(context).pleaseTryAgain, icon: Icons.block),
+        renderError: ([error]) => NoData(
+            message: MyLocalizations.of(context).pleaseTryAgain,
+            icon: Icons.block),
         renderSuccess: ({data}) {
           if (data is List)
             return _shoeDeliveryAgentsList(data);
@@ -272,15 +281,18 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text(MyLocalizations.of(context).areYouSureYouWantToAssignOrderTo
- +                    staff['name'] +
+                Text(MyLocalizations.of(context)
+                        .areYouSureYouWantToAssignOrderTo +
+                    staff['name'] +
                     '?'),
               ],
             ),
           ),
           actions: <Widget>[
             FlatButton(
-              child: isLoading ? Text(MyLocalizations.of(context).pleaseWait) : Text(MyLocalizations.of(context).ok),
+              child: isLoading
+                  ? Text(MyLocalizations.of(context).pleaseWait)
+                  : Text(MyLocalizations.of(context).ok),
               onPressed: () {
                 if (!isLoading) {
                   if (mounted) {
@@ -300,7 +312,8 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
                     orders.removeAt(selectedIndex);
-                    showSnackbar(MyLocalizations.of(context).assignedSuccessfully);
+                    showSnackbar(
+                        MyLocalizations.of(context).assignedSuccessfully);
                     if (mounted) {
                       setState(() {
                         isLoading = false;

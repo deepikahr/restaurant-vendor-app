@@ -1,12 +1,9 @@
+import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import './new-orders.dart';
 import './orders-in-progress.dart';
 import '../../styles/styles.dart';
 import './drawer.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-
-import '../../constant.dart' show languages;
-import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
 
 class OrderList extends StatefulWidget {
   static String tag = "orderList";

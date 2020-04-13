@@ -1,3 +1,4 @@
+import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import '../widgets/order-item.dart';
 import '../widgets/no-data.dart';
@@ -6,7 +7,6 @@ import 'package:async_loader/async_loader.dart';
 import '../../services/orders.dart';
 import '../../screens/main/order-details.dart';
 import 'package:intl/intl.dart';
-import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
 
 // CouponCard
 
@@ -79,7 +79,6 @@ class _NewOrdersState extends State<NewOrders> {
       }
     });
     return Future(null);
-
   }
 
   Future<List<dynamic>> cancelOrder(String orderId, int index) async {
@@ -100,13 +99,14 @@ class _NewOrdersState extends State<NewOrders> {
     });
     return Future(null);
   }
- 
+
   Widget build(BuildContext context) {
     var asyncLoader = AsyncLoader(
       key: _asyncLoaderState,
       initState: () async => await getOrder(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
-      renderError: ([error]) => NoData(message: MyLocalizations.of(context).errorMessage),
+      renderError: ([error]) =>
+          NoData(message: MyLocalizations.of(context).errorMessage),
       renderSuccess: ({data}) => orders.length == 0
           ? NoData(message: MyLocalizations.of(context).noOrderHistory)
           : Container(
@@ -116,14 +116,14 @@ class _NewOrdersState extends State<NewOrders> {
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  new OrderDetails(
-                                orderData: orders[index],
-                                option: MyLocalizations.of(context).accept,
-                              ),
-                            ));
+                          context,
+                          new MaterialPageRoute(
+                            builder: (BuildContext context) => new OrderDetails(
+                              orderData: orders[index],
+                              option: MyLocalizations.of(context).accept,
+                            ),
+                          ),
+                        );
                       },
                       child: SingleChildScrollView(
                         child: Container(

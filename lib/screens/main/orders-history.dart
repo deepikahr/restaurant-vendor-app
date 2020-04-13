@@ -1,3 +1,4 @@
+import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import '../widgets/order-item.dart';
 import '../widgets/no-data.dart';
@@ -6,16 +7,13 @@ import 'package:async_loader/async_loader.dart';
 import '../../services/orders.dart';
 import '../../screens/main/order-details.dart';
 import 'package:intl/intl.dart';
-import '../../localizations.dart' show MyLocalizations, MyLocalizationsDelegate;
 
 class OrderHistory extends StatefulWidget {
   static String tag = "orderHistory";
   final Map<String, Map<String, String>> localizedValues;
   final String locale;
 
-  OrderHistory({
-    Key key,this.locale, this.localizedValues
-  }) : super(key: key);
+  OrderHistory({Key key, this.locale, this.localizedValues}) : super(key: key);
 
   @override
   _OrderHistoryState createState() => _OrderHistoryState();
@@ -57,7 +55,8 @@ class _OrderHistoryState extends State<OrderHistory> {
       key: _asyncLoaderState,
       initState: () async => await getOrder(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
-      renderError: ([error]) => NoData(message: MyLocalizations.of(context).errorMessage),
+      renderError: ([error]) =>
+          NoData(message: MyLocalizations.of(context).errorMessage),
       renderSuccess: ({data}) => data.length == 0
           ? NoData(message: MyLocalizations.of(context).noOrderHistory)
           : Container(
@@ -93,10 +92,17 @@ class _OrderHistoryState extends State<OrderHistory> {
                                                 ['imageUrl'] ??
                                             'https://images.unsplash.com/photo-1490717064594-3bd2c4081693?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60R',
                                         orderId: '${data[index]['orderID']}',
-                                        dateTime:
-                                            data[index]['createdAtTime']!=null?DateFormat('dd-MMM-yy hh:mm a').format(new DateTime.fromMillisecondsSinceEpoch(data[index]['createdAtTime'])): DateFormat('dd-MMM-yy hh:mm a')
-                                          .format(DateTime.parse(
-                                              data[index]['createdAt'])),
+                                        dateTime: data[index]
+                                                    ['createdAtTime'] !=
+                                                null
+                                            ? DateFormat('dd-MMM-yy hh:mm a')
+                                                .format(new DateTime
+                                                        .fromMillisecondsSinceEpoch(
+                                                    data[index]
+                                                        ['createdAtTime']))
+                                            : DateFormat('dd-MMM-yy hh:mm a')
+                                                .format(DateTime.parse(
+                                                    data[index]['createdAt'])),
                                         details: data[index]
                                                         ['shippingAddress'] !=
                                                     null &&
@@ -128,7 +134,14 @@ class _OrderHistoryState extends State<OrderHistory> {
     return Scaffold(
         backgroundColor: WHITE,
         appBar: AppBar(
-          title: Text(MyLocalizations.of(context).orderHistory, style: headerDefaultColor()),
+          leading: InkWell(
+            onTap: () {
+              Navigator.of(context);
+            },
+            child: Icon(Icons.arrow_back),
+          ),
+          title: Text(MyLocalizations.of(context).orderHistory,
+              style: headerDefaultColor()),
           iconTheme: new IconThemeData(color: WHITE),
         ),
         body: asyncLoader);
