@@ -1,5 +1,6 @@
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/order-item.dart';
 import '../widgets/no-data.dart';
 import '../../styles/styles.dart';
@@ -24,11 +25,18 @@ class _OrderHistoryState extends State<OrderHistory> {
       GlobalKey<AsyncLoaderState>();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   dynamic data;
+  String currency;
 
   @override
   void initState() {
     getOrder();
     super.initState();
+    getCurrency();
+  }
+
+  getCurrency() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    currency = prefs.getString('currency');
   }
 
   Future<List<dynamic>> getOrder() async {
@@ -107,13 +115,13 @@ class _OrderHistoryState extends State<OrderHistory> {
                                                         ['shippingAddress'] !=
                                                     null &&
                                                 data[index]['shippingAddress']
-                                                        ['locationName'] !=
+                                                        ['address'] !=
                                                     null
                                             ? data[index]['shippingAddress']
-                                                ['locationName']
+                                                ['address']
                                             : '',
                                         price:
-                                            ' \$${data[index]['payableAmount'].toStringAsFixed(2)}',
+                                            ' $currency${data[index]['payableAmount'].toStringAsFixed(2)}',
                                         paymentMethod:
                                             ' - ${data[index]['paymentOption']}',
                                         statusLabel:
@@ -136,14 +144,10 @@ class _OrderHistoryState extends State<OrderHistory> {
     return Scaffold(
         backgroundColor: WHITE,
         appBar: AppBar(
-          leading: InkWell(
-            onTap: () {
-              Navigator.of(context);
-            },
-            child: Icon(Icons.arrow_back),
+          title: Text(
+            MyLocalizations.of(context).orderHistory,
+            style: headerDefaultColor(),
           ),
-          title: Text(MyLocalizations.of(context).orderHistory,
-              style: headerDefaultColor()),
           iconTheme: new IconThemeData(color: WHITE),
         ),
         body: asyncLoader);

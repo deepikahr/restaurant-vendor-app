@@ -1,5 +1,6 @@
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/order-item.dart';
 import '../widgets/no-data.dart';
 import '../../styles/styles.dart';
@@ -29,10 +30,16 @@ class _NewOrdersState extends State<NewOrders> {
   bool isCancleLoading = false;
   int currentIndexAccept;
   int currentIndexCancle;
-
+  String currency;
   @override
   void initState() {
     super.initState();
+    getCurrency();
+  }
+
+  getCurrency() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    currency = prefs.getString('currency');
   }
 
   void showSnackbar(message) {
@@ -157,12 +164,12 @@ class _NewOrdersState extends State<NewOrders> {
                                                       ['shippingAddress'] !=
                                                   null &&
                                               orders[index]['shippingAddress']
-                                                      ['locationName'] !=
+                                                      ['address'] !=
                                                   null
-                                          ? '${orders[index]['shippingAddress']['locationName']}'
+                                          ? '${orders[index]['shippingAddress']['address']}'
                                           : '',
                                       price:
-                                          ' \$${orders[index]['payableAmount'].toStringAsFixed(2)}',
+                                          ' $currency${orders[index]['payableAmount'].toStringAsFixed(2)}',
                                       paymentMethod:
                                           ' - ${orders[index]['paymentOption']}',
                                       statusLabel: 'Status: ',

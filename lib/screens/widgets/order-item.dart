@@ -90,7 +90,9 @@ class OrderItem extends StatelessWidget {
                   child: Icon(Icons.map, color: Colors.grey),
                 ),
                 Text(
-                  details ?? '',
+                  details.length > 30
+                      ? details.substring(0, 30) + ".."
+                      : details ?? '',
                   style: textGray(),
                 )
               ],

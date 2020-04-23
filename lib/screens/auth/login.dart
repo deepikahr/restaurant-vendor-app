@@ -1,5 +1,6 @@
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../styles/styles.dart';
 import '../main/order-list.dart';
 import '../../services/auth.dart';
@@ -25,14 +26,20 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  login() {
+  login() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!isLoading && _formKey.currentState.validate() && mounted) {
       setState(() {
         isLoading = true;
       });
     }
     _formKey.currentState.save();
-    Map<String, dynamic> body = {'email': email, 'password': password};
+    Map<String, dynamic> body = {
+      'email': email,
+      'password': password,
+      "playerId": prefs.getString("playerId")
+    };
+    print(body);
     AuthService.login(body).then((onValue) {
       if (onValue['message'] != null) {
         showSnackbar(onValue['message']);
@@ -51,7 +58,6 @@ class _LoginState extends State<Login> {
         });
       }
       showSnackbar(onError.toString());
-      print(MyLocalizations.of(context).errorMessage + onError.toString());
     });
   }
 
