@@ -6,6 +6,7 @@ import 'package:Kitchenapp/services/localizations.dart'
     show MyLocalizationsDelegate;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './screens/main/order-list.dart';
 import './screens/auth/login.dart';
@@ -72,7 +73,64 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    loginInCheck();
+    getGlobalSettingsData();
+  }
+
+  Future<void> initOneSignal() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    OneSignal.shared
+        .setNotificationReceivedHandler((OSNotification notification) {
+      print(notification);
+    });
+    OneSignal.shared
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {});
+    OneSignal.shared.init(ONE_SIGNAL_APP_ID, iOSSettings: {
+      OSiOSSettings.autoPrompt: false,
+      OSiOSSettings.inAppLaunchUrl: true
+    });
+    OneSignal.shared.setInFocusDisplayType(
+      OSNotificationDisplayType.notification,
+    );
+
+    OneSignal.shared
+        .promptUserForPushNotificationPermission(fallbackToSettings: true);
+    OneSignal.shared
+        .setInFocusDisplayType(OSNotificationDisplayType.notification);
+    var status = await OneSignal.shared.getPermissionSubscriptionState();
+    String playerId = status.subscriptionStatus.userId;
+    if (playerId == null) {
+      print(playerId);
+      initOneSignal();
+    } else {
+      if (mounted) {
+        setState(() {
+          loginCheck = false;
+        });
+      }
+      prefs.setString("playerId", playerId);
+    }
+  }
+
+  getGlobalSettingsData() async {
+    if (mounted) {
+      setState(() {
+        loginCheck = true;
+      });
+    }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await AuthService.getAdminSettings().then((onValue) {
+      print(onValue);
+      var adminSettings = onValue;
+      initOneSignal();
+      loginInCheck();
+      if (adminSettings['currency'] == null) {
+        prefs.setString('currency', '\$');
+      } else {
+        prefs.setString(
+            'currency', '${adminSettings['currency']['currencySymbol']}');
+      }
+    });
   }
 
   loginInCheck() {
@@ -109,15 +167,35 @@ class _MyAppState extends State<MyApp> {
         primaryColor: PRIMARY,
         brightness: Brightness.light,
       ),
-      home: loginIn
-          ? OrderList(
-              locale: widget.locale,
-              localizedValues: widget.localizedValues,
+      home: loginCheck
+          ? CheckTokenScreen(
+              widget.locale,
+              widget.localizedValues,
             )
-          : Login(
-              locale: widget.locale,
-              localizedValues: widget.localizedValues,
-            ),
+          : loginIn
+              ? OrderList(
+                  locale: widget.locale,
+                  localizedValues: widget.localizedValues,
+                )
+              : Login(
+                  locale: widget.locale,
+                  localizedValues: widget.localizedValues,
+                ),
+    );
+  }
+}
+
+class CheckTokenScreen extends StatelessWidget {
+  final Map<String, Map<String, String>> localizedValues;
+  final String locale;
+  CheckTokenScreen(this.locale, this.localizedValues);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }

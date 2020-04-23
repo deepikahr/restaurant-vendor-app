@@ -1,5 +1,6 @@
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/no-data.dart';
 import '../widgets/avatar.dart';
 import '../../styles/styles.dart';
@@ -47,10 +48,17 @@ class _OrderDetailsState extends State<OrderDetails> {
   bool isAcceptLoading = false;
   bool isCancleLoading = false;
 
+  String currency;
   @override
   void initState() {
     orderDetail();
+    getCurrency();
     super.initState();
+  }
+
+  getCurrency() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    currency = prefs.getString('currency');
   }
 
   Future<Map<String, dynamic>> orderDetail() async {
@@ -252,18 +260,18 @@ class _OrderDetailsState extends State<OrderDetails> {
                 _detailTopSection(),
                 // detailMiddle(),
                 _detailBottom(MyLocalizations.of(context).subTotal,
-                    '\$' + subTotal ?? ''),
+                    '$currency' + subTotal ?? ''),
                 _detailBottom(MyLocalizations.of(context).tax,
-                    taxInfo['taxRate'].toStringAsFixed(2) + '%' ?? ''),
+                    taxInfo['taxRate'].toString() + '%' ?? ''),
                 _detailBottom(
                     MyLocalizations.of(context).deliveryCharges,
                     (deliveryCharge == MyLocalizations.of(context).free
                                 ? ''
-                                : '\$') +
+                                : '$currency') +
                             deliveryCharge ??
                         ''),
                 _detailBottom(MyLocalizations.of(context).grandTotal,
-                    '\$' + grandTotal ?? ''),
+                    '$currency' + grandTotal ?? ''),
               ],
             ),
           ),
@@ -313,7 +321,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     products[i]['Quantity'].toString(),
                                 style: labelLight()),
                             Text(
-                              "\$${products[i]['price'] * products[i]['Quantity']}",
+                              "$currency${products[i]['price'] * products[i]['Quantity']}",
                               style: TextStyle(fontSize: 10),
                             ),
                           ],
@@ -336,7 +344,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                             '',
                                         style: labelLight()),
                                     Text(
-                                      '\$${products[i]['extraIngredients'][j]['price'].toString()}' ??
+                                      '$currency${products[i]['extraIngredients'][j]['price'].toString()}' ??
                                           '',
                                       style: TextStyle(fontSize: 10),
                                     )
@@ -346,7 +354,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             Container(),
-                            Text('\$${products[i]['totalPrice']}',
+                            Text('$currency${products[i]['totalPrice']}',
                                 style: textPrimary()),
                           ],
                         )

@@ -27,10 +27,7 @@ class _SettingsState extends State<Settings> {
   }
 
   void checkAuth() {
-    AuthService.getUserInfo().then((onValue) {
-      //  data =onValue;
-      // print(data);
-    });
+    AuthService.getUserInfo().then((onValue) {});
   }
 
   @override

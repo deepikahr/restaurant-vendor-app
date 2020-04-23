@@ -1,5 +1,6 @@
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/order-item.dart';
 import '../widgets/no-data.dart';
 import '../../styles/styles.dart';
@@ -28,10 +29,17 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
   List orders;
   bool isAcceptLoading = false;
   int selectedIndex;
+  String currency;
+
+  getCurrency() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    currency = prefs.getString('currency');
+  }
 
   @override
   void initState() {
     getOrder();
+    getCurrency();
     super.initState();
   }
 
@@ -130,13 +138,13 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                                                         ['shippingAddress'] !=
                                                     null &&
                                                 orders[index]['shippingAddress']
-                                                        ['locationName'] !=
+                                                        ['address'] !=
                                                     null
                                             ? orders[index]['shippingAddress']
-                                                ['locationName']
+                                                ['address']
                                             : '',
                                         price:
-                                            ' \$${orders[index]['payableAmount'].toStringAsFixed(2)}',
+                                            ' $currency${orders[index]['payableAmount'].toStringAsFixed(2)}',
                                         paymentMethod:
                                             ' - ${orders[index]['paymentOption']}',
                                         statusLabel:
@@ -166,7 +174,7 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
   }
 
   Widget _bottomSection(int index, bool assigned, String deliveryBoyName) {
-    if (assigned) {
+    if (!assigned) {
       return InkWell(
         onTap: () {
           selectedIndex = index;
@@ -262,7 +270,7 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                 child: ListTile(
                   title: Column(
                     children: [
-                      Text(list[index][MyLocalizations.of(context).name]),
+                      Text(list[index]["name"]),
                       Divider(),
                     ],
                   ),
