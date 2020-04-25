@@ -1,7 +1,5 @@
-import 'package:Kitchenapp/services/auth.dart';
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import './new-orders.dart';
 import './orders-in-progress.dart';
 import '../../styles/styles.dart';
