@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/home/vipul/Downloads/flutter"
-export "FLUTTER_APPLICATION_PATH=/home/vipul/Documents/company project/sass/flutter-vendorapp"
+export "FLUTTER_ROOT=/Users/pietchsolution/Downloads/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/pietchsolution/Downloads/projects/demos/flutter-vendorapp"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "SYMROOT=${SOURCE_ROOT}/../build/ios"
