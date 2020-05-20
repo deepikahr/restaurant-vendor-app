@@ -260,5 +260,8 @@
     "historyorderstatus": "历史订单状态",
     "unwantedentry": "不需要的条目",
     "tax": "税",
-    "free": "自由"
+    "free": "自由",
+    "reports": "报告书",
+    "daily": "日常",
+    "monthly": "每月一次"
 }

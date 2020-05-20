@@ -1,3 +1,4 @@
+import 'package:Kitchenapp/screens/main/reports.dart';
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import '../../styles/styles.dart';
@@ -91,6 +92,13 @@ class _MenuState extends State<Menu> {
                 MyLocalizations.of(context).orderHistory,
                 Icons.arrow_forward_ios,
                 OrderHistory(
+                  locale: widget.locale,
+                  localizedValues: widget.localizedValues,
+                )),
+            _tile(
+                MyLocalizations.of(context).reports,
+                Icons.arrow_forward_ios,
+                Reports(
                   locale: widget.locale,
                   localizedValues: widget.localizedValues,
                 )),
