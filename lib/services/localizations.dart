@@ -160,6 +160,18 @@ class MyLocalizations {
     return localizedValues[locale.languageCode]['orderHistory'];
   }
 
+  String get reports {
+    return localizedValues[locale.languageCode]['reports'];
+  }
+
+  String get daily {
+    return localizedValues[locale.languageCode]['daily'];
+  }
+
+  String get monthly {
+    return localizedValues[locale.languageCode]['monthly'];
+  }
+
   String get addProducts {
     return localizedValues[locale.languageCode]['addProducts'];
   }

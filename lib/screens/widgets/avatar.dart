@@ -7,9 +7,7 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: _buildImg(imgurl)
-    );
+    return Center(child: _buildImg(imgurl));
   }
 
   Widget _buildImg(imgurl) {
@@ -20,14 +18,9 @@ class Avatar extends StatelessWidget {
             shape: BoxShape.circle,
             image: new DecorationImage(
                 fit: BoxFit.fill,
-                image: new NetworkImage(
-                    imgurl ?? 
-                    "https://images.unsplash.com/photo-1490717064594-3bd2c4081693?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60")
-            )
-        )
-    );
+                image: new NetworkImage(imgurl ??
+                    "https://images.unsplash.com/photo-1490717064594-3bd2c4081693?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"))));
   }
-
 
   //   Widget _buildText(message) {
   //   return Text(

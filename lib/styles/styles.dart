@@ -137,3 +137,19 @@ TextStyle boldwhite() {
     color: Colors.white,
   );
 }
+
+TextStyle orderDetailsRejectbtn() {
+  return TextStyle(
+    color: Color(0xFF4A4F59),
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+  );
+}
+
+TextStyle orderDetailsBoldPrice() {
+  return TextStyle(
+    color: PRIMARY,
+    fontSize: 17,
+    fontWeight: FontWeight.w700,
+  );
+}

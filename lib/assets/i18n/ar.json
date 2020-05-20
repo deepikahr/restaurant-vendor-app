@@ -260,5 +260,8 @@
     "historyorderstatus": "حالة طلب السجل",
     "unwantedentry": "دخول غير مرغوب فيه",
     "tax": "ضريبة",
-    "free": "مجانا"
+    "free": "مجانا",
+    "reports": "التقارير",
+    "daily": "اليومي",
+    "monthly": "شهريا"
 }

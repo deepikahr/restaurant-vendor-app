@@ -260,5 +260,8 @@
   "historyorderstatus": "Statut de la commande d'historique",
   "unwantedentry": "Entrée indésirable",
   "tax": "impôt",
-  "free": "gratuit"
+  "free": "gratuit",
+  "reports": "Rapports",
+  "daily": "du quotidien",
+  "monthly": "Mensuel"
 }

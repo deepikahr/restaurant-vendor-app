@@ -260,5 +260,8 @@
   "historyorderstatus": "History order status",
   "unwantedentry": "Unwanted entry",
   "tax": "Tax",
-  "free": "Free"
+  "free": "Free",
+  "reports": "Reports",
+  "daily": "Daily",
+  "monthly": "Monthly"
 }
