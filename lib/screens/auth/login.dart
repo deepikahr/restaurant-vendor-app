@@ -39,7 +39,6 @@ class _LoginState extends State<Login> {
       'password': password,
       "playerId": prefs.getString("playerId")
     };
-    print(body);
     AuthService.login(body).then((onValue) {
       if (onValue['message'] != null) {
         showSnackbar(onValue['message']);

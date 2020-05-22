@@ -36,6 +36,19 @@ class OrderServices {
     }
   }
 
+  static Future<Map<String, dynamic>> getReportDetails() async {
+    String token, id;
+    await Common.getToken().then((onValue) {
+      token = 'bearer ' + onValue;
+    });
+    await Common.getId().then((onValue) {
+      id = onValue;
+    });
+    final response = await client.get(API_ENDPOINT + 'orders/location/info/5ea2aed3b1fa0016602b9635',
+        headers: {'Content-Type': 'application/json', 'Authorization': token});
+    return json.decode(response.body);
+  }
+
   static Future<Map<String, dynamic>> getOrderDetail(String orderId) async {
     String token;
     await Common.getToken().then((onValue) {
