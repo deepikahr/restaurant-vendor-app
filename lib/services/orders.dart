@@ -24,6 +24,7 @@ class OrderServices {
             'Content-Type': 'application/json',
             'Authorization': token
           });
+      print('ord ${response.statusCode}');
       return json.decode(response.body);
     }
     if (role == 'Owner') {
@@ -44,8 +45,12 @@ class OrderServices {
     await Common.getId().then((onValue) {
       id = onValue;
     });
-    final response = await client.get(API_ENDPOINT + 'orders/location/info/5ea2aed3b1fa0016602b9635',
+    print('toke $token');
+    print('id $id');
+//    5ea2aed3b1fa0016602b9635
+    final response = await client.get(API_ENDPOINT + 'orders/loc-info/$id',
         headers: {'Content-Type': 'application/json', 'Authorization': token});
+    print('rep ${response.statusCode}');
     return json.decode(response.body);
   }
 
@@ -61,11 +66,25 @@ class OrderServices {
 
   static Future<Map<String, dynamic>> updateOrder(
       String orderID, Map<String, dynamic> body) async {
+    print('body $body $orderID');
     String token;
     await Common.getToken().then((onValue) {
       token = 'bearer ' + onValue;
     });
     final response = await client.put(API_ENDPOINT + 'orders/$orderID',
+        headers: {'Content-Type': 'application/json', 'Authorization': token},
+        body: json.encode(body));
+    return json.decode(response.body);
+  }
+
+  static Future<Map<String, dynamic>> assignOrder(
+      String orderID, Map<String, dynamic> body) async {
+    print('body $body');
+    String token;
+    await Common.getToken().then((onValue) {
+      token = 'bearer ' + onValue;
+    });
+    final response = await client.put(API_ENDPOINT + 'orders/assign/$orderID',
         headers: {'Content-Type': 'application/json', 'Authorization': token},
         body: json.encode(body));
     return json.decode(response.body);

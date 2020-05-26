@@ -40,6 +40,7 @@ class _MonthlyState extends State<Monthly> {
 
   getReport() async {
     await OrderServices.getReportDetails().then((onValue) {
+      print('on $onValue');
       if (mounted) {
         setState(() {
           monthlyReport = onValue['response_data']['data']['Monthly'];
@@ -80,12 +81,16 @@ class _MonthlyState extends State<Monthly> {
                                           monthlyReport[index]['_id'] == null
                                               ? Text('')
                                               : Text(
-                                                  DateFormat(
-                                                          'dd-MMM-yy hh:mm a')
-                                                      .format(new DateTime
-                                                              .fromMillisecondsSinceEpoch(
-                                                          monthlyReport[index]
-                                                              ['_id'])),
+                                            '${monthlyReport[index]
+                                            ['_id']['date']}/${monthlyReport[index]
+                                            ['_id']['month']}/${monthlyReport[index]
+                                            ['_id']['year']}',
+//                                                  DateFormat(
+//                                                          'dd-MMM-yy hh:mm a')
+//                                                      .format(new DateTime
+//                                                              .fromMillisecondsSinceEpoch(
+//                                                          monthlyReport[index]
+//                                                              ['_id'])),
                                                   style: blacktext(),
                                                 ),
                                         ],

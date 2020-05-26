@@ -40,6 +40,7 @@ class _DailyState extends State<Daily> {
 
   getReport() async {
     await OrderServices.getReportDetails().then((onValue) {
+      print('on $onValue');
       if (mounted) {
         setState(() {
           dailyReport = onValue['response_data']['data']['Daily'];
@@ -80,12 +81,16 @@ class _DailyState extends State<Daily> {
                                     dailyReport[index]['_id'] == null
                                         ? Text('')
                                         : Text(
-                                      DateFormat(
-                                          'dd-MMM-yy hh:mm a')
-                                          .format(new DateTime
-                                          .fromMillisecondsSinceEpoch(
-                                          dailyReport[index]
-                                          ['_id'])),
+                                     '${dailyReport[index]
+                                    ['_id']['date']}/${dailyReport[index]
+                                     ['_id']['month']}/${dailyReport[index]
+                                     ['_id']['year']}',
+//                                      DateFormat(
+//                                          'dd-MMM-yy hh:mm a')
+//                                          .format(new DateTime
+//                                          .fromMillisecondsSinceEpoch(
+//                                          dailyReport[index]
+//                                          ['_id'])),
                                       style: blacktext(),
                                     ),
                                   ],
