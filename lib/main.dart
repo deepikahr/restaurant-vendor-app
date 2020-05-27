@@ -120,7 +120,6 @@ class _MyAppState extends State<MyApp> {
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await AuthService.getAdminSettings().then((onValue) {
-      print(onValue);
       var adminSettings = onValue;
       initOneSignal();
       loginInCheck();
@@ -166,6 +165,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: PRIMARY,
         brightness: Brightness.light,
+        accentColor: PRIMARY,
       ),
       home: loginCheck
           ? CheckTokenScreen(

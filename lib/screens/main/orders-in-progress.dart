@@ -285,6 +285,8 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
 
   bool isLoading = false;
   Future<void> _showAssignConfirmAlert(Map staff) {
+
+    print('staf $staff');
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -313,26 +315,46 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                       isLoading = true;
                     });
                   }
-                  orders[selectedIndex]['assigned'] = true;
-                  orders[selectedIndex]['assignedDate'] =
-                      DateTime.now().millisecondsSinceEpoch;
-                  orders[selectedIndex]['deliveryBy'] = staff['_id'];
-                  orders[selectedIndex]['deliveryByName'] = staff['name'];
-                  orders[selectedIndex]['status'] = "On the Way";
-                  OrderServices.updateOrder(
-                          orders[selectedIndex]['_id'], orders[selectedIndex])
+//                  orders[selectedIndex]['assigned'] = true;
+//                  orders[selectedIndex]['assignedDate'] =
+//                      DateTime.now().millisecondsSinceEpoch;
+//                  orders[selectedIndex]['deliveryBy'] = staff['_id'];
+//                  orders[selectedIndex]['deliveryByName'] = staff['name'];
+//                  orders[selectedIndex]['status'] = "On the Way";
+//                  OrderServices.updateOrder(
+//                          orders[selectedIndex]['_id'], orders[selectedIndex])
+//                      .then((onValue) {
+////                    Navigator.of(context).pop();
+////                    Navigator.of(context).pop();
+//                    orders.removeAt(selectedIndex);
+////                    showSnackbar(MyLocalizations.of(context).assignedSuccessfully);
+//                    if (mounted) {
+//                      setState(() {
+//                        isLoading = false;
+//                      });
+//                    }
+//                  });
+
+                  Map<String, dynamic> assignBody = {
+                    'assignedDate': DateTime.now().millisecondsSinceEpoch,
+                    'assigned': true,
+                    'deliveryBy': staff['_id'],
+                    'deliveryByName': staff['name']
+                  };
+print('ordr id ${orders[selectedIndex]['_id']}');
+                  OrderServices.assignOrder(
+                      orders[selectedIndex]['_id'], assignBody)
                       .then((onValue) {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
-                    orders.removeAt(selectedIndex);
-                    showSnackbar(
-                        MyLocalizations.of(context).assignedSuccessfully);
+                    showSnackbar(MyLocalizations.of(context).assignedSuccessfully);
                     if (mounted) {
                       setState(() {
                         isLoading = false;
                       });
                     }
                   });
+
                 }
               },
             ),

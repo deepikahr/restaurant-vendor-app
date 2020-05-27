@@ -31,6 +31,8 @@ class _NewOrdersState extends State<NewOrders> {
   int currentIndexAccept;
   int currentIndexCancle;
   String currency;
+
+
   @override
   void initState() {
     super.initState();
