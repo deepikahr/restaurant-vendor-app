@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,17 +28,25 @@ class _NewOrdersState extends State<NewOrders> {
       GlobalKey<AsyncLoaderState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List orders;
-  bool isAcceptLoading = false;
-  bool isCancleLoading = false;
-  int currentIndexAccept;
-  int currentIndexCancle;
+  bool isAcceptLoading = false,
+   isCancleLoading = false;
+  int currentIndexAccept,
+   currentIndexCancle;
   String currency;
-
-
+Timer ordersTimer;
   @override
   void initState() {
     super.initState();
     getCurrency();
+    ordersTimer = new Timer.periodic(Duration(seconds: 5), (_) async {
+      getOrder();
+    });
+  }
+
+  @override
+  void dispose() {
+    if (ordersTimer != null) ordersTimer.cancel();
+    super.dispose();
   }
 
   getCurrency() async {
