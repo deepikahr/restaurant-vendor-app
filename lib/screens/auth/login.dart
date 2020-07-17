@@ -73,7 +73,9 @@ class _LoginState extends State<Login> {
           Common.setId(onValue['_id']);
         }
         Common.setRole(role);
-        showSnackbar(MyLocalizations.of(context).loginSuccessfully);
+        showSnackbar(MyLocalizations.of(context)
+            .getLocalizations("NEAR_BY")
+        );
         Future.delayed(Duration(milliseconds: 1500), () {
           Navigator.pushAndRemoveUntil(
               context,
@@ -85,7 +87,7 @@ class _LoginState extends State<Login> {
               (Route<dynamic> route) => false);
         });
       } else {
-        showSnackbar(MyLocalizations.of(context).youAreNotAuthorizedToLogin);
+        showSnackbar(MyLocalizations.of(context).getLocalizations("YOU_ARE_NOT_AUTHORIZED_TO_LOGIN"));
       }
       if (mounted) {
         setState(() {
@@ -156,7 +158,7 @@ class _LoginState extends State<Login> {
         validator: (String value) {
           if (value.isEmpty ||
               !RegExp(Validators.emailPattern).hasMatch(value)) {
-            return MyLocalizations.of(context).pleaseEnterAValidEmail;
+            return MyLocalizations.of(context).getLocalizations("PLEASE_ENTER_VALID_EMAIL");
           } else
             return null;
         },
@@ -164,10 +166,10 @@ class _LoginState extends State<Login> {
           email = value;
         },
         autofocus: false,
-        initialValue: 'manager@test.com',
+        initialValue: 'manager1@ionicfirebaseapp.com',
         obscureText: false,
         decoration: InputDecoration(
-          hintText: MyLocalizations.of(context).emailId,
+          hintText: MyLocalizations.of(context).getLocalizations("EMAIL_ID"),
           contentPadding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: PRIMARY, width: 2.0),
@@ -186,7 +188,7 @@ class _LoginState extends State<Login> {
       keyboardType: TextInputType.text,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
-          return MyLocalizations.of(context).passwordShouldBeAtleast6CharLong;
+          return MyLocalizations.of(context).getLocalizations("PLEASE_ENTER_VALID_PASSWORD");
         } else
           return null;
       },
@@ -194,7 +196,7 @@ class _LoginState extends State<Login> {
         password = value;
       },
       decoration: new InputDecoration(
-        hintText: MyLocalizations.of(context).password,
+        hintText: MyLocalizations.of(context).getLocalizations("PASSWORD"),
         contentPadding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: PRIMARY, width: 2.0),
@@ -215,9 +217,9 @@ class _LoginState extends State<Login> {
         padding: EdgeInsets.all(12),
         fillColor: PRIMARY,
         child: isLoading
-            ? Text(MyLocalizations.of(context).pleaseWait,
+            ? Text(MyLocalizations.of(context).getLocalizations("PLEASE_WAIT"),
                 style: TextStyle(color: Colors.white))
-            : Text(MyLocalizations.of(context).login,
+            : Text(MyLocalizations.of(context).getLocalizations("LOGIN"),
                 style: TextStyle(color: Colors.white)),
         onPressed: login,
       ),
