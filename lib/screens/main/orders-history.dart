@@ -64,9 +64,9 @@ class _OrderHistoryState extends State<OrderHistory> {
       initState: () async => await getOrder(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
       renderError: ([error]) =>
-          NoData(message: MyLocalizations.of(context).errorMessage),
+          NoData(message: MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
       renderSuccess: ({data}) => data.length == 0
-          ? NoData(message: MyLocalizations.of(context).noOrderHistory)
+          ? NoData(message: MyLocalizations.of(context).getLocalizations("NO_ORDER_HISTORY"))
           : Container(
               child: ListView.builder(
                   itemCount: data == null ? 0 : data.length,
@@ -125,7 +125,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                                         paymentMethod:
                                             ' - ${data[index]['paymentOption']}',
                                         statusLabel:
-                                            MyLocalizations.of(context).status +
+                                            MyLocalizations.of(context).getLocalizations("STATUS") +
                                                 ': ',
                                         status: '${data[index]['status']}',
                                       ),
@@ -145,7 +145,7 @@ class _OrderHistoryState extends State<OrderHistory> {
         backgroundColor: WHITE,
         appBar: AppBar(
           title: Text(
-            MyLocalizations.of(context).orderHistory,
+            MyLocalizations.of(context).getLocalizations("ORDER_HISTORY"),
             style: headerDefaultColor(),
           ),
           iconTheme: new IconThemeData(color: WHITE),

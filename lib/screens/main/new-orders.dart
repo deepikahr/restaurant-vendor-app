@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,8 +9,6 @@ import 'package:async_loader/async_loader.dart';
 import '../../services/orders.dart';
 import '../../screens/main/order-details.dart';
 import 'package:intl/intl.dart';
-
-// CouponCard
 
 class NewOrders extends StatefulWidget {
   static String tag = "newOrder";
@@ -92,7 +89,7 @@ Timer ordersTimer;
           setState(() {
             isAcceptLoading = false;
             orders.removeAt(index);
-            showSnackbar(MyLocalizations.of(context).orderAccepted);
+            showSnackbar(MyLocalizations.of(context).getLocalizations("ORDER_ACCEPTED"));
           });
         }
       }
@@ -112,7 +109,7 @@ Timer ordersTimer;
         setState(() {
           isCancleLoading = false;
           orders.removeAt(index);
-          showSnackbar(MyLocalizations.of(context).orderCancelled);
+          showSnackbar(MyLocalizations.of(context).getLocalizations("ORDER_CANCELLED"));
         });
       }
     });
@@ -125,9 +122,9 @@ Timer ordersTimer;
       initState: () async => await getOrder(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
       renderError: ([error]) =>
-          NoData(message: MyLocalizations.of(context).errorMessage),
+          NoData(message: MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
       renderSuccess: ({data}) => orders.length == 0
-          ? NoData(message: MyLocalizations.of(context).noOrderHistory)
+          ? NoData(message: MyLocalizations.of(context).getLocalizations("NO_ORDER_HISTORY"))
           : Container(
               child: ListView.builder(
                   itemCount: orders == null ? 0 : orders.length,
@@ -139,7 +136,7 @@ Timer ordersTimer;
                           new MaterialPageRoute(
                             builder: (BuildContext context) => new OrderDetails(
                               orderData: orders[index],
-                              option: MyLocalizations.of(context).accept,
+                              option: MyLocalizations.of(context).getLocalizations("ACCEPT"),
                             ),
                           ),
                         );
@@ -228,8 +225,8 @@ Timer ordersTimer;
                 }
               },
               child: (isAcceptLoading && currentIndexAccept == index)
-                  ? Text(MyLocalizations.of(context).pleaseWait)
-                  : Text(MyLocalizations.of(context).accept),
+                  ? Text(MyLocalizations.of(context).getLocalizations("PLEASE_WAIT"))
+                  : Text(MyLocalizations.of(context).getLocalizations("ACCEPT")),
               textColor: PRIMARY,
               padding: EdgeInsets.all(0),
             ),
@@ -244,8 +241,8 @@ Timer ordersTimer;
                 }
               },
               child: (isCancleLoading && currentIndexCancle == index)
-                  ? Text(MyLocalizations.of(context).pleaseWait)
-                  : Text(MyLocalizations.of(context).reject),
+                  ? Text(MyLocalizations.of(context).getLocalizations("PLEASE_WAIT"))
+                  : Text(MyLocalizations.of(context).getLocalizations("REJECT")),
               textColor: DARK_TEXT_A,
               padding: EdgeInsets.all(0),
             ),
