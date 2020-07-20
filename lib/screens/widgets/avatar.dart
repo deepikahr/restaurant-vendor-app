@@ -22,14 +22,14 @@ class Avatar extends StatelessWidget {
                     "https://images.unsplash.com/photo-1490717064594-3bd2c4081693?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"))));
   }
 
-  //   Widget _buildText(message) {
-  //   return Text(
-  //     message ?? 'Resources not available!',
-  //     style: TextStyle(
-  //       fontSize: 18.0,
-  //       color: Colors.grey[500],
-  //     ),
-  //   );
-  // }
+//   Widget _buildText(message) {
+//   return Text(
+//     message ?? 'Resources not available!',
+//     style: TextStyle(
+//       fontSize: 18.0,
+//       color: Colors.grey[500],
+//     ),
+//   );
+// }
 
 }

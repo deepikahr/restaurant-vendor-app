@@ -125,7 +125,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       initState: () async => await orderDetail(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
       renderError: ([error]) =>
-          NoData(message: MyLocalizations.of(context).errorMessage),
+          NoData(message: MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
       renderSuccess: ({data}) => Container(
         width: screenWidth(context),
         height: screenHeight(context),
@@ -148,7 +148,7 @@ class _OrderDetailsState extends State<OrderDetails> {
     return Scaffold(
         backgroundColor: WHITE,
         appBar: AppBar(
-          title: Text(MyLocalizations.of(context).orderDetails,
+          title: Text(MyLocalizations.of(context).getLocalizations("ORDER_DETAILS"),
               style: headerDefaultColor()),
           iconTheme: new IconThemeData(color: WHITE),
         ),
@@ -162,7 +162,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            MyLocalizations.of(context).customerAndPaymentInfo,
+            MyLocalizations.of(context).getLocalizations("CUSTOMER_AND_PAYMENT_INFO"),
             style: titleStyle(),
           ),
           Card(
@@ -178,27 +178,27 @@ class _OrderDetailsState extends State<OrderDetails> {
                 children: <Widget>[
                   _customerSection(
                       Icons.card_membership,
-                      MyLocalizations.of(context).orderID,
+                      MyLocalizations.of(context).getLocalizations("ORDER_ID"),
                       orderId != null ? orderId : ''),
                   _customerSection(
                       Icons.account_circle,
-                      MyLocalizations.of(context).name,
+                      MyLocalizations.of(context).getLocalizations("NAME"),
                       customerName != null ? customerName : ''),
                   _customerSection(
                       Icons.location_on,
-                      MyLocalizations.of(context).location,
+                      MyLocalizations.of(context).getLocalizations("LOCATION"),
                       shippingAddress != null ? shippingAddress : ''),
                   _customerSection(
                       Icons.contact_phone,
-                      MyLocalizations.of(context).contactNo,
+                      MyLocalizations.of(context).getLocalizations("CONTACT_NUMBER"),
                       customerContact != null ? customerContact : ''),
                   _customerSection(
                       Icons.email,
-                      MyLocalizations.of(context).emailId,
+                      MyLocalizations.of(context).getLocalizations("EMAIL_ID"),
                       customerEmail != null ? customerEmail : ''),
                   _customerSection(
                       Icons.payment,
-                      MyLocalizations.of(context).paymentMethod,
+                      MyLocalizations.of(context).getLocalizations("PAYMENT_METHOD"),
                       paymentMethod != null ? paymentMethod : ''),
                 ],
               ),
@@ -243,7 +243,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          MyLocalizations.of(context).orderDetails,
+          MyLocalizations.of(context).getLocalizations("ORDER_DETAILS"),
           style: titleStyle(),
         ),
         Card(
@@ -259,18 +259,18 @@ class _OrderDetailsState extends State<OrderDetails> {
               children: <Widget>[
                 _detailTopSection(),
                 // detailMiddle(),
-                _detailBottom(MyLocalizations.of(context).subTotal,
+                _detailBottom(MyLocalizations.of(context).getLocalizations("SUBTOTAL"),
                     '$currency' + subTotal ?? ''),
-                _detailBottom(MyLocalizations.of(context).tax,
+                _detailBottom(MyLocalizations.of(context).getLocalizations("TAX"),
                     taxInfo['taxRate'].toString() + '%' ?? ''),
                 _detailBottom(
-                    MyLocalizations.of(context).deliveryCharges,
-                    (deliveryCharge == MyLocalizations.of(context).free
+                    MyLocalizations.of(context).getLocalizations("DELIVERY_CHARGES"),
+                    (deliveryCharge == MyLocalizations.of(context).getLocalizations("FREE")
                                 ? ''
                                 : '$currency') +
                             deliveryCharge ??
                         ''),
-                _detailBottom(MyLocalizations.of(context).grandTotal,
+                _detailBottom(MyLocalizations.of(context).getLocalizations("GRAND_TOTAL"),
                     '$currency' + grandTotal ?? ''),
               ],
             ),
@@ -387,8 +387,8 @@ class _OrderDetailsState extends State<OrderDetails> {
               child: FlatButton(
                 onPressed: accceptOrder,
                 child: isAcceptLoading
-                    ? Text(MyLocalizations.of(context).pleaseWait)
-                    : Text(MyLocalizations.of(context).accept),
+                    ? Text(MyLocalizations.of(context).getLocalizations("PLEASE_WAIT"))
+                    : Text(MyLocalizations.of(context).getLocalizations("ACCEPT")),
                 textColor: PRIMARY,
                 padding: EdgeInsets.all(0),
               ),
@@ -398,8 +398,8 @@ class _OrderDetailsState extends State<OrderDetails> {
               child: FlatButton(
                 onPressed: cancelOrder,
                 child: isCancleLoading
-                    ? Text(MyLocalizations.of(context).pleaseWait)
-                    : Text(MyLocalizations.of(context).reject),
+                    ? Text(MyLocalizations.of(context).getLocalizations("PLEASE_WAIT"))
+                    : Text(MyLocalizations.of(context).getLocalizations("REJECT")),
                 textColor: PRIMARY,
                 padding: EdgeInsets.all(0),
               ),
@@ -408,11 +408,11 @@ class _OrderDetailsState extends State<OrderDetails> {
         ),
       );
     } else if (widget.option == 'assign') {
-      return Text(MyLocalizations.of(context).assignhere);
+      return Text(MyLocalizations.of(context).getLocalizations("ASSIGN_HERE"));
     } else if (widget.option == 'history') {
-      return Text(MyLocalizations.of(context).historyorderstatus);
+      return Text(MyLocalizations.of(context).getLocalizations("ORDER_HISTORY_STATUS"));
     } else {
-      return Text(MyLocalizations.of(context).unwantedentry);
+      return Text(MyLocalizations.of(context).getLocalizations("UNWANTED_ENTRY"));
     }
   }
 
