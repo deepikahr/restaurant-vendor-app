@@ -1,23 +1,21 @@
-//App name
-const APP_NAME = 'Restaurant Saas';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-//one signal
-const ONE_SIGNAL_APP_ID = '05ac6c51-8416-41ab-8779-b48503bbe125';
+class Constants {
+  // app name
+  static const APP_NAME = "Kitchen App";
 
-// const ONE_SIGNAL_APP_ID = 'abad9271-449e-40fd-80f9-0d36e5ec7e74';
+  // delopy url production
+  static String apiUrl = DotEnv().env['API_URL'];
 
-// api deploy testing
-const BASE_URL = 'http://162.243.171.81:8000/';
+  // local socketUrl
+  static String apiEndPoint = apiUrl + 'api/';
 
-// api deploy production
-//const BASE_URL = 'http://162.243.171.81:7000/';
+  // ONE_SIGNAL_KEY
+  static String oneSignalKey = DotEnv().env['ONE_SIGNAL_KEY'];
 
-//api urls/
-// const BASE_URL = 'https://8d89ff11.ngrok.io/';
+  // googleapikey
+  static String googleMapApiKey = DotEnv().env['GOOGLE_MAP_API_KEY'];
 
-// const BASE_URL = 'https://api-otp-version.herokuapp.com/';
-
-const API_ENDPOINT = BASE_URL + 'api/';
-
-// languages list
-const List<String> LANGUAGES = ['en', 'fr', 'ar', 'zh'];
+  // language list
+  static List<String> languagesList = ['en', 'fr', 'ar', 'zh'];
+}

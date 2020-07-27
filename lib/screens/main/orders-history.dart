@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 
 class OrderHistory extends StatefulWidget {
   static String tag = "orderHistory";
-  final Map<String, Map<String, String>> localizedValues;
+  final Map localizedValues;
   final String locale;
 
   OrderHistory({Key key, this.locale, this.localizedValues}) : super(key: key);
@@ -63,10 +63,13 @@ class _OrderHistoryState extends State<OrderHistory> {
       key: _asyncLoaderState,
       initState: () async => await getOrder(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
-      renderError: ([error]) =>
-          NoData(message: MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
+      renderError: ([error]) => NoData(
+          message:
+              MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
       renderSuccess: ({data}) => data.length == 0
-          ? NoData(message: MyLocalizations.of(context).getLocalizations("NO_ORDER_HISTORY"))
+          ? NoData(
+              message: MyLocalizations.of(context)
+                  .getLocalizations("NO_ORDER_HISTORY"))
           : Container(
               child: ListView.builder(
                   itemCount: data == null ? 0 : data.length,
@@ -124,9 +127,9 @@ class _OrderHistoryState extends State<OrderHistory> {
                                             ' $currency${data[index]['payableAmount'].toStringAsFixed(2)}',
                                         paymentMethod:
                                             ' - ${data[index]['paymentOption']}',
-                                        statusLabel:
-                                            MyLocalizations.of(context).getLocalizations("STATUS") +
-                                                ': ',
+                                        statusLabel: MyLocalizations.of(context)
+                                                .getLocalizations("STATUS") +
+                                            ': ',
                                         status: '${data[index]['status']}',
                                       ),
                                       // _bottomSection()
