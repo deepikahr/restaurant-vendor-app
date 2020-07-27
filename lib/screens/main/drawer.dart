@@ -1,4 +1,3 @@
-import 'package:Kitchenapp/screens/main/reports.dart';
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import '../../styles/styles.dart';
@@ -11,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import '../../main.dart';
 
 class Menu extends StatefulWidget {
-  final Map<String, Map<String, String>> localizedValues;
+  final Map localizedValues;
   final String locale;
   final GlobalKey<ScaffoldState> scaffoldKey;
   Menu({Key key, this.scaffoldKey, this.locale, this.localizedValues})
@@ -109,11 +108,12 @@ class _MenuState extends State<Menu> {
                 ),
               ),
               child: ListTile(
-                title: Text(MyLocalizations.of(context).getLocalizations("LOGOUT"),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                    )),
+                title:
+                    Text(MyLocalizations.of(context).getLocalizations("LOGOUT"),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                        )),
                 onTap: logout,
                 trailing: Icon(
                   Icons.arrow_forward_ios,
@@ -128,7 +128,8 @@ class _MenuState extends State<Menu> {
                 border: Border.all(color: Colors.grey, width: 1.0),
               ),
               child: ListTile(
-                title: Text(MyLocalizations.of(context).getLocalizations("SELECT_LANGUAGES")),
+                title: Text(MyLocalizations.of(context)
+                    .getLocalizations("SELECT_LANGUAGES")),
                 trailing: DropdownButtonHideUnderline(
                   child: DropdownButton(
                     hint: Text(

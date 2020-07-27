@@ -8,7 +8,7 @@ import '../../services/common.dart';
 import '../../blocs/validators.dart';
 
 class Login extends StatefulWidget {
-  final Map<String, Map<String, String>> localizedValues;
+  final Map localizedValues;
   final String locale;
   final GlobalKey<ScaffoldState> scaffoldKey;
   Login({Key key, this.scaffoldKey, this.locale, this.localizedValues})
@@ -73,9 +73,8 @@ class _LoginState extends State<Login> {
           Common.setId(onValue['_id']);
         }
         Common.setRole(role);
-        showSnackbar(MyLocalizations.of(context)
-            .getLocalizations("NEAR_BY")
-        );
+        showSnackbar(
+            MyLocalizations.of(context).getLocalizations("LOGIN_SUCCESSFUL"));
         Future.delayed(Duration(milliseconds: 1500), () {
           Navigator.pushAndRemoveUntil(
               context,
@@ -87,7 +86,8 @@ class _LoginState extends State<Login> {
               (Route<dynamic> route) => false);
         });
       } else {
-        showSnackbar(MyLocalizations.of(context).getLocalizations("YOU_ARE_NOT_AUTHORIZED_TO_LOGIN"));
+        showSnackbar(MyLocalizations.of(context)
+            .getLocalizations("YOU_ARE_NOT_AUTHORIZED_TO_LOGIN"));
       }
       if (mounted) {
         setState(() {
@@ -158,7 +158,8 @@ class _LoginState extends State<Login> {
         validator: (String value) {
           if (value.isEmpty ||
               !RegExp(Validators.emailPattern).hasMatch(value)) {
-            return MyLocalizations.of(context).getLocalizations("PLEASE_ENTER_VALID_EMAIL");
+            return MyLocalizations.of(context)
+                .getLocalizations("PLEASE_ENTER_VALID_EMAIL");
           } else
             return null;
         },
@@ -188,7 +189,8 @@ class _LoginState extends State<Login> {
       keyboardType: TextInputType.text,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
-          return MyLocalizations.of(context).getLocalizations("PLEASE_ENTER_VALID_PASSWORD");
+          return MyLocalizations.of(context)
+              .getLocalizations("PLEASE_ENTER_VALID_PASSWORD");
         } else
           return null;
       },

@@ -8,7 +8,7 @@ import '../../services/orders.dart';
 
 class Monthly extends StatefulWidget {
   static String tag = "Monthly";
-  final Map<String, Map<String, String>> localizedValues;
+  final Map localizedValues;
   final String locale;
 
   Monthly({Key key, this.locale, this.localizedValues}) : super(key: key);
@@ -78,10 +78,7 @@ class _MonthlyState extends State<Monthly> {
                                           monthlyReport[index]['_id'] == null
                                               ? Text('')
                                               : Text(
-                                            '${monthlyReport[index]
-                                            ['_id']['date']}/${monthlyReport[index]
-                                            ['_id']['month']}/${monthlyReport[index]
-                                            ['_id']['year']}',
+                                                  '${monthlyReport[index]['_id']['date']}/${monthlyReport[index]['_id']['month']}/${monthlyReport[index]['_id']['year']}',
 //                                                  DateFormat(
 //                                                          'dd-MMM-yy hh:mm a')
 //                                                      .format(new DateTime
@@ -101,10 +98,13 @@ class _MonthlyState extends State<Monthly> {
                                             style: orderDetailsRejectbtn(),
                                           ),
                                           Text(
-                                            monthlyReport[index]['TotalOrder'] == null
-                                                ? Text('') :
-                                            monthlyReport[index]['TotalOrder']
-                                                .toString(),
+                                            monthlyReport[index]
+                                                        ['TotalOrder'] ==
+                                                    null
+                                                ? Text('')
+                                                : monthlyReport[index]
+                                                        ['TotalOrder']
+                                                    .toString(),
                                             style: blacktext(),
                                           ),
                                         ],
@@ -120,9 +120,11 @@ class _MonthlyState extends State<Monthly> {
                                             style: orderDetailsRejectbtn(),
                                           ),
                                           Text(
-                                            monthlyReport[index]['TotalAmount'] == null
-                                                ? Text('') :
-                                            '$currency${monthlyReport[index]['TotalAmount']}',
+                                            monthlyReport[index]
+                                                        ['TotalAmount'] ==
+                                                    null
+                                                ? Text('')
+                                                : '$currency${monthlyReport[index]['TotalAmount']}',
                                             style: orderDetailsBoldPrice(),
                                           ),
                                         ],
@@ -142,16 +144,16 @@ class _MonthlyState extends State<Monthly> {
     return Scaffold(
         backgroundColor: WHITE,
         body: AsyncLoader(
-                key: _asyncLoaderState,
-                initState: () async => await getReport(),
-                renderLoad: () =>
-                    Center(child: new CircularProgressIndicator()),
-                renderError: ([error]) =>
-                    NoData(message: MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
-                renderSuccess: ({data}) => monthlyReport.length == 0 ?
-                NoData(message: MyLocalizations.of(context).getLocalizations("NO_ORDER_HISTORY")) :
-                reportCard()
-        )
-    );
+            key: _asyncLoaderState,
+            initState: () async => await getReport(),
+            renderLoad: () => Center(child: new CircularProgressIndicator()),
+            renderError: ([error]) => NoData(
+                message: MyLocalizations.of(context)
+                    .getLocalizations("ERROR_MESSAGE")),
+            renderSuccess: ({data}) => monthlyReport.length == 0
+                ? NoData(
+                    message: MyLocalizations.of(context)
+                        .getLocalizations("NO_ORDER_HISTORY"))
+                : reportCard()));
   }
 }

@@ -8,7 +8,7 @@ import '../../services/orders.dart';
 
 class Daily extends StatefulWidget {
   static String tag = "Daily";
-  final Map<String, Map<String, String>> localizedValues;
+  final Map localizedValues;
   final String locale;
 
   Daily({Key key, this.locale, this.localizedValues}) : super(key: key);
@@ -54,88 +54,88 @@ class _DailyState extends State<Daily> {
             return dailyReport.length == 0
                 ? CircularProgressIndicator()
                 : GestureDetector(
-              onTap: () {},
-              child: SingleChildScrollView(
-                child: Container(
-                  width: screenWidth(context),
-                  child: Column(
-                    children: <Widget>[
-                      Card(
-                          elevation: 1.0,
-                          margin: EdgeInsets.only(top: 12.0, bottom: 6),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: Column(
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Text(
-                                      'Date : ',
-                                      style: orderDetailsRejectbtn(),
-                                    ),
-                                    dailyReport[index]['_id'] == null
-                                        ? Text('')
-                                        : Text(
-                                     '${dailyReport[index]
-                                    ['_id']['date']}/${dailyReport[index]
-                                     ['_id']['month']}/${dailyReport[index]
-                                     ['_id']['year']}',
+                    onTap: () {},
+                    child: SingleChildScrollView(
+                      child: Container(
+                        width: screenWidth(context),
+                        child: Column(
+                          children: <Widget>[
+                            Card(
+                                elevation: 1.0,
+                                margin: EdgeInsets.only(top: 12.0, bottom: 6),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                            'Date : ',
+                                            style: orderDetailsRejectbtn(),
+                                          ),
+                                          dailyReport[index]['_id'] == null
+                                              ? Text('')
+                                              : Text(
+                                                  '${dailyReport[index]['_id']['date']}/${dailyReport[index]['_id']['month']}/${dailyReport[index]['_id']['year']}',
 //                                      DateFormat(
 //                                          'dd-MMM-yy hh:mm a')
 //                                          .format(new DateTime
 //                                          .fromMillisecondsSinceEpoch(
 //                                          dailyReport[index]
 //                                          ['_id'])),
-                                      style: blacktext(),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
+                                                  style: blacktext(),
+                                                ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
 
-                                Row(
-                                  children: <Widget>[
-                                    Text(
-                                      'No. of sales : ',
-                                      style: orderDetailsRejectbtn(),
-                                    ),
-                                    Text(
-                                      dailyReport[index]['TotalOrder'] == null
-                                          ? Text('') :
-                                      dailyReport[index]['TotalOrder']
-                                          .toString(),
-                                      style: blacktext(),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                            'No. of sales : ',
+                                            style: orderDetailsRejectbtn(),
+                                          ),
+                                          Text(
+                                            dailyReport[index]['TotalOrder'] ==
+                                                    null
+                                                ? Text('')
+                                                : dailyReport[index]
+                                                        ['TotalOrder']
+                                                    .toString(),
+                                            style: blacktext(),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
 
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      'Total : ',
-                                      style: orderDetailsRejectbtn(),
-                                    ),
-                                    Text(
-                                      dailyReport[index]['TotalAmount'] == null
-                                          ? Text('') :
-                                      '$currency${dailyReport[index]['TotalAmount']}',
-                                      style: orderDetailsBoldPrice(),
-                                    ),
-                                  ],
-                                ),
-                                // _bottomSection()
-                              ],
-                            ),
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-            );
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Text(
+                                            'Total : ',
+                                            style: orderDetailsRejectbtn(),
+                                          ),
+                                          Text(
+                                            dailyReport[index]['TotalAmount'] ==
+                                                    null
+                                                ? Text('')
+                                                : '$currency${dailyReport[index]['TotalAmount']}',
+                                            style: orderDetailsBoldPrice(),
+                                          ),
+                                        ],
+                                      ),
+                                      // _bottomSection()
+                                    ],
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
           });
     }
 
@@ -144,12 +144,14 @@ class _DailyState extends State<Daily> {
         body: AsyncLoader(
             key: _asyncLoaderState,
             initState: () async => await getReport(),
-            renderLoad: () =>
-                Center(child: new CircularProgressIndicator()),
-            renderError: ([error]) => NoData(message: MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
-            renderSuccess: ({data}) => dailyReport.length == 0 ?
-            NoData(message: MyLocalizations.of(context).getLocalizations("NO_ORDER_HISTORY")) : reportCard()
-        )
-    );
+            renderLoad: () => Center(child: new CircularProgressIndicator()),
+            renderError: ([error]) => NoData(
+                message: MyLocalizations.of(context)
+                    .getLocalizations("ERROR_MESSAGE")),
+            renderSuccess: ({data}) => dailyReport.length == 0
+                ? NoData(
+                    message: MyLocalizations.of(context)
+                        .getLocalizations("NO_ORDER_HISTORY"))
+                : reportCard()));
   }
 }

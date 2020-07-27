@@ -19,20 +19,20 @@ class OrderServices {
       id = onValue;
     });
     if (role == 'Manager') {
-      final response = await client.get(API_ENDPOINT + 'orders/location/$id',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          });
+      final response = await client
+          .get(Constants.apiEndPoint + 'orders/location/$id', headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      });
       print('ord ${response.statusCode}');
       return json.decode(response.body);
     }
     if (role == 'Owner') {
-      final response = await client.get(API_ENDPOINT + 'orders/restaurant/$id',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          });
+      final response = await client
+          .get(Constants.apiEndPoint + 'orders/restaurant/$id', headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      });
       return json.decode(response.body);
     }
   }
@@ -48,7 +48,8 @@ class OrderServices {
     print('toke $token');
     print('id $id');
 //    5ea2aed3b1fa0016602b9635
-    final response = await client.get(API_ENDPOINT + 'orders/loc-info/$id',
+    final response = await client.get(
+        Constants.apiEndPoint + 'orders/loc-info/$id',
         headers: {'Content-Type': 'application/json', 'Authorization': token});
     print('rep ${response.statusCode}');
     return json.decode(response.body);
@@ -59,7 +60,7 @@ class OrderServices {
     await Common.getToken().then((onValue) {
       token = 'bearer ' + onValue;
     });
-    final response = await client.get(API_ENDPOINT + 'orders/$orderId',
+    final response = await client.get(Constants.apiEndPoint + 'orders/$orderId',
         headers: {'Content-Type': 'application/json', 'Authorization': token});
     return json.decode(response.body);
   }
@@ -71,7 +72,7 @@ class OrderServices {
     await Common.getToken().then((onValue) {
       token = 'bearer ' + onValue;
     });
-    final response = await client.put(API_ENDPOINT + 'orders/$orderID',
+    final response = await client.put(Constants.apiEndPoint + 'orders/$orderID',
         headers: {'Content-Type': 'application/json', 'Authorization': token},
         body: json.encode(body));
     return json.decode(response.body);
@@ -84,7 +85,8 @@ class OrderServices {
     await Common.getToken().then((onValue) {
       token = 'bearer ' + onValue;
     });
-    final response = await client.put(API_ENDPOINT + 'orders/assign/$orderID',
+    final response = await client.put(
+        Constants.apiEndPoint + 'orders/assign/$orderID',
         headers: {'Content-Type': 'application/json', 'Authorization': token},
         body: json.encode(body));
     return json.decode(response.body);
@@ -99,7 +101,7 @@ class OrderServices {
       locationId = onValue;
     });
     final response = await client.get(
-        API_ENDPOINT + 'users/all/active/staff/$locationId',
+        Constants.apiEndPoint + 'users/all/active/staff/$locationId',
         headers: {'Content-Type': 'application/json', 'Authorization': token});
     return json.decode(response.body);
   }
