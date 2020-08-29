@@ -1,5 +1,5 @@
 name: Kitchenapp
-version: 1.0.14+15
+version: 1.0.15+16
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
