@@ -44,7 +44,6 @@ class _LoginState extends State<Login> {
         showSnackbar(onValue['message']);
       }
       if (onValue['token'] != null) {
-        print('tt ${onValue['token']}');
         Common.setToken(onValue['token']).then((saved) {
           if (saved) {
             checkAuth();
@@ -66,16 +65,13 @@ class _LoginState extends State<Login> {
       String role = onValue['role'];
       if (role == 'Manager' || role == 'Owner') {
         if (role == 'Manager') {
-          print('location id ${onValue['locationInfo']['locationId']}');
           Common.setId(onValue['locationInfo']['locationId']);
         }
         if (role == 'Owner') {
           Common.setId(onValue['_id']);
         }
         Common.setRole(role);
-        showSnackbar(MyLocalizations.of(context)
-            .getLocalizations("NEAR_BY")
-        );
+        showSnackbar(MyLocalizations.of(context).getLocalizations("NEAR_BY"));
         Future.delayed(Duration(milliseconds: 1500), () {
           Navigator.pushAndRemoveUntil(
               context,
@@ -87,7 +83,8 @@ class _LoginState extends State<Login> {
               (Route<dynamic> route) => false);
         });
       } else {
-        showSnackbar(MyLocalizations.of(context).getLocalizations("YOU_ARE_NOT_AUTHORIZED_TO_LOGIN"));
+        showSnackbar(MyLocalizations.of(context)
+            .getLocalizations("YOU_ARE_NOT_AUTHORIZED_TO_LOGIN"));
       }
       if (mounted) {
         setState(() {
@@ -158,7 +155,8 @@ class _LoginState extends State<Login> {
         validator: (String value) {
           if (value.isEmpty ||
               !RegExp(Validators.emailPattern).hasMatch(value)) {
-            return MyLocalizations.of(context).getLocalizations("PLEASE_ENTER_VALID_EMAIL");
+            return MyLocalizations.of(context)
+                .getLocalizations("PLEASE_ENTER_VALID_EMAIL");
           } else
             return null;
         },
@@ -188,7 +186,8 @@ class _LoginState extends State<Login> {
       keyboardType: TextInputType.text,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
-          return MyLocalizations.of(context).getLocalizations("PLEASE_ENTER_VALID_PASSWORD");
+          return MyLocalizations.of(context)
+              .getLocalizations("PLEASE_ENTER_VALID_PASSWORD");
         } else
           return null;
       },

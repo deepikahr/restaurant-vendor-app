@@ -80,9 +80,7 @@ class _MyAppState extends State<MyApp> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     OneSignal.shared
-        .setNotificationReceivedHandler((OSNotification notification) {
-      print(notification);
-    });
+        .setNotificationReceivedHandler((OSNotification notification) {});
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {});
     OneSignal.shared.init(ONE_SIGNAL_APP_ID, iOSSettings: {
@@ -100,7 +98,6 @@ class _MyAppState extends State<MyApp> {
     var status = await OneSignal.shared.getPermissionSubscriptionState();
     String playerId = status.subscriptionStatus.userId;
     if (playerId == null) {
-      print(playerId);
       initOneSignal();
     } else {
       if (mounted) {

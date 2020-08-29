@@ -17,10 +17,8 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Kitchen App"
-        android:icon="@mipmap/ic_launcher">
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDXxt_aIn5HWQZg3gFYOqcuf8hjUuzmvKg"/>
-        <activity
+        android:label="Restaurant Saas Vendor App"
+        android:icon="@mipmap/ic_launcher">        <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
