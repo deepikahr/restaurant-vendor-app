@@ -1,5 +1,5 @@
 name: Kitchenapp
-version: 1.0.11+12
+version: 1.0.15+16
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -11,10 +11,8 @@ dependencies:
   http: ^0.12.2
   shared_preferences: ^0.5.8
   async_loader: ^0.1.2
-  onesignal_flutter: ^2.6.0
-  flutter_dotenv: ^2.1.0
   audioplayers: ^0.13.0
-
+  onesignal_flutter: ^2.6.1
   flutter_localizations:
     sdk: flutter
 
@@ -27,7 +25,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - .env
     - lib/assets/images/cover.png
     - lib/assets/images/sass.png
     - lib/assets/images/logo.png
@@ -38,4 +35,3 @@ flutter:
     - lib/assets/i18n/ar.json
     - lib/assets/i18n/zh.json
     - lib/assets/splash.png
-

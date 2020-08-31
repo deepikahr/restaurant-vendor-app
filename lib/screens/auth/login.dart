@@ -44,7 +44,6 @@ class _LoginState extends State<Login> {
         showSnackbar(onValue['message']);
       }
       if (onValue['token'] != null) {
-        print('tt ${onValue['token']}');
         Common.setToken(onValue['token']).then((saved) {
           if (saved) {
             checkAuth();
@@ -66,7 +65,6 @@ class _LoginState extends State<Login> {
       String role = onValue['role'];
       if (role == 'Manager' || role == 'Owner') {
         if (role == 'Manager') {
-          print('location id ${onValue['locationInfo']['locationId']}');
           Common.setId(onValue['locationInfo']['locationId']);
         }
         if (role == 'Owner') {

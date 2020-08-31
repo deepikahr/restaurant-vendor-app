@@ -37,7 +37,6 @@ class _MonthlyState extends State<Monthly> {
 
   getReport() async {
     await OrderServices.getReportDetails().then((onValue) {
-      print('on $onValue');
       if (mounted) {
         setState(() {
           monthlyReport = onValue['response_data']['data']['Monthly'];

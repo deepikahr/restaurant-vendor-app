@@ -37,7 +37,6 @@ class _DailyState extends State<Daily> {
 
   getReport() async {
     await OrderServices.getReportDetails().then((onValue) {
-      print('on $onValue');
       if (mounted) {
         setState(() {
           dailyReport = onValue['response_data']['data']['Daily'];

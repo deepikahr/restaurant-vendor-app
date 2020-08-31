@@ -5,8 +5,8 @@ import 'package:Kitchenapp/services/initialize_i18n.dart';
 import 'package:Kitchenapp/services/localizations.dart'
     show MyLocalizationsDelegate;
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,8 +28,6 @@ bool get isInDebugMode {
 }
 
 Future<void> main() async {
-  // Stetho.initialize();
-  await DotEnv().load('.env');
   WidgetsFlutterBinding.ensureInitialized();
   Map localizedValues = await initializeI18n();
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -50,7 +48,6 @@ Future<void> main() async {
 }
 
 void tokenCheck(locale, localizedValues) {
-  print("jjj");
   Common.getToken().then((tokenVerification) async {
     if (tokenVerification != null) {
       AuthService.verifyTokenOTP(tokenVerification).then((verifyInfo) async {
@@ -79,7 +76,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     getGlobalSettingsData();
     super.initState();
-    print("getGlobalSettingsData");
   }
 
   @override
@@ -124,7 +120,6 @@ class _MyAppState extends State<MyApp> {
           loginCheck = false;
         });
       }
-
       if (oneSignalTimer != null && oneSignalTimer.isActive)
         oneSignalTimer.cancel();
     }
@@ -137,14 +132,13 @@ class _MyAppState extends State<MyApp> {
       });
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print("kk");
     await AuthService.getAdminSettings().then((onValue) {
       print(onValue);
       var adminSettings = onValue;
       oneSignalTimer = Timer.periodic(Duration(seconds: 2), (timer) {
         initOneSignal();
       });
-
+      initOneSignal();
       loginInCheck();
       if (adminSettings['currency'] == null) {
         prefs.setString('currency', '\$');
@@ -181,8 +175,10 @@ class _MyAppState extends State<MyApp> {
       locale: Locale(widget.locale),
       localizationsDelegates: [
         MyLocalizationsDelegate(widget.localizedValues, [widget.locale]),
-        GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate
       ],
       supportedLocales: [Locale(widget.locale)],
       debugShowCheckedModeBanner: false,

@@ -293,7 +293,6 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
 
   bool isLoading = false;
   Future<void> _showAssignConfirmAlert(Map staff) {
-    print('staf $staff');
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -349,7 +348,6 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                     'deliveryBy': staff['_id'],
                     'deliveryByName': staff['name']
                   };
-                  print('ordr id ${orders[selectedIndex]['_id']}');
                   OrderServices.assignOrder(
                           orders[selectedIndex]['_id'], assignBody)
                       .then((onValue) {
