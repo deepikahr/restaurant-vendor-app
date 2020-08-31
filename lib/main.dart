@@ -4,6 +4,8 @@ import 'package:Kitchenapp/services/auth.dart';
 import 'package:Kitchenapp/services/initialize_i18n.dart';
 import 'package:Kitchenapp/services/localizations.dart'
     show MyLocalizationsDelegate;
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -17,6 +19,8 @@ import 'services/common.dart';
 import 'services/constant.dart';
 import 'styles/styles.dart';
 
+AudioPlayer audioPlayer = AudioPlayer();
+
 bool get isInDebugMode {
   bool inDebugMode = false;
   assert(inDebugMode = true);
@@ -24,13 +28,10 @@ bool get isInDebugMode {
 }
 
 Future<void> main() async {
-  // Stetho.initialize();
   WidgetsFlutterBinding.ensureInitialized();
-  Map<String, Map<String, String>> localizedValues = await initializeI18n();
+  Map localizedValues = await initializeI18n();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String locale = prefs.getString('selectedLanguage') == null
-      ? 'en'
-      : prefs.getString('selectedLanguage');
+  String locale = prefs.getString('selectedLanguage') ?? "en";
   FlutterError.onError = (FlutterErrorDetails details) async {
     if (isInDebugMode) {
       FlutterError.dumpErrorToConsole(details);
@@ -42,6 +43,7 @@ Future<void> main() async {
   tokenCheck(locale, localizedValues);
   runZoned<Future<Null>>(() async {
     runApp(new MyApp(locale, localizedValues));
+    // ignore: deprecated_member_use
   }, onError: (error, stackTrace) async {});
 }
 
@@ -59,7 +61,7 @@ void tokenCheck(locale, localizedValues) {
 }
 
 class MyApp extends StatefulWidget {
-  final Map<String, Map<String, String>> localizedValues;
+  final Map localizedValues;
   final String locale;
   MyApp(this.locale, this.localizedValues);
 
@@ -68,22 +70,36 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool loginIn = false;
-  bool loginCheck = false;
+  bool loginIn = false, loginCheck = false;
+  Timer oneSignalTimer;
   @override
   void initState() {
-    super.initState();
     getGlobalSettingsData();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    setState(() {
+      audioPlayer.stop();
+      audioPlayer.dispose();
+    });
   }
 
   Future<void> initOneSignal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     OneSignal.shared
-        .setNotificationReceivedHandler((OSNotification notification) {});
+        .setNotificationReceivedHandler((OSNotification notification) async {
+      if (notification != null) {
+        await audioPlayer.play(
+            "https://www.mediacollege.com/audio/tone/files/250Hz_44100Hz_16bit_05sec.wav");
+      }
+    });
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {});
-    OneSignal.shared.init(ONE_SIGNAL_APP_ID, iOSSettings: {
+    OneSignal.shared.init(Constants.oneSignalKey, iOSSettings: {
       OSiOSSettings.autoPrompt: false,
       OSiOSSettings.inAppLaunchUrl: true
     });
@@ -97,15 +113,15 @@ class _MyAppState extends State<MyApp> {
         .setInFocusDisplayType(OSNotificationDisplayType.notification);
     var status = await OneSignal.shared.getPermissionSubscriptionState();
     String playerId = status.subscriptionStatus.userId;
-    if (playerId == null) {
-      initOneSignal();
-    } else {
+    if (playerId != null) {
+      prefs.setString("playerId", playerId);
       if (mounted) {
         setState(() {
           loginCheck = false;
         });
       }
-      prefs.setString("playerId", playerId);
+      if (oneSignalTimer != null && oneSignalTimer.isActive)
+        oneSignalTimer.cancel();
     }
   }
 
@@ -117,7 +133,11 @@ class _MyAppState extends State<MyApp> {
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await AuthService.getAdminSettings().then((onValue) {
+      print(onValue);
       var adminSettings = onValue;
+      oneSignalTimer = Timer.periodic(Duration(seconds: 2), (timer) {
+        initOneSignal();
+      });
       initOneSignal();
       loginInCheck();
       if (adminSettings['currency'] == null) {
@@ -126,6 +146,8 @@ class _MyAppState extends State<MyApp> {
         prefs.setString(
             'currency', '${adminSettings['currency']['currencySymbol']}');
       }
+    }).catchError((onError) {
+      print(onError);
     });
   }
 
@@ -153,22 +175,21 @@ class _MyAppState extends State<MyApp> {
       locale: Locale(widget.locale),
       localizationsDelegates: [
         MyLocalizationsDelegate(widget.localizedValues, [widget.locale]),
-        GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate
       ],
-      supportedLocales: LANGUAGES.map((language) => Locale(language, '')),
+      supportedLocales: [Locale(widget.locale)],
       debugShowCheckedModeBanner: false,
-      title: APP_NAME,
+      title: Constants.APP_NAME,
       theme: ThemeData(
         primaryColor: PRIMARY,
         brightness: Brightness.light,
         accentColor: PRIMARY,
       ),
       home: loginCheck
-          ? CheckTokenScreen(
-              widget.locale,
-              widget.localizedValues,
-            )
+          ? CheckTokenScreen()
           : loginIn
               ? OrderList(
                   locale: widget.locale,
@@ -183,15 +204,19 @@ class _MyAppState extends State<MyApp> {
 }
 
 class CheckTokenScreen extends StatelessWidget {
-  final Map<String, Map<String, String>> localizedValues;
-  final String locale;
-  CheckTokenScreen(this.locale, this.localizedValues);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
+      body: Container(
+        color: PRIMARY,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Image.asset(
+          'lib/assets/splash.png',
+          fit: BoxFit.cover,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+        ),
       ),
     );
   }

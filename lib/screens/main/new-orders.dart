@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 
 class NewOrders extends StatefulWidget {
   static String tag = "newOrder";
-  final Map<String, Map<String, String>> localizedValues;
+  final Map localizedValues;
   final String locale;
   NewOrders({Key key, this.locale, this.localizedValues}) : super(key: key);
 
@@ -25,12 +25,10 @@ class _NewOrdersState extends State<NewOrders> {
       GlobalKey<AsyncLoaderState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List orders;
-  bool isAcceptLoading = false,
-   isCancleLoading = false;
-  int currentIndexAccept,
-   currentIndexCancle;
+  bool isAcceptLoading = false, isCancleLoading = false;
+  int currentIndexAccept, currentIndexCancle;
   String currency;
-Timer ordersTimer;
+  Timer ordersTimer;
   @override
   void initState() {
     super.initState();
@@ -89,7 +87,8 @@ Timer ordersTimer;
           setState(() {
             isAcceptLoading = false;
             orders.removeAt(index);
-            showSnackbar(MyLocalizations.of(context).getLocalizations("ORDER_ACCEPTED"));
+            showSnackbar(
+                MyLocalizations.of(context).getLocalizations("ORDER_ACCEPTED"));
           });
         }
       }
@@ -109,7 +108,8 @@ Timer ordersTimer;
         setState(() {
           isCancleLoading = false;
           orders.removeAt(index);
-          showSnackbar(MyLocalizations.of(context).getLocalizations("ORDER_CANCELLED"));
+          showSnackbar(
+              MyLocalizations.of(context).getLocalizations("ORDER_CANCELLED"));
         });
       }
     });
@@ -121,10 +121,13 @@ Timer ordersTimer;
       key: _asyncLoaderState,
       initState: () async => await getOrder(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
-      renderError: ([error]) =>
-          NoData(message: MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
+      renderError: ([error]) => NoData(
+          message:
+              MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
       renderSuccess: ({data}) => orders.length == 0
-          ? NoData(message: MyLocalizations.of(context).getLocalizations("NO_ORDER_HISTORY"))
+          ? NoData(
+              message: MyLocalizations.of(context)
+                  .getLocalizations("NO_ORDER_HISTORY"))
           : Container(
               child: ListView.builder(
                   itemCount: orders == null ? 0 : orders.length,
@@ -136,7 +139,8 @@ Timer ordersTimer;
                           new MaterialPageRoute(
                             builder: (BuildContext context) => new OrderDetails(
                               orderData: orders[index],
-                              option: MyLocalizations.of(context).getLocalizations("ACCEPT"),
+                              option: MyLocalizations.of(context)
+                                  .getLocalizations("ACCEPT"),
                             ),
                           ),
                         );
@@ -225,8 +229,10 @@ Timer ordersTimer;
                 }
               },
               child: (isAcceptLoading && currentIndexAccept == index)
-                  ? Text(MyLocalizations.of(context).getLocalizations("PLEASE_WAIT"))
-                  : Text(MyLocalizations.of(context).getLocalizations("ACCEPT")),
+                  ? Text(MyLocalizations.of(context)
+                      .getLocalizations("PLEASE_WAIT"))
+                  : Text(
+                      MyLocalizations.of(context).getLocalizations("ACCEPT")),
               textColor: PRIMARY,
               padding: EdgeInsets.all(0),
             ),
@@ -241,8 +247,10 @@ Timer ordersTimer;
                 }
               },
               child: (isCancleLoading && currentIndexCancle == index)
-                  ? Text(MyLocalizations.of(context).getLocalizations("PLEASE_WAIT"))
-                  : Text(MyLocalizations.of(context).getLocalizations("REJECT")),
+                  ? Text(MyLocalizations.of(context)
+                      .getLocalizations("PLEASE_WAIT"))
+                  : Text(
+                      MyLocalizations.of(context).getLocalizations("REJECT")),
               textColor: DARK_TEXT_A,
               padding: EdgeInsets.all(0),
             ),

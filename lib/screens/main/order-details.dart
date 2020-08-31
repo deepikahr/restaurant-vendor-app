@@ -11,7 +11,7 @@ class OrderDetails extends StatefulWidget {
   static String tag = "orderDetails";
   final orderData;
   final String option;
-  final Map<String, Map<String, String>> localizedValues;
+  final Map localizedValues;
   final String locale;
   OrderDetails(
       {Key key,
@@ -124,8 +124,9 @@ class _OrderDetailsState extends State<OrderDetails> {
       key: _asyncLoaderState,
       initState: () async => await orderDetail(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
-      renderError: ([error]) =>
-          NoData(message: MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
+      renderError: ([error]) => NoData(
+          message:
+              MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
       renderSuccess: ({data}) => Container(
         width: screenWidth(context),
         height: screenHeight(context),
@@ -148,7 +149,8 @@ class _OrderDetailsState extends State<OrderDetails> {
     return Scaffold(
         backgroundColor: WHITE,
         appBar: AppBar(
-          title: Text(MyLocalizations.of(context).getLocalizations("ORDER_DETAILS"),
+          title: Text(
+              MyLocalizations.of(context).getLocalizations("ORDER_DETAILS"),
               style: headerDefaultColor()),
           iconTheme: new IconThemeData(color: WHITE),
         ),
@@ -162,7 +164,8 @@ class _OrderDetailsState extends State<OrderDetails> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            MyLocalizations.of(context).getLocalizations("CUSTOMER_AND_PAYMENT_INFO"),
+            MyLocalizations.of(context)
+                .getLocalizations("CUSTOMER_AND_PAYMENT_INFO"),
             style: titleStyle(),
           ),
           Card(
@@ -190,7 +193,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                       shippingAddress != null ? shippingAddress : ''),
                   _customerSection(
                       Icons.contact_phone,
-                      MyLocalizations.of(context).getLocalizations("CONTACT_NUMBER"),
+                      MyLocalizations.of(context)
+                          .getLocalizations("CONTACT_NUMBER"),
                       customerContact != null ? customerContact : ''),
                   _customerSection(
                       Icons.email,
@@ -198,7 +202,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                       customerEmail != null ? customerEmail : ''),
                   _customerSection(
                       Icons.payment,
-                      MyLocalizations.of(context).getLocalizations("PAYMENT_METHOD"),
+                      MyLocalizations.of(context)
+                          .getLocalizations("PAYMENT_METHOD"),
                       paymentMethod != null ? paymentMethod : ''),
                 ],
               ),
@@ -259,18 +264,24 @@ class _OrderDetailsState extends State<OrderDetails> {
               children: <Widget>[
                 _detailTopSection(),
                 // detailMiddle(),
-                _detailBottom(MyLocalizations.of(context).getLocalizations("SUBTOTAL"),
+                _detailBottom(
+                    MyLocalizations.of(context).getLocalizations("SUBTOTAL"),
                     '$currency' + subTotal ?? ''),
-                _detailBottom(MyLocalizations.of(context).getLocalizations("TAX"),
+                _detailBottom(
+                    MyLocalizations.of(context).getLocalizations("TAX"),
                     taxInfo['taxRate'].toString() + '%' ?? ''),
                 _detailBottom(
-                    MyLocalizations.of(context).getLocalizations("DELIVERY_CHARGES"),
-                    (deliveryCharge == MyLocalizations.of(context).getLocalizations("FREE")
+                    MyLocalizations.of(context)
+                        .getLocalizations("DELIVERY_CHARGES"),
+                    (deliveryCharge ==
+                                    MyLocalizations.of(context)
+                                        .getLocalizations("FREE")
                                 ? ''
                                 : '$currency') +
                             deliveryCharge ??
                         ''),
-                _detailBottom(MyLocalizations.of(context).getLocalizations("GRAND_TOTAL"),
+                _detailBottom(
+                    MyLocalizations.of(context).getLocalizations("GRAND_TOTAL"),
                     '$currency' + grandTotal ?? ''),
               ],
             ),
@@ -387,8 +398,10 @@ class _OrderDetailsState extends State<OrderDetails> {
               child: FlatButton(
                 onPressed: accceptOrder,
                 child: isAcceptLoading
-                    ? Text(MyLocalizations.of(context).getLocalizations("PLEASE_WAIT"))
-                    : Text(MyLocalizations.of(context).getLocalizations("ACCEPT")),
+                    ? Text(MyLocalizations.of(context)
+                        .getLocalizations("PLEASE_WAIT"))
+                    : Text(
+                        MyLocalizations.of(context).getLocalizations("ACCEPT")),
                 textColor: PRIMARY,
                 padding: EdgeInsets.all(0),
               ),
@@ -398,8 +411,10 @@ class _OrderDetailsState extends State<OrderDetails> {
               child: FlatButton(
                 onPressed: cancelOrder,
                 child: isCancleLoading
-                    ? Text(MyLocalizations.of(context).getLocalizations("PLEASE_WAIT"))
-                    : Text(MyLocalizations.of(context).getLocalizations("REJECT")),
+                    ? Text(MyLocalizations.of(context)
+                        .getLocalizations("PLEASE_WAIT"))
+                    : Text(
+                        MyLocalizations.of(context).getLocalizations("REJECT")),
                 textColor: PRIMARY,
                 padding: EdgeInsets.all(0),
               ),
@@ -410,9 +425,11 @@ class _OrderDetailsState extends State<OrderDetails> {
     } else if (widget.option == 'assign') {
       return Text(MyLocalizations.of(context).getLocalizations("ASSIGN_HERE"));
     } else if (widget.option == 'history') {
-      return Text(MyLocalizations.of(context).getLocalizations("ORDER_HISTORY_STATUS"));
+      return Text(
+          MyLocalizations.of(context).getLocalizations("ORDER_HISTORY_STATUS"));
     } else {
-      return Text(MyLocalizations.of(context).getLocalizations("UNWANTED_ENTRY"));
+      return Text(
+          MyLocalizations.of(context).getLocalizations("UNWANTED_ENTRY"));
     }
   }
 

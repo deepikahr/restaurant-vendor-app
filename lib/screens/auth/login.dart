@@ -8,7 +8,7 @@ import '../../services/common.dart';
 import '../../blocs/validators.dart';
 
 class Login extends StatefulWidget {
-  final Map<String, Map<String, String>> localizedValues;
+  final Map localizedValues;
   final String locale;
   final GlobalKey<ScaffoldState> scaffoldKey;
   Login({Key key, this.scaffoldKey, this.locale, this.localizedValues})
@@ -71,7 +71,8 @@ class _LoginState extends State<Login> {
           Common.setId(onValue['_id']);
         }
         Common.setRole(role);
-        showSnackbar(MyLocalizations.of(context).getLocalizations("NEAR_BY"));
+        showSnackbar(
+            MyLocalizations.of(context).getLocalizations("LOGIN_SUCCESSFUL"));
         Future.delayed(Duration(milliseconds: 1500), () {
           Navigator.pushAndRemoveUntil(
               context,

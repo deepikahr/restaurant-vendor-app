@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 class OrderList extends StatefulWidget {
   static String tag = "orderList";
 
-  final Map<String, Map<String, String>> localizedValues;
+  final Map localizedValues;
   final String locale;
   OrderList({Key key, this.locale, this.localizedValues}) : super(key: key);
 
@@ -48,8 +48,12 @@ class OrderListState extends State<OrderList> {
               color: PRIMARY,
             ),
             tabs: [
-              Tab(text: MyLocalizations.of(context).getLocalizations("NEW_ORDERS")),
-              Tab(text: MyLocalizations.of(context).getLocalizations("IN_PROGRESS")),
+              Tab(
+                  text: MyLocalizations.of(context)
+                      .getLocalizations("NEW_ORDERS")),
+              Tab(
+                  text: MyLocalizations.of(context)
+                      .getLocalizations("IN_PROGRESS")),
             ],
           ),
           title: Text(MyLocalizations.of(context).getLocalizations("ORDERS"),

@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 
 class OrdersInProgress extends StatefulWidget {
   static String tag = "orderProgress";
-  final Map<String, Map<String, String>> localizedValues;
+  final Map localizedValues;
   final String locale;
   OrdersInProgress({Key key, this.locale, this.localizedValues})
       : super(key: key);

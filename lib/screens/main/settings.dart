@@ -8,7 +8,7 @@ import '../../services/auth.dart';
 
 class Settings extends StatefulWidget {
   static String tag = "Settings";
-  final Map<String, Map<String, String>> localizedValues;
+  final Map localizedValues;
   final String locale;
   Settings({Key key, this.locale, this.localizedValues}) : super(key: key);
 
@@ -72,7 +72,8 @@ class _SettingsState extends State<Settings> {
             ),
             FlatButton(
               onPressed: () {},
-              child: Text(MyLocalizations.of(context).getLocalizations("CHANGE_PROFILE")),
+              child: Text(MyLocalizations.of(context)
+                  .getLocalizations("CHANGE_PROFILE")),
               textColor: PRIMARY,
               padding: EdgeInsets.all(0),
             ),
@@ -89,7 +90,8 @@ class _SettingsState extends State<Settings> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
           padding: EdgeInsets.all(12),
           fillColor: PRIMARY,
-          child: Text(MyLocalizations.of(context).getLocalizations("UPDATE_PROFILE"),
+          child: Text(
+              MyLocalizations.of(context).getLocalizations("UPDATE_PROFILE"),
               style: TextStyle(color: Colors.white)),
           onPressed: () {
             //  Navigator.of(context).pushNamed(OrderList.tag);
@@ -126,7 +128,8 @@ class _SettingsState extends State<Settings> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              MyLocalizations.of(context).getLocalizations("USER_NAME"),
+                              MyLocalizations.of(context)
+                                  .getLocalizations("USER_NAME"),
                               style: textGray(),
                             ),
                             Text(
@@ -146,7 +149,8 @@ class _SettingsState extends State<Settings> {
                     )),
                     child: FlatButton(
                       onPressed: () {},
-                      child: Text(MyLocalizations.of(context).getLocalizations("EDIT")),
+                      child: Text(
+                          MyLocalizations.of(context).getLocalizations("EDIT")),
                       textColor: PRIMARY,
                       padding: EdgeInsets.all(0),
                     ),
@@ -179,7 +183,8 @@ class _SettingsState extends State<Settings> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              MyLocalizations.of(context).getLocalizations("EMAIL_ID"),
+                              MyLocalizations.of(context)
+                                  .getLocalizations("EMAIL_ID"),
                               style: textGray(),
                             ),
                             Text(
@@ -199,7 +204,8 @@ class _SettingsState extends State<Settings> {
                     )),
                     child: FlatButton(
                       onPressed: () {},
-                      child: Text(MyLocalizations.of(context).getLocalizations("EDIT")),
+                      child: Text(
+                          MyLocalizations.of(context).getLocalizations("EDIT")),
                       textColor: PRIMARY,
                       padding: EdgeInsets.all(0),
                     ),
@@ -232,7 +238,8 @@ class _SettingsState extends State<Settings> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              MyLocalizations.of(context).getLocalizations("CONTACT_NUMBER"),
+                              MyLocalizations.of(context)
+                                  .getLocalizations("CONTACT_NUMBER"),
                               style: textGray(),
                             ),
                             Text(
@@ -252,7 +259,8 @@ class _SettingsState extends State<Settings> {
                     )),
                     child: FlatButton(
                       onPressed: () {},
-                      child: Text(MyLocalizations.of(context).getLocalizations("EDIT")),
+                      child: Text(
+                          MyLocalizations.of(context).getLocalizations("EDIT")),
                       textColor: PRIMARY,
                       padding: EdgeInsets.all(0),
                     ),
@@ -285,7 +293,8 @@ class _SettingsState extends State<Settings> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              MyLocalizations.of(context).getLocalizations("ADDRESS"),
+                              MyLocalizations.of(context)
+                                  .getLocalizations("ADDRESS"),
                               style: textGray(),
                             ),
                             Text(
@@ -305,7 +314,8 @@ class _SettingsState extends State<Settings> {
                     )),
                     child: FlatButton(
                       onPressed: () {},
-                      child: Text(MyLocalizations.of(context).getLocalizations("EDIT")),
+                      child: Text(
+                          MyLocalizations.of(context).getLocalizations("EDIT")),
                       textColor: PRIMARY,
                       padding: EdgeInsets.all(0),
                     ),
