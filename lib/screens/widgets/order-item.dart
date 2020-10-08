@@ -1,7 +1,8 @@
+import 'package:Kitchenapp/services/localizations.dart';
 import 'package:flutter/material.dart';
-import '../../styles/styles.dart';
+
 import './avatar.dart';
-import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
+import '../../styles/styles.dart';
 
 class OrderItem extends StatelessWidget {
   final String imgurl;
@@ -15,14 +16,14 @@ class OrderItem extends StatelessWidget {
 
   OrderItem(
       {Key key,
-        this.imgurl,
-        this.orderId,
-        this.price,
-        this.paymentMethod,
-        this.dateTime,
-        this.details,
-        this.status,
-        this.statusLabel})
+      this.imgurl,
+      this.orderId,
+      this.price,
+      this.paymentMethod,
+      this.dateTime,
+      this.details,
+      this.status,
+      this.statusLabel})
       : super(key: key);
 
   @override
@@ -43,8 +44,8 @@ class OrderItem extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         decoration: const BoxDecoration(
             border: Border(
-              right: BorderSide(width: 1.0, color: Color(0xFFf29000000)),
-            )),
+          right: BorderSide(width: 1.0, color: Color(0xFFf29000000)),
+        )),
         child: Avatar(imgurl: imgurl));
   }
 
@@ -52,84 +53,84 @@ class OrderItem extends StatelessWidget {
     return Expanded(
       child: Container(
           child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              new Container(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 1.0, color: Color(0xFFf29000000)),
-                    )),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          new Container(
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+            decoration: const BoxDecoration(
+                border: Border(
+              bottom: BorderSide(width: 1.0, color: Color(0xFFf29000000)),
+            )),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "${MyLocalizations.of(context).orderID} #" + orderId ?? '',
+                  style: labelLarge(),
+                ),
+                new Row(
                   children: <Widget>[
-                    Text(
-                      "${MyLocalizations.of(context).getLocalizations("ORDER_ID")}: #" + orderId ?? '',
-                      style: labelLarge(),
+                    new Text(dateTime ?? '', style: labelLight()),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          new Container(
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+            decoration: const BoxDecoration(
+                border: Border(
+              bottom: BorderSide(width: 1.0, color: Color(0xFFf29000000)),
+            )),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(right: 4.0),
+                  child: Icon(Icons.map, color: Colors.black),
+                ),
+                Text(
+                  details.length > 30
+                      ? details.substring(0, 30) + ".."
+                      : details ?? '',
+                  style: textGray(),
+                )
+              ],
+            ),
+          ),
+          new Container(
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Row(
+                  children: <Widget>[
+                    new Text(
+                      statusLabel ?? '',
+                      style: label(),
                     ),
-                    new Row(
-                      children: <Widget>[
-                        new Text(dateTime ?? '', style: labelLight()),
-                      ],
+                    new Text(
+                      status ?? '',
+                      style: labelLight(),
                     ),
                   ],
                 ),
-              ),
-              new Container(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 1.0, color: Color(0xFFf29000000)),
-                    )),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                new Row(
                   children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(right: 4.0),
-                      child: Icon(Icons.map, color: Colors.grey),
+                    new Text(
+                      price ?? '',
+                      style: label(),
                     ),
-                    Text(
-                      details.length > 30
-                          ? details.substring(0, 30) + ".."
-                          : details ?? '',
-                      style: textGray(),
-                    )
+                    new Text(paymentMethod ?? '', style: textSuccess()),
                   ],
                 ),
-              ),
-              new Container(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Row(
-                      children: <Widget>[
-                        new Text(
-                          statusLabel ?? '',
-                          style: label(),
-                        ),
-                        new Text(
-                          status ?? '',
-                          style: labelLight(),
-                        ),
-                      ],
-                    ),
-                    new Row(
-                      children: <Widget>[
-                        new Text(
-                          price ?? '',
-                          style: label(),
-                        ),
-                        new Text(paymentMethod ?? '', style: textSuccess()),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )),
+              ],
+            ),
+          ),
+        ],
+      )),
     );
   }
 }
