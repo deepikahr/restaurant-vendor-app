@@ -164,7 +164,7 @@ class _LoginState extends State<Login> {
           email = value;
         },
         autofocus: false,
-        initialValue: '',
+        initialValue: 'manager1@ionicfirebaseapp.com',
         obscureText: false,
         decoration: InputDecoration(
           hintText: MyLocalizations.of(context).emailId,
@@ -181,7 +181,7 @@ class _LoginState extends State<Login> {
   Widget _passwordField() {
     return TextFormField(
       autofocus: false,
-      initialValue: '',
+      initialValue: '123456',
       obscureText: true,
       keyboardType: TextInputType.text,
       validator: (String value) {

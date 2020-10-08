@@ -7,11 +7,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^1.0.0
   http: ^0.12.0+4
   shared_preferences: ^0.5.7
   async_loader: ^0.1.2
   onesignal_flutter: ^2.4.0
+  audioplayers: ^0.16.1
 
   flutter_localizations:
     sdk: flutter
@@ -31,3 +32,4 @@ flutter:
     - lib/assets/logos/logo.png
     - lib/assets/i18n/en.json
     - lib/assets/i18n/es.json
+    - lib/assets/splash.png

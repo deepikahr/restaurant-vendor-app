@@ -132,7 +132,7 @@ class _MenuState extends State<Menu> {
                 trailing: DropdownButtonHideUnderline(
                   child: DropdownButton(
                     hint: Text(
-                        selectedLocale == null ? 'Spanish' : selectedLocale),
+                        selectedLocale == null ? 'English' : selectedLocale),
                     value: selectedLanguages,
                     onChanged: (newValue) async {
                       if (newValue == 'English') {
