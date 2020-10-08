@@ -4,22 +4,20 @@ import 'package:Kitchenapp/services/auth.dart';
 import 'package:Kitchenapp/services/initialize_i18n.dart';
 import 'package:Kitchenapp/services/localizations.dart'
     show MyLocalizationsDelegate;
-import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import './screens/main/order-list.dart';
+
 import './screens/auth/login.dart';
+import './screens/main/order-list.dart';
 import './styles/styles.dart';
 import 'screens/auth/login.dart';
 import 'screens/main/order-list.dart';
+import 'screens/notification/notification_page.dart';
 import 'services/common.dart';
 import 'services/constant.dart';
 import 'styles/styles.dart';
-
-AudioPlayer audioPlayer = AudioPlayer();
 
 bool get isInDebugMode {
   bool inDebugMode = false;
@@ -29,9 +27,11 @@ bool get isInDebugMode {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Map localizedValues = await initializeI18n();
+  Map<String, Map<String, String>> localizedValues = await initializeI18n();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String locale = prefs.getString('selectedLanguage') ?? "en";
+  String locale = prefs.getString('selectedLanguage') == null
+      ? 'en'
+      : prefs.getString('selectedLanguage');
   FlutterError.onError = (FlutterErrorDetails details) async {
     if (isInDebugMode) {
       FlutterError.dumpErrorToConsole(details);
@@ -43,7 +43,6 @@ Future<void> main() async {
   tokenCheck(locale, localizedValues);
   runZoned<Future<Null>>(() async {
     runApp(new MyApp(locale, localizedValues));
-    // ignore: deprecated_member_use
   }, onError: (error, stackTrace) async {});
 }
 
@@ -61,8 +60,9 @@ void tokenCheck(locale, localizedValues) {
 }
 
 class MyApp extends StatefulWidget {
-  final Map localizedValues;
+  final Map<String, Map<String, String>> localizedValues;
   final String locale;
+
   MyApp(this.locale, this.localizedValues);
 
   @override
@@ -70,36 +70,27 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool loginIn = false, loginCheck = false;
-  Timer oneSignalTimer;
-  @override
-  void initState() {
-    getGlobalSettingsData();
-    super.initState();
-  }
+  bool loginIn = false;
+  bool loginCheck = false;
 
   @override
-  void dispose() {
-    super.dispose();
-    setState(() {
-      audioPlayer.stop();
-      audioPlayer.dispose();
-    });
+  void initState() {
+    super.initState();
+    getGlobalSettingsData();
   }
 
   Future<void> initOneSignal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     OneSignal.shared
-        .setNotificationReceivedHandler((OSNotification notification) async {
-      if (notification != null) {
-        await audioPlayer.play(
-            "https://www.mediacollege.com/audio/tone/files/250Hz_44100Hz_16bit_05sec.wav");
-      }
+        .setNotificationReceivedHandler((OSNotification notification) {});
+    OneSignal.shared
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      runApp(Notification(
+        locale: widget.locale,
+        localizedValues: widget.localizedValues,
+      ));
     });
-    OneSignal.shared
-        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {});
-    OneSignal.shared.init(Constants.oneSignalKey, iOSSettings: {
+    OneSignal.shared.init(ONE_SIGNAL_APP_ID, iOSSettings: {
       OSiOSSettings.autoPrompt: false,
       OSiOSSettings.inAppLaunchUrl: true
     });
@@ -113,15 +104,15 @@ class _MyAppState extends State<MyApp> {
         .setInFocusDisplayType(OSNotificationDisplayType.notification);
     var status = await OneSignal.shared.getPermissionSubscriptionState();
     String playerId = status.subscriptionStatus.userId;
-    if (playerId != null) {
-      prefs.setString("playerId", playerId);
+    if (playerId == null) {
+      initOneSignal();
+    } else {
       if (mounted) {
         setState(() {
           loginCheck = false;
         });
       }
-      if (oneSignalTimer != null && oneSignalTimer.isActive)
-        oneSignalTimer.cancel();
+      prefs.setString("playerId", playerId);
     }
   }
 
@@ -133,11 +124,7 @@ class _MyAppState extends State<MyApp> {
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await AuthService.getAdminSettings().then((onValue) {
-      print(onValue);
       var adminSettings = onValue;
-      oneSignalTimer = Timer.periodic(Duration(seconds: 2), (timer) {
-        initOneSignal();
-      });
       initOneSignal();
       loginInCheck();
       if (adminSettings['currency'] == null) {
@@ -146,8 +133,6 @@ class _MyAppState extends State<MyApp> {
         prefs.setString(
             'currency', '${adminSettings['currency']['currencySymbol']}');
       }
-    }).catchError((onError) {
-      print(onError);
     });
   }
 
@@ -174,22 +159,23 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       locale: Locale(widget.locale),
       localizationsDelegates: [
-        MyLocalizationsDelegate(widget.localizedValues, [widget.locale]),
-        GlobalWidgetsLocalizations.delegate,
+        MyLocalizationsDelegate(widget.localizedValues),
         GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        DefaultCupertinoLocalizations.delegate
+        GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: [Locale(widget.locale)],
+      supportedLocales: LANGUAGES.map((language) => Locale(language, '')),
       debugShowCheckedModeBanner: false,
-      title: Constants.APP_NAME,
+      title: APP_NAME,
       theme: ThemeData(
         primaryColor: PRIMARY,
         brightness: Brightness.light,
         accentColor: PRIMARY,
       ),
       home: loginCheck
-          ? CheckTokenScreen()
+          ? CheckTokenScreen(
+              widget.locale,
+              widget.localizedValues,
+            )
           : loginIn
               ? OrderList(
                   locale: widget.locale,
@@ -204,20 +190,48 @@ class _MyAppState extends State<MyApp> {
 }
 
 class CheckTokenScreen extends StatelessWidget {
+  final Map<String, Map<String, String>> localizedValues;
+  final String locale;
+
+  CheckTokenScreen(this.locale, this.localizedValues);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: PRIMARY,
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Image.asset(
-          'lib/assets/splash.png',
-          fit: BoxFit.cover,
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-        ),
+      body: Center(
+        child: CircularProgressIndicator(),
       ),
     );
+  }
+}
+
+class Notification extends StatelessWidget {
+  final String locale;
+  final Map localizedValues;
+
+  const Notification({Key key, this.locale, this.localizedValues})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        locale: Locale(locale),
+        localizationsDelegates: [
+          MyLocalizationsDelegate(localizedValues),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: LANGUAGES.map((language) => Locale(language, '')),
+        debugShowCheckedModeBanner: false,
+        title: APP_NAME,
+        theme: ThemeData(
+          primaryColor: PRIMARY,
+          brightness: Brightness.light,
+          accentColor: PRIMARY,
+        ),
+        home: HomeNotification(
+          localizedValues: localizedValues,
+          locale: locale,
+        ));
   }
 }

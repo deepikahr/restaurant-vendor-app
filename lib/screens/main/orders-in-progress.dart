@@ -1,20 +1,22 @@
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../widgets/order-item.dart';
-import '../widgets/no-data.dart';
-import '../../styles/styles.dart';
 import 'package:async_loader/async_loader.dart';
-import '../../services/orders.dart';
-import '../../screens/main/order-details.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../screens/main/order-details.dart';
+import '../../services/orders.dart';
+import '../../styles/styles.dart';
+import '../widgets/no-data.dart';
+import '../widgets/order-item.dart';
 
 // CouponCard
 
 class OrdersInProgress extends StatefulWidget {
   static String tag = "orderProgress";
-  final Map localizedValues;
+  final Map<String, Map<String, String>> localizedValues;
   final String locale;
+
   OrdersInProgress({Key key, this.locale, this.localizedValues})
       : super(key: key);
 
@@ -85,11 +87,9 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
       renderLoad: () => Center(child: new CircularProgressIndicator()),
       renderError: ([error]) => NoData(
           message: MyLocalizations.of(context)
-              .getLocalizations("SOMETHING_WENT_WRONG")),
+              .somethingwentwrongpleaserestarttheapp),
       renderSuccess: ({data}) => data.length == 0
-          ? NoData(
-              message: MyLocalizations.of(context)
-                  .getLocalizations("NO_ORDER_HISTORY"))
+          ? NoData(message: MyLocalizations.of(context).noOrderHistory)
           : Container(
               child: ListView.builder(
                   itemCount: orders == null ? 0 : orders.length,
@@ -149,16 +149,16 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                                             ' $currency${orders[index]['payableAmount'].toStringAsFixed(2)}',
                                         paymentMethod:
                                             ' - ${orders[index]['paymentOption']}',
-                                        statusLabel: MyLocalizations.of(context)
-                                                .getLocalizations("STATUS") +
-                                            ': ',
+                                        statusLabel:
+                                            MyLocalizations.of(context).status +
+                                                ': ',
                                         status: '${orders[index]['status']}',
                                       ),
                                     ),
-                                    _bottomSection(
-                                        index,
-                                        orders[index]['assigned'],
-                                        orders[index]['deliveryByName'] ?? '')
+//                                    _bottomSection(
+//                                        index,
+//                                        orders[index]['assigned'],
+//                                        orders[index]['deliveryByName'] ?? '')
                                   ],
                                 )),
                           ],
@@ -190,8 +190,7 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
           )),
           child: Center(
             child: Text(
-              MyLocalizations.of(context)
-                  .getLocalizations("ASSIGN_FOR_DELIVER"),
+              MyLocalizations.of(context).assignForDeliver,
               style: TextStyle(color: SUCCESS),
             ),
           ),
@@ -200,8 +199,7 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
     } else {
       return InkWell(
         onTap: () {
-          showSnackbar(
-              MyLocalizations.of(context).getLocalizations("ALREADY_ASSIGNED"));
+          showSnackbar(MyLocalizations.of(context).alreadyAssigned);
         },
         child: Container(
           height: 44,
@@ -211,9 +209,8 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
           )),
           child: Center(
             child: Text(
-              MyLocalizations.of(context).getLocalizations("ASSIGNED_TO") +
-                  deliveryBoyName,
-              style: TextStyle(color: Colors.yellow[600]),
+              MyLocalizations.of(context).assignedTo + deliveryBoyName,
+              style: TextStyle(color: Colors.black),
             ),
           ),
         ),
@@ -230,23 +227,20 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
         initState: () async => await _getStaffList(),
         renderLoad: () => Center(child: CircularProgressIndicator()),
         renderError: ([error]) => NoData(
-            message: MyLocalizations.of(context)
-                .getLocalizations("PLEASE_TRY_AGAIN"),
+            message: MyLocalizations.of(context).pleaseTryAgain,
             icon: Icons.block),
         renderSuccess: ({data}) {
           if (data is List)
             return _shoeDeliveryAgentsList(data);
           else
-            return Text(MyLocalizations.of(context)
-                .getLocalizations("NO_STAFF_AVAILABLE"));
+            return Text(MyLocalizations.of(context).noStaffAvailable);
         });
     return showDialog<void>(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(MyLocalizations.of(context)
-              .getLocalizations("SELECT_DELIVERY_AGENT")),
+          title: Text(MyLocalizations.of(context).selectDeliveryAgent),
           content: _asyncLoaderStaff,
         );
       },
@@ -292,18 +286,20 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
   }
 
   bool isLoading = false;
+
   Future<void> _showAssignConfirmAlert(Map staff) {
+    print('staf $staff');
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(MyLocalizations.of(context).getLocalizations("CONFIRM")),
+          title: Text(MyLocalizations.of(context).confirm),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text(MyLocalizations.of(context)
-                        .getLocalizations("ARE_YOU_SURE_TO_ASSIGN") +
+                        .areYouSureYouWantToAssignOrderTo +
                     staff['name'] +
                     '?'),
               ],
@@ -312,9 +308,8 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
           actions: <Widget>[
             FlatButton(
               child: isLoading
-                  ? Text(MyLocalizations.of(context)
-                      .getLocalizations("PLEASE_WAIT"))
-                  : Text(MyLocalizations.of(context).getLocalizations("OK")),
+                  ? Text(MyLocalizations.of(context).pleaseWait)
+                  : Text(MyLocalizations.of(context).ok),
               onPressed: () {
                 if (!isLoading) {
                   if (mounted) {
@@ -353,8 +348,8 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
                       .then((onValue) {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
-                    showSnackbar(MyLocalizations.of(context)
-                        .getLocalizations("ASSIGNED_SUCCESSFULLY"));
+                    showSnackbar(
+                        MyLocalizations.of(context).assignedSuccessfully);
                     if (mounted) {
                       setState(() {
                         isLoading = false;
@@ -365,8 +360,7 @@ class _OrdersInProgressState extends State<OrdersInProgress> {
               },
             ),
             FlatButton(
-              child:
-                  Text(MyLocalizations.of(context).getLocalizations("GO_BACK")),
+              child: Text(MyLocalizations.of(context).goBack),
               onPressed: () {
                 Navigator.of(context).pop();
               },
