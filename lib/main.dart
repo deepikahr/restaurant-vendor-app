@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:audioplayers/audioplayers.dart';
 import 'package:Kitchenapp/services/auth.dart';
 import 'package:Kitchenapp/services/initialize_i18n.dart';
 import 'package:Kitchenapp/services/localizations.dart'
@@ -18,6 +18,8 @@ import 'screens/notification/notification_page.dart';
 import 'services/common.dart';
 import 'services/constant.dart';
 import 'styles/styles.dart';
+
+AudioPlayer audioPlayer = AudioPlayer();
 
 bool get isInDebugMode {
   bool inDebugMode = false;
@@ -73,16 +75,32 @@ class _MyAppState extends State<MyApp> {
   bool loginIn = false;
   bool loginCheck = false;
 
+  Timer oneSignalTimer;
+
   @override
   void initState() {
     super.initState();
     getGlobalSettingsData();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    setState(() {
+      audioPlayer.stop();
+      audioPlayer.dispose();
+    });
+  }
+
   Future<void> initOneSignal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     OneSignal.shared
-        .setNotificationReceivedHandler((OSNotification notification) {});
+        .setNotificationReceivedHandler((OSNotification notification) async {
+      if (notification != null) {
+        await audioPlayer.play(
+            "https://www.mediacollege.com/audio/tone/files/250Hz_44100Hz_16bit_05sec.wav");
+      }
+    });
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       runApp(Notification(
@@ -113,6 +131,9 @@ class _MyAppState extends State<MyApp> {
         });
       }
       prefs.setString("playerId", playerId);
+      if (oneSignalTimer != null && oneSignalTimer.isActive) {
+        oneSignalTimer.cancel();
+      }
     }
   }
 
@@ -125,6 +146,9 @@ class _MyAppState extends State<MyApp> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await AuthService.getAdminSettings().then((onValue) {
       var adminSettings = onValue;
+      oneSignalTimer = Timer.periodic(Duration(seconds: 2), (timer) {
+        initOneSignal();
+      });
       initOneSignal();
       loginInCheck();
       if (adminSettings['currency'] == null) {
@@ -198,8 +222,16 @@ class CheckTokenScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
+      body: Container(
+        color: PRIMARY,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Image.asset(
+          'lib/assets/splash.png',
+          fit: BoxFit.cover,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+        ),
       ),
     );
   }
