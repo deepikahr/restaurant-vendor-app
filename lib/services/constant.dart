@@ -1,7 +1,7 @@
 //App name
 const APP_NAME = 'Restaurant Saas Vendor App';
 
-const ONE_SIGNAL_APP_ID = 'e42ca909-d95c-4d00-8f9d-120be4efac46';
+const ONE_SIGNAL_APP_ID = '05ac6c51-8416-41ab-8779-b48503bbe125';
 
 // api deploy testing
 //const BASE_URL = 'http://162.243.171.81:8000/';

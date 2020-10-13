@@ -4,6 +4,7 @@ import 'package:Kitchenapp/services/auth.dart';
 import 'package:Kitchenapp/services/initialize_i18n.dart';
 import 'package:Kitchenapp/services/localizations.dart'
     show MyLocalizationsDelegate;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -250,8 +251,10 @@ class Notification extends StatelessWidget {
         locale: Locale(locale),
         localizationsDelegates: [
           MyLocalizationsDelegate(localizedValues),
-          GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate
         ],
         supportedLocales: LANGUAGES.map((language) => Locale(language, '')),
         debugShowCheckedModeBanner: false,
