@@ -1,17 +1,18 @@
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../widgets/order-item.dart';
-import '../widgets/no-data.dart';
-import '../../styles/styles.dart';
 import 'package:async_loader/async_loader.dart';
-import '../../services/orders.dart';
-import '../../screens/main/order-details.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../screens/main/order-details.dart';
+import '../../services/orders.dart';
+import '../../styles/styles.dart';
+import '../widgets/no-data.dart';
+import '../widgets/order-item.dart';
 
 class OrderHistory extends StatefulWidget {
   static String tag = "orderHistory";
-  final Map localizedValues;
+  final Map<String, Map<String, String>> localizedValues;
   final String locale;
 
   OrderHistory({Key key, this.locale, this.localizedValues}) : super(key: key);
@@ -63,13 +64,10 @@ class _OrderHistoryState extends State<OrderHistory> {
       key: _asyncLoaderState,
       initState: () async => await getOrder(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
-      renderError: ([error]) => NoData(
-          message:
-              MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
+      renderError: ([error]) =>
+          NoData(message: MyLocalizations.of(context).errorMessage),
       renderSuccess: ({data}) => data.length == 0
-          ? NoData(
-              message: MyLocalizations.of(context)
-                  .getLocalizations("NO_ORDER_HISTORY"))
+          ? NoData(message: MyLocalizations.of(context).noOrderHistory)
           : Container(
               child: ListView.builder(
                   itemCount: data == null ? 0 : data.length,
@@ -127,9 +125,9 @@ class _OrderHistoryState extends State<OrderHistory> {
                                             ' $currency${data[index]['payableAmount'].toStringAsFixed(2)}',
                                         paymentMethod:
                                             ' - ${data[index]['paymentOption']}',
-                                        statusLabel: MyLocalizations.of(context)
-                                                .getLocalizations("STATUS") +
-                                            ': ',
+                                        statusLabel:
+                                            MyLocalizations.of(context).status +
+                                                ': ',
                                         status: '${data[index]['status']}',
                                       ),
                                       // _bottomSection()
@@ -148,7 +146,7 @@ class _OrderHistoryState extends State<OrderHistory> {
         backgroundColor: WHITE,
         appBar: AppBar(
           title: Text(
-            MyLocalizations.of(context).getLocalizations("ORDER_HISTORY"),
+            MyLocalizations.of(context).orderHistory,
             style: headerDefaultColor(),
           ),
           iconTheme: new IconThemeData(color: WHITE),

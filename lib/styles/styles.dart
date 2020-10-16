@@ -48,7 +48,7 @@ TextStyle titleStyle() {
   return TextStyle(
     fontWeight: FontWeight.w500,
     fontSize: 18.0,
-    color: DARK_TEXT_A,
+    color: Colors.black,
   );
 }
 
@@ -56,7 +56,7 @@ TextStyle labelLarge() {
   return TextStyle(
     fontWeight: FontWeight.w600,
     fontSize: 15.0,
-    color: DARK_TEXT,
+    color: Colors.black,
   );
 }
 
@@ -64,15 +64,15 @@ TextStyle label() {
   return TextStyle(
     fontWeight: FontWeight.w600,
     fontSize: 13.0,
-    color: DARK_TEXT,
+    color: Colors.black,
   );
 }
 
 TextStyle labelLight() {
   return TextStyle(
     fontWeight: FontWeight.w500,
-    fontSize: 13.0,
-    color: GRAY,
+    fontSize: 14.0,
+    color: Colors.black,
   );
 }
 
@@ -80,7 +80,7 @@ TextStyle textSuccess() {
   return TextStyle(
     fontWeight: FontWeight.w500,
     fontSize: 14.0,
-    color: SUCCESS,
+    color: Colors.black,
   );
 }
 
@@ -96,7 +96,7 @@ TextStyle textGray() {
   return TextStyle(
     fontWeight: FontWeight.w500,
     fontSize: 14.0,
-    color: GRAY,
+    color: Colors.black,
   );
 }
 
