@@ -1,16 +1,18 @@
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+import './drawer.dart';
 import './new-orders.dart';
 import './orders-in-progress.dart';
 import '../../styles/styles.dart';
-import './drawer.dart';
-import 'package:flutter/widgets.dart';
 
 class OrderList extends StatefulWidget {
   static String tag = "orderList";
 
   final Map<String, Map<String, String>> localizedValues;
   final String locale;
+
   OrderList({Key key, this.locale, this.localizedValues}) : super(key: key);
 
   @override
@@ -19,6 +21,7 @@ class OrderList extends StatefulWidget {
 
 class OrderListState extends State<OrderList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -48,11 +51,11 @@ class OrderListState extends State<OrderList> {
               color: PRIMARY,
             ),
             tabs: [
-              Tab(text: MyLocalizations.of(context).getLocalizations("NEW_ORDERS")),
-              Tab(text: MyLocalizations.of(context).getLocalizations("IN_PROGRESS")),
+              Tab(text: MyLocalizations.of(context).newOrders),
+              Tab(text: MyLocalizations.of(context).inProgress),
             ],
           ),
-          title: Text(MyLocalizations.of(context).getLocalizations("ORDERS"),
+          title: Text(MyLocalizations.of(context).orders,
               style: headerDefaultColor()),
           iconTheme: new IconThemeData(color: WHITE),
         ),

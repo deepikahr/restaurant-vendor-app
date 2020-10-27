@@ -1,10 +1,11 @@
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
+import 'package:async_loader/async_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../widgets/no-data.dart';
-import '../../styles/styles.dart';
-import 'package:async_loader/async_loader.dart';
+
 import '../../services/orders.dart';
+import '../../styles/styles.dart';
+import '../widgets/no-data.dart';
 
 class Monthly extends StatefulWidget {
   static String tag = "Monthly";
@@ -146,13 +147,10 @@ class _MonthlyState extends State<Monthly> {
             key: _asyncLoaderState,
             initState: () async => await getReport(),
             renderLoad: () => Center(child: new CircularProgressIndicator()),
-            renderError: ([error]) => NoData(
-                message: MyLocalizations.of(context)
-                    .getLocalizations("ERROR_MESSAGE")),
+            renderError: ([error]) =>
+                NoData(message: MyLocalizations.of(context).errorMessage),
             renderSuccess: ({data}) => monthlyReport.length == 0
-                ? NoData(
-                    message: MyLocalizations.of(context)
-                        .getLocalizations("NO_ORDER_HISTORY"))
+                ? NoData(message: MyLocalizations.of(context).noOrderHistory)
                 : reportCard()));
   }
 }

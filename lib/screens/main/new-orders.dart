@@ -1,19 +1,22 @@
-import 'dart:async';
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../widgets/order-item.dart';
-import '../widgets/no-data.dart';
-import '../../styles/styles.dart';
 import 'package:async_loader/async_loader.dart';
-import '../../services/orders.dart';
-import '../../screens/main/order-details.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../screens/main/order-details.dart';
+import '../../services/orders.dart';
+import '../../styles/styles.dart';
+import '../widgets/no-data.dart';
+import '../widgets/order-item.dart';
+
+// CouponCard
 
 class NewOrders extends StatefulWidget {
   static String tag = "newOrder";
   final Map<String, Map<String, String>> localizedValues;
   final String locale;
+
   NewOrders({Key key, this.locale, this.localizedValues}) : super(key: key);
 
   @override
@@ -25,25 +28,16 @@ class _NewOrdersState extends State<NewOrders> {
       GlobalKey<AsyncLoaderState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List orders;
-  bool isAcceptLoading = false,
-   isCancleLoading = false;
-  int currentIndexAccept,
-   currentIndexCancle;
+  bool isAcceptLoading = false;
+  bool isCancleLoading = false;
+  int currentIndexAccept;
+  int currentIndexCancle;
   String currency;
-Timer ordersTimer;
+
   @override
   void initState() {
     super.initState();
     getCurrency();
-    ordersTimer = new Timer.periodic(Duration(seconds: 5), (_) async {
-      getOrder();
-    });
-  }
-
-  @override
-  void dispose() {
-    if (ordersTimer != null) ordersTimer.cancel();
-    super.dispose();
   }
 
   getCurrency() async {
@@ -89,7 +83,7 @@ Timer ordersTimer;
           setState(() {
             isAcceptLoading = false;
             orders.removeAt(index);
-            showSnackbar(MyLocalizations.of(context).getLocalizations("ORDER_ACCEPTED"));
+            showSnackbar(MyLocalizations.of(context).orderAccepted);
           });
         }
       }
@@ -109,7 +103,7 @@ Timer ordersTimer;
         setState(() {
           isCancleLoading = false;
           orders.removeAt(index);
-          showSnackbar(MyLocalizations.of(context).getLocalizations("ORDER_CANCELLED"));
+          showSnackbar(MyLocalizations.of(context).orderCancelled);
         });
       }
     });
@@ -122,9 +116,9 @@ Timer ordersTimer;
       initState: () async => await getOrder(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
       renderError: ([error]) =>
-          NoData(message: MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
-      renderSuccess: ({data}) => orders.length == 0
-          ? NoData(message: MyLocalizations.of(context).getLocalizations("NO_ORDER_HISTORY"))
+          NoData(message: MyLocalizations.of(context).errorMessage),
+      renderSuccess: ({data}) => data.length == 0
+          ? NoData(message: MyLocalizations.of(context).noOrderHistory)
           : Container(
               child: ListView.builder(
                   itemCount: orders == null ? 0 : orders.length,
@@ -136,7 +130,7 @@ Timer ordersTimer;
                           new MaterialPageRoute(
                             builder: (BuildContext context) => new OrderDetails(
                               orderData: orders[index],
-                              option: MyLocalizations.of(context).getLocalizations("ACCEPT"),
+                              option: MyLocalizations.of(context).accept,
                             ),
                           ),
                         );
@@ -181,7 +175,8 @@ Timer ordersTimer;
                                           ' $currency${orders[index]['payableAmount'].toStringAsFixed(2)}',
                                       paymentMethod:
                                           ' - ${orders[index]['paymentOption']}',
-                                      statusLabel: 'Status: ',
+                                      statusLabel:
+                                          '${MyLocalizations.of(context).status} :',
                                       status: '${orders[index]['status']}',
                                     ),
                                     _bottomSection(orders[index]['_id'], index),
@@ -225,8 +220,8 @@ Timer ordersTimer;
                 }
               },
               child: (isAcceptLoading && currentIndexAccept == index)
-                  ? Text(MyLocalizations.of(context).getLocalizations("PLEASE_WAIT"))
-                  : Text(MyLocalizations.of(context).getLocalizations("ACCEPT")),
+                  ? Text(MyLocalizations.of(context).pleaseWait)
+                  : Text(MyLocalizations.of(context).accept),
               textColor: PRIMARY,
               padding: EdgeInsets.all(0),
             ),
@@ -241,9 +236,9 @@ Timer ordersTimer;
                 }
               },
               child: (isCancleLoading && currentIndexCancle == index)
-                  ? Text(MyLocalizations.of(context).getLocalizations("PLEASE_WAIT"))
-                  : Text(MyLocalizations.of(context).getLocalizations("REJECT")),
-              textColor: DARK_TEXT_A,
+                  ? Text(MyLocalizations.of(context).pleaseWait)
+                  : Text(MyLocalizations.of(context).reject),
+              textColor: Colors.black,
               padding: EdgeInsets.all(0),
             ),
           ),

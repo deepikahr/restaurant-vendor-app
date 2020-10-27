@@ -1,19 +1,21 @@
 import 'package:Kitchenapp/screens/main/reports.dart';
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../styles/styles.dart';
-import '../auth/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import './order-list.dart';
 import './orders-history.dart';
-import '../../services/common.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/cupertino.dart';
 import '../../main.dart';
+import '../../services/common.dart';
+import '../../styles/styles.dart';
+import '../auth/login.dart';
 
 class Menu extends StatefulWidget {
   final Map<String, Map<String, String>> localizedValues;
   final String locale;
   final GlobalKey<ScaffoldState> scaffoldKey;
+
   Menu({Key key, this.scaffoldKey, this.locale, this.localizedValues})
       : super(key: key);
 
@@ -35,7 +37,7 @@ class _MenuState extends State<Menu> {
 
   String selectedLanguages, selectedLang;
 
-  List<String> languages = ['English', 'French', 'Arabic', 'Chinese'];
+  List<String> languages = ['English', 'Spanish'];
 
   var selectedLanguage, selectedLocale;
 
@@ -47,12 +49,8 @@ class _MenuState extends State<Menu> {
       });
       if (selectedLanguage == 'en') {
         selectedLocale = 'English';
-      } else if (selectedLanguage == 'fr') {
-        selectedLocale = 'French';
-      } else if (selectedLanguage == 'ar') {
-        selectedLocale = 'Arabic';
-      } else if (selectedLanguage == 'zh') {
-        selectedLocale = 'Chinese';
+      } else if (selectedLanguage == 'es') {
+        selectedLocale = 'Spanish';
       }
     }
   }
@@ -82,26 +80,26 @@ class _MenuState extends State<Menu> {
               ),
             ),
             _tile(
-                MyLocalizations.of(context).getLocalizations("HOME"),
+                MyLocalizations.of(context).home,
                 Icons.arrow_forward_ios,
                 OrderList(
                   locale: widget.locale,
                   localizedValues: widget.localizedValues,
                 )),
             _tile(
-                MyLocalizations.of(context).getLocalizations("ORDER_HISTORY"),
+                MyLocalizations.of(context).orderHistory,
                 Icons.arrow_forward_ios,
                 OrderHistory(
                   locale: widget.locale,
                   localizedValues: widget.localizedValues,
                 )),
-//            _tile(
-//                MyLocalizations.of(context).reports,
-//                Icons.arrow_forward_ios,
-//                Reports(
-//                  locale: widget.locale,
-//                  localizedValues: widget.localizedValues,
-//                )),
+            _tile(
+                MyLocalizations.of(context).reports,
+                Icons.arrow_forward_ios,
+                Reports(
+                  locale: widget.locale,
+                  localizedValues: widget.localizedValues,
+                )),
             Container(
               decoration: const BoxDecoration(
                 border: Border(
@@ -109,11 +107,10 @@ class _MenuState extends State<Menu> {
                 ),
               ),
               child: ListTile(
-                title: Text(MyLocalizations.of(context).getLocalizations("LOGOUT"),
+                title: Text(MyLocalizations.of(context).logout,
                     style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                    )),
+                        fontSize: 16,
+                        color: Colors.black)),
                 onTap: logout,
                 trailing: Icon(
                   Icons.arrow_forward_ios,
@@ -128,7 +125,10 @@ class _MenuState extends State<Menu> {
                 border: Border.all(color: Colors.grey, width: 1.0),
               ),
               child: ListTile(
-                title: Text(MyLocalizations.of(context).getLocalizations("SELECT_LANGUAGES")),
+                title: Text(
+                  MyLocalizations.of(context).selectLanguages,
+                  style: TextStyle(color: Colors.black),
+                ),
                 trailing: DropdownButtonHideUnderline(
                   child: DropdownButton(
                     hint: Text(
@@ -146,45 +146,25 @@ class _MenuState extends State<Menu> {
                                   MyApp("en", widget.localizedValues),
                             ),
                             (Route<dynamic> route) => false);
-                      } else if (newValue == 'Arabic') {
+                      } else if (newValue == 'Spanish') {
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
-                        prefs.setString('selectedLanguage', 'ar');
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => MyApp(
-                                "ar",
-                                widget.localizedValues,
-                              ),
-                            ),
-                            (Route<dynamic> route) => false);
-                      } else if (newValue == 'Chinese') {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        prefs.setString('selectedLanguage', 'zh');
+                        prefs.setString('selectedLanguage', 'es');
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  MyApp('zh', widget.localizedValues),
+                                  MyApp('es', widget.localizedValues),
                             ),
-                            (Route<dynamic> route) => false);
-                      } else {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        prefs.setString('selectedLanguage', 'fr');
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    MyApp('fr', widget.localizedValues)),
                             (Route<dynamic> route) => false);
                       }
                     },
                     items: languages.map((lang) {
                       return DropdownMenuItem(
-                        child: new Text(lang),
+                        child: new Text(
+                          lang,
+                          style: TextStyle(color: Colors.black),
+                        ),
                         value: lang,
                       );
                     }).toList(),
@@ -208,9 +188,7 @@ class _MenuState extends State<Menu> {
           title: Text(
             title,
             style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-            ),
+                 fontSize: 16, color: Colors.black),
           ),
           onTap: () {
             Navigator.pop(context);

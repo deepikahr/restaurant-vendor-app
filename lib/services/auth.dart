@@ -1,7 +1,9 @@
-import 'package:http/http.dart' show Client;
-import './constant.dart';
-import './common.dart';
 import 'dart:convert';
+
+import 'package:http/http.dart' show Client;
+
+import './common.dart';
+import './constant.dart';
 
 class AuthService {
   static final Client client = Client();
@@ -27,7 +29,6 @@ class AuthService {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
         });
-
     return json.decode(response.body);
   }
 

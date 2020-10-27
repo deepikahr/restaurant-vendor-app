@@ -1,21 +1,26 @@
 import 'dart:async';
-
+import 'package:audioplayers/audioplayers.dart';
 import 'package:Kitchenapp/services/auth.dart';
 import 'package:Kitchenapp/services/initialize_i18n.dart';
 import 'package:Kitchenapp/services/localizations.dart'
     show MyLocalizationsDelegate;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import './screens/main/order-list.dart';
+
 import './screens/auth/login.dart';
+import './screens/main/order-list.dart';
 import './styles/styles.dart';
 import 'screens/auth/login.dart';
 import 'screens/main/order-list.dart';
+import 'screens/notification/notification_page.dart';
 import 'services/common.dart';
 import 'services/constant.dart';
 import 'styles/styles.dart';
+
+AudioPlayer audioPlayer = AudioPlayer();
 
 bool get isInDebugMode {
   bool inDebugMode = false;
@@ -24,7 +29,6 @@ bool get isInDebugMode {
 }
 
 Future<void> main() async {
-  // Stetho.initialize();
   WidgetsFlutterBinding.ensureInitialized();
   Map<String, Map<String, String>> localizedValues = await initializeI18n();
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -61,6 +65,7 @@ void tokenCheck(locale, localizedValues) {
 class MyApp extends StatefulWidget {
   final Map<String, Map<String, String>> localizedValues;
   final String locale;
+
   MyApp(this.locale, this.localizedValues);
 
   @override
@@ -70,19 +75,40 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool loginIn = false;
   bool loginCheck = false;
+
+  Timer oneSignalTimer;
+
   @override
   void initState() {
     super.initState();
     getGlobalSettingsData();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    setState(() {
+      audioPlayer.stop();
+      audioPlayer.dispose();
+    });
+  }
+
   Future<void> initOneSignal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     OneSignal.shared
-        .setNotificationReceivedHandler((OSNotification notification) {});
+        .setNotificationReceivedHandler((OSNotification notification) async {
+      if (notification != null) {
+        await audioPlayer.play(
+            "https://www.mediacollege.com/audio/tone/files/250Hz_44100Hz_16bit_05sec.wav");
+      }
+    });
     OneSignal.shared
-        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {});
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      runApp(Notification(
+        locale: widget.locale,
+        localizedValues: widget.localizedValues,
+      ));
+    });
     OneSignal.shared.init(ONE_SIGNAL_APP_ID, iOSSettings: {
       OSiOSSettings.autoPrompt: false,
       OSiOSSettings.inAppLaunchUrl: true
@@ -106,6 +132,9 @@ class _MyAppState extends State<MyApp> {
         });
       }
       prefs.setString("playerId", playerId);
+      if (oneSignalTimer != null && oneSignalTimer.isActive) {
+        oneSignalTimer.cancel();
+      }
     }
   }
 
@@ -118,6 +147,9 @@ class _MyAppState extends State<MyApp> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await AuthService.getAdminSettings().then((onValue) {
       var adminSettings = onValue;
+      oneSignalTimer = Timer.periodic(Duration(seconds: 2), (timer) {
+        initOneSignal();
+      });
       initOneSignal();
       loginInCheck();
       if (adminSettings['currency'] == null) {
@@ -152,7 +184,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       locale: Locale(widget.locale),
       localizationsDelegates: [
-        MyLocalizationsDelegate(widget.localizedValues, [widget.locale]),
+        MyLocalizationsDelegate(widget.localizedValues),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
@@ -185,14 +217,56 @@ class _MyAppState extends State<MyApp> {
 class CheckTokenScreen extends StatelessWidget {
   final Map<String, Map<String, String>> localizedValues;
   final String locale;
+
   CheckTokenScreen(this.locale, this.localizedValues);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
+      body: Container(
+        color: PRIMARY,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Image.asset(
+          'lib/assets/splash.png',
+          fit: BoxFit.cover,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+        ),
       ),
     );
+  }
+}
+
+class Notification extends StatelessWidget {
+  final String locale;
+  final Map localizedValues;
+
+  const Notification({Key key, this.locale, this.localizedValues})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        locale: Locale(locale),
+        localizationsDelegates: [
+          MyLocalizationsDelegate(localizedValues),
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate
+        ],
+        supportedLocales: LANGUAGES.map((language) => Locale(language, '')),
+        debugShowCheckedModeBanner: false,
+        title: APP_NAME,
+        theme: ThemeData(
+          primaryColor: PRIMARY,
+          brightness: Brightness.light,
+          accentColor: PRIMARY,
+        ),
+        home: HomeNotification(
+          localizedValues: localizedValues,
+          locale: locale,
+        ));
   }
 }

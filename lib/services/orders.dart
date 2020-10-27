@@ -1,7 +1,9 @@
-import 'package:http/http.dart' show Client;
 import 'dart:convert';
-import './constant.dart';
+
+import 'package:http/http.dart' show Client;
+
 import './common.dart';
+import './constant.dart';
 
 class OrderServices {
   static final Client client = Client();
@@ -59,8 +61,8 @@ class OrderServices {
     return json.decode(response.body);
   }
 
-  static Future<Map<String, dynamic>> updateOrder(
-      String orderID, Map<String, dynamic> body) async {
+  static Future<Map<String, dynamic>> updateOrder(String orderID,
+      Map<String, dynamic> body) async {
     String token;
     await Common.getToken().then((onValue) {
       token = 'bearer ' + onValue;
@@ -71,8 +73,9 @@ class OrderServices {
     return json.decode(response.body);
   }
 
-  static Future<Map<String, dynamic>> assignOrder(
-      String orderID, Map<String, dynamic> body) async {
+  static Future<Map<String, dynamic>> assignOrder(String orderID,
+      Map<String, dynamic> body) async {
+    print('body $body');
     String token;
     await Common.getToken().then((onValue) {
       token = 'bearer ' + onValue;

@@ -1,13 +1,14 @@
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../widgets/order-item.dart';
-import '../widgets/no-data.dart';
-import '../../styles/styles.dart';
 import 'package:async_loader/async_loader.dart';
-import '../../services/orders.dart';
-import '../../screens/main/order-details.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../screens/main/order-details.dart';
+import '../../services/orders.dart';
+import '../../styles/styles.dart';
+import '../widgets/no-data.dart';
+import '../widgets/order-item.dart';
 
 class OrderHistory extends StatefulWidget {
   static String tag = "orderHistory";
@@ -64,9 +65,9 @@ class _OrderHistoryState extends State<OrderHistory> {
       initState: () async => await getOrder(),
       renderLoad: () => Center(child: new CircularProgressIndicator()),
       renderError: ([error]) =>
-          NoData(message: MyLocalizations.of(context).getLocalizations("ERROR_MESSAGE")),
+          NoData(message: MyLocalizations.of(context).errorMessage),
       renderSuccess: ({data}) => data.length == 0
-          ? NoData(message: MyLocalizations.of(context).getLocalizations("NO_ORDER_HISTORY"))
+          ? NoData(message: MyLocalizations.of(context).noOrderHistory)
           : Container(
               child: ListView.builder(
                   itemCount: data == null ? 0 : data.length,
@@ -125,7 +126,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                                         paymentMethod:
                                             ' - ${data[index]['paymentOption']}',
                                         statusLabel:
-                                            MyLocalizations.of(context).getLocalizations("STATUS") +
+                                            MyLocalizations.of(context).status +
                                                 ': ',
                                         status: '${data[index]['status']}',
                                       ),
@@ -145,7 +146,7 @@ class _OrderHistoryState extends State<OrderHistory> {
         backgroundColor: WHITE,
         appBar: AppBar(
           title: Text(
-            MyLocalizations.of(context).getLocalizations("ORDER_HISTORY"),
+            MyLocalizations.of(context).orderHistory,
             style: headerDefaultColor(),
           ),
           iconTheme: new IconThemeData(color: WHITE),

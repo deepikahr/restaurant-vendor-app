@@ -1,16 +1,18 @@
 import 'package:Kitchenapp/services/localizations.dart' show MyLocalizations;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../styles/styles.dart';
-import '../main/order-list.dart';
+
+import '../../blocs/validators.dart';
 import '../../services/auth.dart';
 import '../../services/common.dart';
-import '../../blocs/validators.dart';
+import '../../styles/styles.dart';
+import '../main/order-list.dart';
 
 class Login extends StatefulWidget {
   final Map<String, Map<String, String>> localizedValues;
   final String locale;
   final GlobalKey<ScaffoldState> scaffoldKey;
+
   Login({Key key, this.scaffoldKey, this.locale, this.localizedValues})
       : super(key: key);
 
@@ -71,7 +73,7 @@ class _LoginState extends State<Login> {
           Common.setId(onValue['_id']);
         }
         Common.setRole(role);
-        showSnackbar(MyLocalizations.of(context).getLocalizations("NEAR_BY"));
+        showSnackbar(MyLocalizations.of(context).loginSuccessfully);
         Future.delayed(Duration(milliseconds: 1500), () {
           Navigator.pushAndRemoveUntil(
               context,
@@ -83,8 +85,7 @@ class _LoginState extends State<Login> {
               (Route<dynamic> route) => false);
         });
       } else {
-        showSnackbar(MyLocalizations.of(context)
-            .getLocalizations("YOU_ARE_NOT_AUTHORIZED_TO_LOGIN"));
+        showSnackbar(MyLocalizations.of(context).youAreNotAuthorizedToLogin);
       }
       if (mounted) {
         setState(() {
@@ -155,8 +156,7 @@ class _LoginState extends State<Login> {
         validator: (String value) {
           if (value.isEmpty ||
               !RegExp(Validators.emailPattern).hasMatch(value)) {
-            return MyLocalizations.of(context)
-                .getLocalizations("PLEASE_ENTER_VALID_EMAIL");
+            return MyLocalizations.of(context).pleaseEnterAValidEmail;
           } else
             return null;
         },
@@ -167,7 +167,7 @@ class _LoginState extends State<Login> {
         initialValue: 'manager1@ionicfirebaseapp.com',
         obscureText: false,
         decoration: InputDecoration(
-          hintText: MyLocalizations.of(context).getLocalizations("EMAIL_ID"),
+          hintText: MyLocalizations.of(context).emailId,
           contentPadding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: PRIMARY, width: 2.0),
@@ -186,8 +186,7 @@ class _LoginState extends State<Login> {
       keyboardType: TextInputType.text,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
-          return MyLocalizations.of(context)
-              .getLocalizations("PLEASE_ENTER_VALID_PASSWORD");
+          return MyLocalizations.of(context).passwordShouldBeAtleast6CharLong;
         } else
           return null;
       },
@@ -195,7 +194,7 @@ class _LoginState extends State<Login> {
         password = value;
       },
       decoration: new InputDecoration(
-        hintText: MyLocalizations.of(context).getLocalizations("PASSWORD"),
+        hintText: MyLocalizations.of(context).password,
         contentPadding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: PRIMARY, width: 2.0),
@@ -216,9 +215,9 @@ class _LoginState extends State<Login> {
         padding: EdgeInsets.all(12),
         fillColor: PRIMARY,
         child: isLoading
-            ? Text(MyLocalizations.of(context).getLocalizations("PLEASE_WAIT"),
+            ? Text(MyLocalizations.of(context).pleaseWait,
                 style: TextStyle(color: Colors.white))
-            : Text(MyLocalizations.of(context).getLocalizations("LOGIN"),
+            : Text(MyLocalizations.of(context).login,
                 style: TextStyle(color: Colors.white)),
         onPressed: login,
       ),
