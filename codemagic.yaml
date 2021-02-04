@@ -76,7 +76,7 @@ workflows:
         - pattern: testing-build
           include: true
           source: true
-    scripts
+    scripts:
       - rm -r lib/services/constant.dart
       - echo $CONSTANT_FILE | base64 --decode > lib/services/constant.dart
       - flutter upgrade
